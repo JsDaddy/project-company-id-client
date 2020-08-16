@@ -1,0 +1,3 @@
+class CheckTokenPending {}
+
+class CheckTokenSuccess {}
