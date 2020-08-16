@@ -54,7 +54,7 @@ class UserModel {
       github: json['github'].toString(),
       activeProjects: json['activeProjects'] as List<dynamic>,
       role: json['role'].toString(),
-      date: json['dob'].toDate() as DateTime,
+      date: DateTime.parse(json['dob'] as String),
       email: json['email'].toString(),
       id: json['_id'].toString(),
       lastName: json['lastName'].toString(),

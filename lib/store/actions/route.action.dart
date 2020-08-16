@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 
 class PushAction {
-  PushAction(this.destination);
-  final String destination;
+  PushAction(this.destination, {this.key});
+  GlobalKey<NavigatorState> key;
+  final Widget destination;
+}
+
+class PushReplacementAction {
+  PushReplacementAction(this.destination, {this.key});
+  GlobalKey<NavigatorState> key;
+  final Widget destination;
+}
+
+class PopAction {
+  PopAction({this.params, this.key});
+  GlobalKey<NavigatorState> key;
+  dynamic params;
 }

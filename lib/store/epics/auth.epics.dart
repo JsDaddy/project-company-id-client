@@ -1,37 +1,75 @@
+import 'dart:convert';
+
 import 'package:company_id_new/common/services/auth.service.dart';
+import 'package:company_id_new/main.dart';
+import 'package:company_id_new/screens/home/home.screen.dart';
+import 'package:company_id_new/screens/set-password/set-password.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
+import 'package:company_id_new/store/store.dart';
+import 'package:dio/dio.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../screens/login/login.screen.dart';
 
 Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is CheckTokenPending)
       .switchMap((dynamic action) => Stream<UserModel>.fromFuture(checkToken())
-              .map<dynamic>((UserModel user) {
-            print('12312312312312');
-            print(user);
-            print('12312312312312');
-            return CheckTokenSuccess() as dynamic;
-            // if (user.userId == null) {
-            //   return <dynamic>[
-            //     SignInFail(),
-            //     PushReplacementAction(MaterialPageRoute<void>(
-            //         builder: (BuildContext context) => LoginScreen()))
-            //   ];
-            // }
-            // return <dynamic>[
-            //   SetTitle(user.role == 'admin' ? 'Statistics' : 'Timelog'),
-            //   SignInSuccess(),
-            //   SetUserInfo(user),
-            //   GetNotificationsPending(user.documentId),
-            //   PushReplacementAction(MaterialPageRoute<void>(
-            //       builder: (BuildContext context) =>
-            //           user.initialLogin ? SetPasswordScreen() : HomeScreen()))
-            // ];
+              .expand<dynamic>((UserModel user) {
+            return <dynamic>[
+              SetTitle(user.role == 'admin' ? 'Statistics' : 'Timelog'),
+              SignInSuccess(user),
+              PushReplacementAction(
+                  user.initialLogin ? SetPasswordScreen() : HomeScreen(),
+                  key: mainNavigatorKey)
+            ];
           }).onErrorReturnWith((dynamic e) {
-            print('qwe $e');
-            return PushAction('/login');
+            print(e);
+            return PushReplacementAction(LoginScreen());
+          }));
+}
+
+Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions.where((dynamic action) => action is SignInPending).switchMap(
+      (dynamic action) => Stream<UserModel>.fromFuture(
+                  singIn(action.email as String, action.password as String))
+              .expand<dynamic>((UserModel user) {
+            print(user);
+            return <dynamic>[
+              SignInSuccess(user),
+              SetTitle(user.role == 'admin' ? 'Statistics' : 'Timelog'),
+              PushReplacementAction(
+                  user.initialLogin ? SetPasswordScreen() : HomeScreen(),
+                  key: mainNavigatorKey)
+            ];
+          }).onErrorReturnWith((dynamic e) {
+            return Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong'));
+          }));
+}
+
+Stream<void> setPasswordEpic(
+    Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions
+      .where((dynamic action) => action is SetPasswordPending)
+      .switchMap((dynamic action) =>
+          Stream<void>.fromFuture(setPassword(action.password as String))
+              .expand<dynamic>((_) {
+            return <dynamic>[
+              Notify(NotifyModel(
+                  NotificationType.success, 'Your password has been changed')),
+              SetTitle(
+                  store.state.user.role == 'admin' ? 'Statistics' : 'Timelog'),
+              PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
+            ];
+          }).onErrorReturnWith((dynamic e) {
+            print(e);
+            print(e.message);
           }));
 }

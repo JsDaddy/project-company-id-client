@@ -1,6 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/screens/login/login.screen.dart';
+import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/splash/splash.screen.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
 class _MyAppState extends State<MyApp> {
   @override
@@ -32,11 +32,6 @@ class _MyAppState extends State<MyApp> {
         store: widget.store,
         child: BotToastInit(
           child: MaterialApp(
-            initialRoute: '/',
-            routes: {
-              '/': (BuildContext context) => SplashScreen(),
-              '/login': (BuildContext context) => LoginScreen(),
-            },
             navigatorObservers: <NavigatorObserver>[
               BotToastNavigatorObserver()
             ],
@@ -58,8 +53,8 @@ class _MyAppState extends State<MyApp> {
               canvasColor: AppColors.bg,
               fontFamily: 'Helvetica',
             ),
-            navigatorKey: navigatorKey,
-            // home: SplashScreen(),
+            navigatorKey: mainNavigatorKey,
+            home: SplashScreen(),
           ),
         ));
   }

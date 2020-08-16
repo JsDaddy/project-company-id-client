@@ -13,5 +13,9 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
     middleware: [
       LoggingMiddleware<dynamic>.printer(),
       EpicMiddleware<dynamic>(checkTokenEpic),
-      EpicMiddleware<dynamic>(routeEpic)
+      EpicMiddleware<dynamic>(signInEpic),
+      EpicMiddleware<dynamic>(routeEpic),
+      EpicMiddleware<dynamic>(routePopEpic),
+      EpicMiddleware<dynamic>(routePushReplacmentEpic),
+      EpicMiddleware<dynamic>(setPasswordEpic)
     ]);
