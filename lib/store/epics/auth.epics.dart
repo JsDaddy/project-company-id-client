@@ -30,8 +30,8 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            print(e);
-            return PushReplacementAction(LoginScreen());
+            print('checktoken error: $e');
+            return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
           }));
 }
 
@@ -40,7 +40,6 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
       (dynamic action) => Stream<UserModel>.fromFuture(
                   singIn(action.email as String, action.password as String))
               .expand<dynamic>((UserModel user) {
-            print(user);
             return <dynamic>[
               SignInSuccess(user),
               SetTitle(user.role == 'admin' ? 'Statistics' : 'Timelog'),

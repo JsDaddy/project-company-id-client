@@ -1,3 +1,4 @@
+import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/services/validators.service.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
@@ -6,6 +7,7 @@ import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -26,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController =
       TextEditingController(text: '');
   bool isRemember = false;
+  @override
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(

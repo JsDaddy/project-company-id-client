@@ -49,20 +49,23 @@ class UserModel {
       return null;
     }
     return UserModel(
-      avatar: json['avatar'].toString(),
-      englishLevel: json['englishLevel'].toString(),
-      github: json['github'].toString(),
-      activeProjects: json['activeProjects'] as List<dynamic>,
-      role: json['role'].toString(),
-      date: DateTime.parse(json['dob'] as String),
-      email: json['email'].toString(),
-      id: json['_id'].toString(),
-      lastName: json['lastName'].toString(),
-      name: json['name'].toString(),
-      phone: json['phone'].toString(),
-      projects: json['projects'] as List<dynamic>,
-      position: json['position'].toString(),
-      skype: json['skype'].toString(),
+      avatar: json['avatar'] as String,
+      englishLevel: json['englishLevel'] as String,
+      github: json['github'] as String,
+      activeProjects: json['activeProjects'] == null
+          ? null
+          : json['activeProjects'] as List<dynamic>,
+      role: json['role'] as String,
+      date: json['dob'] == null ? null : DateTime.parse(json['dob'] as String),
+      email: json['email'] as String,
+      id: json['_id'] as String,
+      lastName: json['lastName'] as String,
+      name: json['name'] as String,
+      phone: json['phone'] as String,
+      projects:
+          json['projects'] == null ? null : json['projects'] as List<dynamic>,
+      position: json['position'] as String,
+      skype: json['skype'] as String,
       initialLogin: json['initialLogin'] as bool,
     );
   }
@@ -94,7 +97,7 @@ class UserModel {
         date: date ?? this.date,
         email: email ?? this.email,
         id: id ?? this.id,
-        lastName: lastName ?? lastName,
+        lastName: lastName ?? this.lastName,
         name: name ?? this.name,
         phone: phone ?? this.phone,
         projects: projects ?? this.projects,
