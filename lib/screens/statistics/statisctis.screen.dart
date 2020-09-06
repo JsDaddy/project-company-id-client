@@ -6,7 +6,9 @@ import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-
 import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
 import 'package:company_id_new/common/widgets/event-marker/event-marker.widget.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
+import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,10 @@ import 'package:redux/redux.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class _ViewModel {
-  _ViewModel({this.logs});
-  Map<DateTime, List<double>> logs;
+  _ViewModel({this.logs, this.statistic, this.holidays});
+  Map<DateTime, List<CalendarModel>> logs;
+  Map<DateTime, List<CalendarModel>> holidays;
+  StatisticModel statistic;
 }
 
 class StatisticsScreen extends StatefulWidget {
@@ -41,6 +45,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         child: StoreConnector<AppState, _ViewModel>(
             converter: (Store<AppState> store) => _ViewModel(
                 // isLoading: store.state.isLoading,
+                statistic: store.state.adminStatistic,
+                holidays: store.state.holidays,
                 logs: store.state.adminLogs),
             builder: (BuildContext context, _ViewModel state) {
               return Scaffold(
@@ -104,7 +110,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   //     ? '\n ${_timeForMonth(state)} / ${state.workTimeMonth} h / ${workedTimeForMonth(state.workTimeMonth, _timeForMonth(state), context)}'
                   //     : '\n${_timeForMonth(state)}',
                   title: 'Timelog',
-                  // holidays: state.holidaysSelector,
+                  holidays: state.holidays,
                   onCalendarCreated: _onCalendarCreated,
                   onVisibleDaysChanged: _onVisibleDaysChanged,
                   events: state.logs,
@@ -125,34 +131,42 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       return children;
                     },
                   ),
-                  // onDaySelected: _onDaySelected,
-                  buildEventList: _buildEventList(),
+                  onDaySelected: _onDaySelected,
+                  buildEventList: _buildEventList(state),
                 ),
               );
             }));
   }
 
-  Widget _buildEventList() {
+  Widget _buildEventList(_ViewModel state) {
     return Container();
+  }
+
+  void _onDaySelected(DateTime day, List<dynamic> events) {
+    // store.dispatch(GetAdminLogByDatePending())
+    // store.dispatch(SetCurrentDayTimelogAll(day.toLocal()));
   }
 
   Widget _buildEventsMarker(
     DateTime date,
     List<dynamic> events,
   ) {
-    return EventMarkerWidget(
-        color: AppColors.red,
-        size: 24,
-        child: Center(
-          child: Text(
-            events[0].round() != events[0]
-                ? events[0].toString()
-                : events[0].toInt().toString(),
-            style: const TextStyle(
-              fontSize: 12.0,
+    if (events[0].timelogs != null) {
+      return EventMarkerWidget(
+          color: AppColors.red,
+          size: 24,
+          child: Center(
+            child: Text(
+              events[0].timelogs.round() != events[0].timelogs
+                  ? events[0].timelogs.toString()
+                  : events[0].timelogs.toInt().toString(),
+              style: const TextStyle(
+                fontSize: 12.0,
+              ),
             ),
-          ),
-        ));
+          ));
+    }
+    return Container();
 
     // if (state.filter?.user != null) {
     //   return _totalTime == 0
@@ -194,7 +208,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     store.dispatch(GetAdminLogsPending(
-        '?${AppQuery.dateQuery(first)}&${AppQuery.logTypeQuery(LogType.all)}'));
+        '?${AppQuery.dateQuery(first)}&${AppQuery.logTypeQuery(LogType.timelog)}'));
   }
 
   void _onCalendarCreated(

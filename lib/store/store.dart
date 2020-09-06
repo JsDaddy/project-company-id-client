@@ -1,7 +1,6 @@
 import 'package:company_id_new/store/epics/auth.epics.dart';
 import 'package:company_id_new/store/epics/logs.epics.dart';
 import 'package:company_id_new/store/epics/route.epics.dart';
-import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';

@@ -45,7 +45,7 @@ class AppConverting {
         return 'vacations';
         break;
       case LogType.timelog:
-        return 'imelogs';
+        return 'timelogs';
         break;
       default:
         return 'all';

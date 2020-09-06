@@ -1,5 +1,6 @@
+import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
-import 'package:company_id_new/store/models/log.model.dart';
+import 'package:company_id_new/store/models/statistic.model.dart';
 
 class GetAdminLogsPending {
   GetAdminLogsPending(this.query);
@@ -8,7 +9,17 @@ class GetAdminLogsPending {
 
 class GetAdminLogsSuccess {
   GetAdminLogsSuccess(this.logs);
-  Map<DateTime, List<double>> logs;
+  Map<DateTime, List<CalendarModel>> logs;
+}
+
+class GetAdmingStatisticSuccess {
+  GetAdmingStatisticSuccess(this.statistic);
+  StatisticModel statistic;
+}
+
+class GetHolidaysLogsSuccess {
+  GetHolidaysLogsSuccess(this.holidays);
+  Map<DateTime, List<CalendarModel>> holidays;
 }
 
 class GetLogsPending {}
