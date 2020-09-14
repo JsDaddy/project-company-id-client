@@ -8,11 +8,17 @@ class AppQuery {
   }
 
   static String logTypeQuery(LogType logType) {
+    if (logType == null) {
+      return '';
+    }
     final String type = AppConverting.getTypeLogQuery(logType);
     return 'logType=$type';
   }
 
   static String vacationTypeQuery(VacationType vacationType) {
+    if (vacationType == null) {
+      return '';
+    }
     final int type = AppConverting.getVacationTypeQuery(vacationType);
     return 'type=$type';
   }

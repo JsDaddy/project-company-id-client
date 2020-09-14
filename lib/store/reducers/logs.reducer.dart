@@ -1,5 +1,6 @@
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
+import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:redux/redux.dart';
 
@@ -24,6 +25,16 @@ final Reducer<StatisticModel> adminStatisticReducers = combineReducers<
 StatisticModel _saveAdminStatistic(
     StatisticModel adminLogs, GetAdmingStatisticSuccess action) {
   return action.statistic;
+}
+
+final Reducer<List<LogModel>> adminByDateReducers = combineReducers<
+    List<LogModel>>(<List<LogModel> Function(List<LogModel>, dynamic)>[
+  TypedReducer<List<LogModel>, GetAdminLogByDateSuccess>(_saveAdminLogsByDate)
+]);
+
+List<LogModel> _saveAdminLogsByDate(
+    List<LogModel> adminLogs, GetAdminLogByDateSuccess action) {
+  return action.logs;
 }
 
 final Reducer<Map<DateTime, List<CalendarModel>>> holidaysReducers =

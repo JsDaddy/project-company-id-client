@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
+import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:dio/dio.dart';
 
@@ -18,15 +19,15 @@ Future<Map<String, dynamic>> getLogs(String query) async {
                   .toList() as List<CalendarModel>));
   final StatisticModel mappedStatistic = StatisticModel.fromJson(statistics);
   return <String, dynamic>{'logs': mappedLogs, 'statistic': mappedStatistic};
-  // return result.map<DateTime, List<LogModel>>((String key, dynamic value) =>
-  //     MapEntry<DateTime, List<LogModel>>(
-  //         DateTime.parse(key),
-  //         value
-  //             .map<LogModel>((dynamic item) =>
-  //                 LogModel.fromJson(item as Map<String, dynamic>))
-  //             .toList() as List<LogModel>));
-  // print(finalRes);
-  // return res.data.map<LogModel>((dynamic item) {
-  //   return {res.data LogModel.fromJson(item as Map<String, dynamic>)};
-  // }).toList() as List<LogModel>;
+}
+
+Future<List<LogModel>> getAdmingLogsByDate(String query) async {
+  final Response<dynamic> res = await api.dio.get<dynamic>('/logs/date$query');
+  final List<dynamic> logs = res.data['logs'] as List<dynamic>;
+  return logs.isEmpty
+      ? <LogModel>[]
+      : logs
+          .map<LogModel>(
+              (dynamic log) => LogModel.fromJson(log as Map<String, dynamic>))
+          .toList();
 }

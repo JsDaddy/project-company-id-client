@@ -11,6 +11,7 @@ class LogModel {
       this.project,
       this.status,
       this.type,
+      this.name,
       this.user,
       this.vacationType});
   String id;
@@ -18,7 +19,8 @@ class LogModel {
   String time;
   // DateTime date;
   VacationType vacationType;
-  VacationStatus status;
+  String status;
+  String name;
   LogType type;
   ProjectModel project;
   UserModel user;
@@ -30,13 +32,14 @@ class LogModel {
         id: json['_id'] as String,
         desc: json['desc'] as String,
         time: json['time'] as String,
-        status: json['status'] != null
-            ? AppConverting.getVacationStatus(json['status'] as String)
-            : null,
+        name: json['name'] as String,
+        status: json['status'] as String,
         vacationType: json['type'] != null
             ? AppConverting.getVacationType(json['type'] as int)
             : null,
-        type: json['type'] != null ? LogType.vacation : LogType.timelog,
+        type: json['type'] != null
+            ? LogType.vacation
+            : json['name'] != null ? LogType.holiday : LogType.timelog,
         user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
         project: json['project'] != null
             ? ProjectModel.fromJson(json['project'] as Map<String, dynamic>)
@@ -49,7 +52,7 @@ class LogModel {
       String time,
       DateTime date,
       VacationType vacationType,
-      VacationStatus status,
+      String status,
       LogType type,
       ProjectModel project,
       UserModel user) {
@@ -67,8 +70,8 @@ class LogModel {
   }
 }
 
-enum LogType { vacation, timelog, all }
+enum LogType { vacation, timelog, holiday, all }
 
 enum VacationType { vacationPaid, vacationNonPaid, sickPaid, sickNonPaid }
 
-enum VacationStatus { pending, approved, rejected }
+// enum VacationStatus { pending, approved, rejected }

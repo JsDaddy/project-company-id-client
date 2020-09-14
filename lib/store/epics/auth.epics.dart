@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:company_id_new/common/services/auth.service.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
+import 'package:company_id_new/screens/login/login.screen.dart';
 import 'package:company_id_new/screens/set-password/set-password.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
@@ -10,12 +9,8 @@ import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
-import 'package:company_id_new/store/store.dart';
-import 'package:dio/dio.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../screens/login/login.screen.dart';
 
 Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions

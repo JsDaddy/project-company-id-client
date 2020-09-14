@@ -21,7 +21,7 @@ class AppApi {
           },
           onError: (DioError e) {
             print('app-api dioerror: $e');
-            return e.response.data['error'];
+            return e.response?.data['error'];
           },
           onResponse: (Response<dynamic> res) => res.data['data']),
     ]);
@@ -29,9 +29,9 @@ class AppApi {
 
   final LocalStorageService localStorageService;
   final Dio dio = Dio(BaseOptions(
-    // connectTimeout: 30000,
-    baseUrl: 'http://10.0.2.2:8090',
-    // baseUrl: 'http://localhost:8090',
+    connectTimeout: 10000,
+    // baseUrl: 'http://10.0.2.2:8090',
+    baseUrl: 'http://localhost:8090',
     // baseUrl: 'http://192.168.88.70:8090',
     responseType: ResponseType.json,
     contentType: ContentType.json.toString(),

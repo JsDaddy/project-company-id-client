@@ -1,11 +1,14 @@
-import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/common/helpers/app-dropdowns.dart';
+import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/helpers/app-query.dart';
-import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
-import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-wrapper.widget.dart';
 import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
-import 'package:company_id_new/common/widgets/event-marker/event-marker.widget.dart';
+import 'package:company_id_new/common/widgets/event-list/event-list.widget.dart';
+import 'package:company_id_new/common/widgets/event-markers/event-markers.widget.dart';
+import 'package:company_id_new/screens/statistics/filter/filter.widget.dart';
+import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/store/models/admin-filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
@@ -18,9 +21,10 @@ import 'package:redux/redux.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class _ViewModel {
-  _ViewModel({this.logs, this.statistic, this.holidays});
+  _ViewModel({this.logs, this.statistic, this.holidays, this.logsByDate});
   Map<DateTime, List<CalendarModel>> logs;
   Map<DateTime, List<CalendarModel>> holidays;
+  List<LogModel> logsByDate;
   StatisticModel statistic;
 }
 
@@ -31,10 +35,12 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   CalendarController _calendarController;
-  int selectedValue;
+  DateTime firstDate;
   @override
   void initState() {
     _calendarController = CalendarController();
+    store.dispatch(GetUsersPending());
+    store.dispatch(GetProjectsPending());
     super.initState();
   }
 
@@ -47,61 +53,33 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 // isLoading: store.state.isLoading,
                 statistic: store.state.adminStatistic,
                 holidays: store.state.holidays,
+                logsByDate: store.state.adminLogsByDate,
                 logs: store.state.adminLogs),
             builder: (BuildContext context, _ViewModel state) {
               return Scaffold(
                 floatingActionButton: FloatingActionButton(
                   child: Image.asset('assets/filter.png',
                       width: 30, height: 30, color: Colors.white),
-                  onPressed: () {
-                    showModalBottomSheet<dynamic>(
-                        context: context,
-                        useRootNavigator: true,
-                        builder: (BuildContext context) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 300,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 24),
-                              child: Column(
-                                children: <Widget>[
-                                  const Text('Filters',
-                                      style: TextStyle(fontSize: 24)),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  AppDropDownWrapperWidget(
-                                    child: DropdownButtonFormField<int>(
-                                      decoration: AppDropDownStyles.decoration,
-                                      style: AppDropDownStyles.style,
-                                      icon: AppDropDownStyles.icon,
-                                      isExpanded: AppDropDownStyles.isExpanded,
-                                      hint: const Text('Select user',
-                                          style: AppDropDownStyles.hintStyle),
-                                      value: selectedValue,
-                                      onChanged: (int value) => setState(() {
-                                        selectedValue = value;
-                                      }),
-                                      items: <int>[1, 2, 3].map((int value) {
-                                        return DropdownMenuItem<int>(
-                                            value: value,
-                                            child: Text('$value'));
-                                      }).toList(),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  AppButtonWidget(
-                                      color: AppColors.green,
-                                      title: 'Apply',
-                                      onClick: () {})
-                                ],
-                              ),
-                            ),
-                          );
-                        });
+                  onPressed: () async {
+                    final AdminFilterModel adminFilter =
+                        await showModalBottomSheet<AdminFilterModel>(
+                            context: context,
+                            useRootNavigator: true,
+                            builder: (BuildContext context) =>
+                                AdminLogFilterWidget());
+                    if (adminFilter != null) {
+                      final String vacQuery = AppQuery.vacationTypeQuery(
+                          adminFilter.logType.vacationType);
+                      final String vacModifedQuery =
+                          vacQuery.isEmpty ? '' : '&$vacQuery';
+                      store.dispatch(SaveAdminFilter(adminFilter));
+                      print(
+                          '?${AppQuery.dateQuery(firstDate)}${AppQuery.logTypeQuery(adminFilter.logType.logType)}$vacModifedQuery');
+                      // store.dispatch(GetAdminLogsPending(
+                      //     '?${AppQuery.dateQuery(firstDate)}${AppQuery.logTypeQuery(adminFilter.logType.logType)}&${AppQuery.vacationTypeQuery(adminFilter.logType.vacationType)}'));
+                      // store.dispatch(GetAdminLogByDatePending(
+                      //     '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(DateTime.now())}'));
+                    }
                   },
                 ),
                 body: CalendarWidget(
@@ -124,7 +102,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           Positioned(
                             right: 1,
                             bottom: 1,
-                            child: _buildEventsMarker(date, events),
+                            child: EventMarkersWidget(date, events),
                           ),
                         );
                       }
@@ -132,89 +110,31 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                     },
                   ),
                   onDaySelected: _onDaySelected,
-                  buildEventList: _buildEventList(state),
+                  buildEventList: EventListWidget(state.logsByDate),
                 ),
               );
             }));
   }
 
-  Widget _buildEventList(_ViewModel state) {
-    return Container();
-  }
-
   void _onDaySelected(DateTime day, List<dynamic> events) {
-    // store.dispatch(GetAdminLogByDatePending())
-    // store.dispatch(SetCurrentDayTimelogAll(day.toLocal()));
-  }
-
-  Widget _buildEventsMarker(
-    DateTime date,
-    List<dynamic> events,
-  ) {
-    if (events[0].timelogs != null) {
-      return EventMarkerWidget(
-          color: AppColors.red,
-          size: 24,
-          child: Center(
-            child: Text(
-              events[0].timelogs.round() != events[0].timelogs
-                  ? events[0].timelogs.toString()
-                  : events[0].timelogs.toInt().toString(),
-              style: const TextStyle(
-                fontSize: 12.0,
-              ),
-            ),
-          ));
-    }
-    return Container();
-
-    // if (state.filter?.user != null) {
-    //   return _totalTime == 0
-    //       ? _eventMarker(
-    //           null,
-    //           events[0].type == 1 || events[0].type == 2
-    //               ? greenColor
-    //               : redColor,
-    //           16)
-    //       : _eventMarker(
-    //           Center(
-    //             child: Text(
-    //               '${totalTimeInMinutes.round() == totalTimeInMinutes ? totalTimeInMinutes.round() : totalTimeInMinutes}',
-    //               style: TextStyle().copyWith(
-    //                 color: Colors.white,
-    //                 fontSize: 12.0,
-    //               ),
-    //             ),
-    //           ),
-    //           redColor,
-    //           24);
-    // }
-    // return _totalTime == 0
-    //     ? Container()
-    //     : _eventMarker(
-    //         Center(
-    //           child: Text(
-    //             '${totalTimeInMinutes.round() == totalTimeInMinutes ? totalTimeInMinutes.round() : totalTimeInMinutes}',
-    //             style: TextStyle().copyWith(
-    //               color: Colors.white,
-    //               fontSize: 12.0,
-    //             ),
-    //           ),
-    //         ),
-    //         redColor,
-    //         24);
+    store.dispatch(GetAdminLogByDatePending(
+        '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(day)}'));
   }
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
+    firstDate = first;
     store.dispatch(GetAdminLogsPending(
         '?${AppQuery.dateQuery(first)}&${AppQuery.logTypeQuery(LogType.timelog)}'));
   }
 
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
+    firstDate = first;
     store.dispatch(GetAdminLogsPending(
         '?${AppQuery.dateQuery(first)}&${AppQuery.logTypeQuery(LogType.all)}'));
+    store.dispatch(GetAdminLogByDatePending(
+        '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(DateTime.now())}'));
   }
 
   Future<bool> _onBackPressed() async {
@@ -222,23 +142,3 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return true;
   }
 }
-
-// String sumTimeForMonth(List<LogModel> times, BuildContext context) {
-//   int h = 0;
-//   int m = 0;
-//   final RegExp reg1 = RegExp(r'\d+(?=h)');
-//   final RegExp reg2 = RegExp(r'\d+(?=m)');
-//   for (final LogModel timelog in times) {
-//     h += reg1.stringMatch(timelog.time) != null
-//         ? int.parse(reg1.stringMatch(timelog.time))
-//         : 0;
-//     m += reg2.stringMatch(timelog.time) != null
-//         ? int.parse(reg2.stringMatch(timelog.time))
-//         : 0;
-//   }
-//   while (m >= 60) {
-//     h++;
-//     m -= 60;
-//   }
-//   return '$h h$m m';
-// }

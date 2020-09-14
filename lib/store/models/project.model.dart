@@ -26,19 +26,20 @@ class ProjectModel {
     if (json == null) {
       return null;
     }
+
     return ProjectModel(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       name: json['name'] as String,
       isInternal: json['isInternal'] as bool,
       isRejected: json['isRejected'] as bool,
       isActivity: json['isActivity'] as bool,
       customer: json['customer'] as String,
       industry: json['industry'] as String,
-      stack: json['stack'] != null
-          ? json['stack'].map((dynamic stack) =>
-                  StackModel.fromJson(stack as Map<String, dynamic>))
-              as List<StackModel>
-          : null,
+      // stack: json['stack'] != null
+      //     ? json['stack'].map((dynamic stack) =>
+      //             StackModel.fromJson(stack as Map<String, dynamic>))
+      //         as List<StackModel>
+      // : null,
       startDate: json['startDate'] == null
           ? null
           : DateTime.parse(json['startDate'] as String),

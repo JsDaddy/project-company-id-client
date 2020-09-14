@@ -39,6 +39,25 @@ class AppConverting {
     }
   }
 
+  static String getVacationTypeString(VacationType type) {
+    switch (type) {
+      case VacationType.vacationPaid:
+        return 'Vacation - paid';
+        break;
+      case VacationType.vacationNonPaid:
+        return 'Vacation - non-paid';
+        break;
+      case VacationType.sickPaid:
+        return 'Sick - paid';
+        break;
+      case VacationType.sickNonPaid:
+        return 'Vacation - non-paid';
+        break;
+      default:
+        return null;
+    }
+  }
+
   static String getTypeLogQuery(LogType logType) {
     switch (logType) {
       case LogType.vacation:
@@ -52,19 +71,19 @@ class AppConverting {
     }
   }
 
-  static VacationStatus getVacationStatus(String status) {
-    switch (status) {
-      case 'approved':
-        return VacationStatus.approved;
-        break;
-      case 'pending':
-        return VacationStatus.pending;
-        break;
-      case 'rejected':
-        return VacationStatus.rejected;
-        break;
-      default:
-        return null;
-    }
-  }
+  // static VacationStatus getVacationStatus(String status) {
+  //   switch (status) {
+  //     case 'approved':
+  //       return VacationStatus.approved;
+  //       break;
+  //     case 'pending':
+  //       return VacationStatus.pending;
+  //       break;
+  //     case 'rejected':
+  //       return VacationStatus.rejected;
+  //       break;
+  //     default:
+  //       return null;
+  //   }
+  // }
 }

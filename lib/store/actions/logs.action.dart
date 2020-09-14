@@ -1,5 +1,6 @@
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
+import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 
 class GetAdminLogsPending {
@@ -38,4 +39,14 @@ class SetAdminCurrentLogDay {
 class SetCurrentLogDay {
   SetCurrentLogDay(this.currentDay);
   CurrentDateModel currentDay;
+}
+
+class GetAdminLogByDatePending {
+  GetAdminLogByDatePending(this.query);
+  String query;
+}
+
+class GetAdminLogByDateSuccess {
+  GetAdminLogByDateSuccess(this.logs);
+  List<LogModel> logs;
 }
