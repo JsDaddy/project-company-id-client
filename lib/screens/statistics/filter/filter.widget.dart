@@ -49,10 +49,23 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
     vacationTypes = <String>[paid, nonPaid];
     selectedVacationType = paid;
     selectedType = types.firstWhere((FilterType type) => type.title == 'All');
-    selectedType = types.firstWhere((FilterType type) =>
-        type.title == store.state.adminFilter.logType.title);
-    selectedVacationType =
-        getSelectedVacationType(store.state.adminFilter.logType.vacationType);
+    if (store.state.adminFilter?.logType?.title != null) {
+      selectedType = types.firstWhere((FilterType type) =>
+          type.title == store.state.adminFilter.logType.title);
+    }
+    if (store.state.adminFilter?.logType?.vacationType != null) {
+      selectedVacationType =
+          getSelectedVacationType(store.state.adminFilter.logType.vacationType);
+    }
+    if (store.state.adminFilter?.user?.id != null) {
+      selectedUser = store.state.users.firstWhere(
+          (UserModel user) => user.id == store.state.adminFilter.user.id);
+    }
+    if (store.state.adminFilter?.project?.id != null) {
+      selectedProject = store.state.projects.firstWhere(
+          (ProjectModel project) =>
+              project.id == store.state.adminFilter.project.id);
+    }
     super.initState();
   }
 
@@ -212,10 +225,16 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                       onClick: () {
                         if (selectedType.logType == LogType.vacation) {
                           Navigator.pop(
-                              context, AdminFilterModel(logType: selectedType));
+                              context,
+                              AdminFilterModel(
+                                  logType: selectedType, user: selectedUser));
                         } else {
                           Navigator.pop(
-                              context, AdminFilterModel(logType: selectedType));
+                              context,
+                              AdminFilterModel(
+                                  logType: selectedType,
+                                  user: selectedUser,
+                                  project: selectedProject));
                         }
                         // FilterModel();
                       })

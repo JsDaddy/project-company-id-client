@@ -3,10 +3,10 @@ import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class AdminFilterModel {
-  AdminFilterModel({this.logType});
+  AdminFilterModel({this.logType, this.user, this.project});
   FilterType logType;
-  // UserModel user;
-  // ProjectModel project;
+  UserModel user;
+  ProjectModel project;
 
   AdminFilterModel copyWith(
           {FilterType logType,
@@ -14,9 +14,9 @@ class AdminFilterModel {
           UserModel user,
           ProjectModel project}) =>
       AdminFilterModel(
-        logType: logType ?? this.logType,
-        // user: user ?? this.user, project: project ?? this.project
-      );
+          logType: logType ?? this.logType,
+          user: user ?? this.user,
+          project: project ?? this.project);
 }
 
 class FilterType {

@@ -72,11 +72,19 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           adminFilter.logType.vacationType);
                       final String vacModifedQuery =
                           vacQuery.isEmpty ? '' : '&$vacQuery';
+                      String userQuery = '';
+                      if (adminFilter.user != null) {
+                        userQuery = '&uid=${adminFilter.user.id}';
+                      }
+                      String projectQuery = '';
+                      if (adminFilter.project != null) {
+                        projectQuery = '&project=${adminFilter.project.id}';
+                      }
                       store.dispatch(SaveAdminFilter(adminFilter));
-                      print(
-                          '?${AppQuery.dateQuery(firstDate)}${AppQuery.logTypeQuery(adminFilter.logType.logType)}$vacModifedQuery');
-                      // store.dispatch(GetAdminLogsPending(
-                      //     '?${AppQuery.dateQuery(firstDate)}${AppQuery.logTypeQuery(adminFilter.logType.logType)}&${AppQuery.vacationTypeQuery(adminFilter.logType.vacationType)}'));
+                      // print(
+                      //     '?${AppQuery.dateQuery(firstDate)}${AppQuery.logTypeQuery(adminFilter.logType.logType)}$vacModifedQuery$userQuery$projectQuery');
+                      store.dispatch(GetAdminLogsPending(
+                          '?${AppQuery.dateQuery(firstDate)}&${AppQuery.logTypeQuery(adminFilter.logType.logType)}$vacModifedQuery$userQuery$projectQuery'));
                       // store.dispatch(GetAdminLogByDatePending(
                       //     '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(DateTime.now())}'));
                     }
