@@ -6,3 +6,13 @@ class GetUsersSuccess {
   GetUsersSuccess(this.users);
   List<UserModel> users;
 }
+
+class GetUserPending {
+  GetUserPending(this.id);
+  String id;
+}
+
+class GetUserSuccess {
+  GetUserSuccess(this.user);
+  UserModel user;
+}

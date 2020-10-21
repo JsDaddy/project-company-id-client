@@ -1,4 +1,5 @@
 import 'package:company_id_new/store/models/log.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
 
 class AppConverting {
   static VacationType getVacationType(int type) {
@@ -71,6 +72,31 @@ class AppConverting {
     }
   }
 
+  static Positions getPositionFromEnum(String position) {
+    switch (position) {
+      case 'owner':
+        return Positions.OWNER;
+        break;
+      case 'developer':
+        return Positions.DEVELOPER;
+        break;
+      default:
+        return null;
+    }
+  }
+
+  static String getPositionFromString(Positions position) {
+    switch (position) {
+      case Positions.OWNER:
+        return 'Owner';
+        break;
+      case Positions.DEVELOPER:
+        return 'Developer';
+        break;
+      default:
+        return null;
+    }
+  }
   // static VacationStatus getVacationStatus(String status) {
   //   switch (status) {
   //     case 'approved':

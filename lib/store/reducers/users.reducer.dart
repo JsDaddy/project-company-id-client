@@ -10,3 +10,12 @@ final Reducer<List<UserModel>> usersReducers = combineReducers<
 List<UserModel> _setUsers(List<UserModel> title, GetUsersSuccess action) {
   return action.users;
 }
+
+final Reducer<UserModel> userReducers =
+    combineReducers<UserModel>(<UserModel Function(UserModel, dynamic)>[
+  TypedReducer<UserModel, GetUserSuccess>(_setUser),
+]);
+
+UserModel _setUser(UserModel user, GetUserSuccess action) {
+  return action.user;
+}

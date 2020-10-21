@@ -1,12 +1,11 @@
+import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 
 class UserModel {
   UserModel(
       {this.avatar,
       this.github,
-      this.role,
       this.date,
-      this.documentId,
       this.email,
       this.lastName,
       this.name,
@@ -20,7 +19,6 @@ class UserModel {
       this.initialLogin});
   final String avatar;
   final String github;
-  final String role;
   final DateTime date;
   final String email;
   final String id;
@@ -28,23 +26,11 @@ class UserModel {
   final String lastName;
   final String name;
   final String phone;
-  final String position;
+  final Positions position;
   final String skype;
   final String englishLevel;
-  final String documentId;
   final bool initialLogin;
   final List<ProjectModel> projects;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'avatar': avatar,
-      'github': github,
-      'lastName': lastName,
-      'name': name,
-      'phone': phone,
-      'skype': skype,
-    };
-  }
 
   static UserModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
@@ -54,7 +40,6 @@ class UserModel {
       avatar: json['avatar'] as String,
       englishLevel: json['englishLevel'] as String,
       github: json['github'] as String,
-      role: json['role'] as String,
       date: json['dob'] == null ? null : DateTime.parse(json['dob'] as String),
       email: json['email'] as String,
       id: json['_id'] as String,
@@ -73,7 +58,7 @@ class UserModel {
               .map<ProjectModel>((dynamic project) =>
                   ProjectModel.fromJson(project as Map<String, dynamic>))
               .toList() as List<ProjectModel>,
-      position: json['position'] as String,
+      position: AppConverting.getPositionFromEnum(json['position'] as String),
       skype: json['skype'] as String,
       initialLogin: json['initialLogin'] as bool,
     );
@@ -82,7 +67,6 @@ class UserModel {
   UserModel copyWith(
       String avatar,
       String github,
-      String role,
       DateTime date,
       String email,
       String userId,
@@ -91,7 +75,7 @@ class UserModel {
       String id,
       String name,
       String phone,
-      String position,
+      Positions position,
       String skype,
       String englishLevel,
       String documentId,
@@ -102,7 +86,6 @@ class UserModel {
         englishLevel: englishLevel ?? this.englishLevel,
         github: github ?? this.github,
         activeProjects: activeProjects ?? this.activeProjects,
-        role: role ?? this.role,
         date: date ?? this.date,
         email: email ?? this.email,
         id: id ?? this.id,
@@ -115,3 +98,5 @@ class UserModel {
         initialLogin: initialLogin ?? this.initialLogin);
   }
 }
+
+enum Positions { OWNER, DEVELOPER }

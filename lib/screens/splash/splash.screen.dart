@@ -14,8 +14,6 @@ class SplashScreen extends StatelessWidget {
           converter: (Store<AppState> store) {},
           onInit: (Store<AppState> store) {
             store.dispatch(CheckTokenPending());
-            // store.dispatch(GetProjectPrefPending());
-            // store.dispatch(GetHolidaysPending());
           },
           builder: (BuildContext context, dynamic state) {
             return const Center(

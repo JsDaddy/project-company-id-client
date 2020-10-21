@@ -6,17 +6,15 @@ class ProjectModel {
       this.customer,
       this.endDate,
       this.industry,
-      this.isActivity,
       this.isInternal,
-      this.isRejected,
       this.name,
       this.stack,
-      this.startDate});
+      this.startDate,
+      this.status});
   String id;
   String name;
+  String status;
   bool isInternal;
-  bool isRejected;
-  bool isActivity;
   String customer;
   String industry;
   List<StackModel> stack;
@@ -26,20 +24,23 @@ class ProjectModel {
     if (json == null) {
       return null;
     }
-
+    print(json['stack']
+        .map((dynamic stack) =>
+            StackModel.fromJson(stack as Map<String, dynamic>))
+        .toList());
     return ProjectModel(
       id: json['_id'] as String,
       name: json['name'] as String,
       isInternal: json['isInternal'] as bool,
-      isRejected: json['isRejected'] as bool,
-      isActivity: json['isActivity'] as bool,
       customer: json['customer'] as String,
       industry: json['industry'] as String,
-      // stack: json['stack'] != null
-      //     ? json['stack'].map((dynamic stack) =>
-      //             StackModel.fromJson(stack as Map<String, dynamic>))
-      //         as List<StackModel>
-      // : null,
+      status: json['status'] as String,
+      stack: json['stack'] != null
+          ? json['stack']
+              .map<StackModel>((dynamic stack) =>
+                  StackModel.fromJson(stack as Map<String, dynamic>))
+              .toList() as List<StackModel>
+          : null,
       startDate: json['startDate'] == null
           ? null
           : DateTime.parse(json['startDate'] as String),

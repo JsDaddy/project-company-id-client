@@ -10,9 +10,7 @@ Future<UserModel> checkToken() async {
 Future<UserModel> singIn(String email, String password) async {
   final Response<dynamic> res = await api.dio.post<dynamic>('/auth/signin',
       data: <String, dynamic>{'email': email, 'password': password});
-
   await api.localStorageService.saveTokenKey(res.data['accessToken'] as String);
-
   return UserModel.fromJson(res.data as Map<String, dynamic>);
 }
 

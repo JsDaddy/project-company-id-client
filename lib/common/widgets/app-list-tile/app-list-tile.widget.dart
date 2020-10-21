@@ -29,7 +29,7 @@ class AppListTile extends StatelessWidget {
           ),
           margin: const EdgeInsets.symmetric(horizontal: 8.0),
           child: GestureDetector(
-            onTap: onTap,
+            onTap: () => onTap(),
             child: ListTile(
               leading: leading,
               title: title ??
@@ -37,7 +37,7 @@ class AppListTile extends StatelessWidget {
                     text: TextSpan(
                       children: <TextSpan>[
                         textSpan,
-                        textSpan2 != null ? textSpan2 : TextSpan(),
+                        textSpan2 ?? const TextSpan(),
                       ],
                     ),
                   ),

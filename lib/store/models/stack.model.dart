@@ -6,6 +6,7 @@ class StackModel {
     if (json == null) {
       return null;
     }
+    print(json);
     return StackModel(
       id: json['_id'] as String,
       name: json['name'] as String,

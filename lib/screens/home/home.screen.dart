@@ -3,6 +3,7 @@ import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart'
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
+import 'package:company_id_new/screens/users/users.screen.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -31,16 +32,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
 
-  final List<Widget> _children = store.state.user.role == 'admin'
+  final List<Widget> _children = store.state.user.position == Positions.OWNER
       ? <Widget>[
           StatisticsScreen(),
-          Container(),
+          UsersScreen(),
           Container(),
           Container(),
           Container(),
           Container()
         ]
-      : <Widget>[Container(), Container(), Container(), Container()];
+      : <Widget>[Container(), UsersScreen(), Container(), Container()];
   // ? <Widget>[
   //     StatisticsScreen(),
   //     UsersScreen(),
@@ -88,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         unselectedItemColor: Colors.white,
         onTap: (int index) => _onTabTapped(index),
         currentIndex: _currentIndex,
-        items: state.user.role == 'admin'
+        items: state.user.position == Positions.OWNER
             // ? _adminBottomNav(state.requests)
             ? _adminBottomNav()
             : _userBottomNav());
@@ -209,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _onTabTapped(int index) {
     navigatorKey.currentState.popUntil((Route<dynamic> route) => route.isFirst);
-    store.dispatch(SetTitle(store.state.user.role == 'admin'
+    store.dispatch(SetTitle(store.state.user.position == Positions.OWNER
         ? _getAdminTitleAppBar(index)
         : _getTitleAppBar(index)));
 

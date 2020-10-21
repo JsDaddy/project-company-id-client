@@ -18,7 +18,7 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
       .switchMap((dynamic action) => Stream<UserModel>.fromFuture(checkToken())
               .expand<dynamic>((UserModel user) {
             return <dynamic>[
-              SetTitle(user.role == 'admin' ? 'Statistics' : 'Timelog'),
+              SetTitle('Statistics'),
               SignInSuccess(user),
               PushReplacementAction(
                   user.initialLogin ? SetPasswordScreen() : HomeScreen(),
@@ -37,7 +37,7 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               .expand<dynamic>((UserModel user) {
             return <dynamic>[
               SignInSuccess(user),
-              SetTitle(user.role == 'admin' ? 'Statistics' : 'Timelog'),
+              SetTitle('Statistics'),
               PushReplacementAction(
                   user.initialLogin ? SetPasswordScreen() : HomeScreen(),
                   key: mainNavigatorKey)
@@ -58,8 +58,7 @@ Stream<void> setPasswordEpic(
             return <dynamic>[
               Notify(NotifyModel(
                   NotificationType.success, 'Your password has been changed')),
-              SetTitle(
-                  store.state.user.role == 'admin' ? 'Statistics' : 'Timelog'),
+              SetTitle('Statistics'),
               PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {

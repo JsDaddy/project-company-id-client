@@ -3,6 +3,7 @@ import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widg
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -40,10 +41,10 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       state.title) {
                     return;
                   }
-                  // store.dispatch(
-                  //     SetTitle('${state.user.name} ${state.user.lastName}'));
+                  store.dispatch(
+                      SetTitle('${state.user.name} ${state.user.lastName}'));
                   // store.dispatch(SetCurrentUser(state.user));
-                  store.dispatch(PushAction(UserScreen()));
+                  store.dispatch(PushAction(UserScreen(uid: state.user.id)));
                   // Navigator.of(context).push(MaterialPageRoute<void>(
                   //     builder: (BuildContext context) => UserScreen()));
                 },
