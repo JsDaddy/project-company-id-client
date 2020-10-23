@@ -12,3 +12,10 @@ Future<List<ProjectModel>> getProjects() async {
               ProjectModel.fromJson(project as Map<String, dynamic>))
           .toList();
 }
+
+Future<ProjectModel> getDetailProject(String projectId) async {
+  final Response<dynamic> res =
+      await api.dio.get<dynamic>('/projects/$projectId');
+  final dynamic project = res.data;
+  return ProjectModel.fromJson(project as Map<String, dynamic>);
+}

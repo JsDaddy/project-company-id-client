@@ -2,24 +2,11 @@ import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 
 class AppQuery {
-  static String dateQuery(DateTime dateTime) {
-    final String date = dateTime.toIso8601String();
-    return 'first=$date';
-  }
-
-  static String logTypeQuery(LogType logType) {
-    if (logType == null) {
-      return '';
-    }
-    final String type = AppConverting.getTypeLogQuery(logType);
-    return 'logType=$type';
-  }
-
   static String vacationTypeQuery(VacationType vacationType) {
     if (vacationType == null) {
       return '';
     }
-    final int type = AppConverting.getVacationTypeQuery(vacationType);
+    final String type = AppConverting.getVacationTypeQuery(vacationType);
     return 'type=$type';
   }
 
@@ -29,5 +16,13 @@ class AppQuery {
 
   static String projectQuery(String projectId) {
     return 'project=$projectId';
+  }
+
+  static String logTypeQuery(LogType logType) {
+    if (logType == null) {
+      return '';
+    }
+    final String type = AppConverting.getTypeLogQuery(logType);
+    return 'logType=$type';
   }
 }

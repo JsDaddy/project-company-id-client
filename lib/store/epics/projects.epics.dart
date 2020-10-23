@@ -11,7 +11,19 @@ Stream<void> getProjectsEpic(
       .switchMap((dynamic action) =>
           Stream<List<ProjectModel>>.fromFuture(getProjects())
               .map((List<ProjectModel> projects) {
-            print(projects);
             return GetProjectsSuccess(projects);
-          }));
+          }))
+      .handleError((dynamic e) => print(e));
+}
+
+Stream<void> getDetailProjectEpic(
+    Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions
+      .where((dynamic action) => action is GetDetailProjectPending)
+      .switchMap((dynamic action) => Stream<ProjectModel>.fromFuture(
+                  getDetailProject(action.projectId as String))
+              .map((ProjectModel project) {
+            return GetDetailProjectSuccess(project);
+          }))
+      .handleError((dynamic e) => print(e));
 }

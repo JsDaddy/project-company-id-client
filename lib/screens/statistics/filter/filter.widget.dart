@@ -42,9 +42,9 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
       FilterType('All', LogType.all),
       FilterType('Log', LogType.timelog),
       FilterType(vacation, LogType.vacation,
-          vacationType: VacationType.vacationPaid),
+          vacationType: VacationType.VACPAID),
       FilterType(sickness, LogType.vacation,
-          vacationType: VacationType.sickPaid)
+          vacationType: VacationType.SICKPAID)
     ];
     vacationTypes = <String>[paid, nonPaid];
     selectedVacationType = paid;
@@ -70,8 +70,8 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
   }
 
   String getSelectedVacationType(VacationType vacationType) {
-    if (vacationType == VacationType.sickNonPaid ||
-        vacationType == VacationType.sickPaid) {
+    if (vacationType == VacationType.VACPAID ||
+        vacationType == VacationType.SICKPAID) {
       return paid;
     } else {
       return nonPaid;
@@ -132,18 +132,16 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                   if (type.title == vacation) {
                                     if (value == nonPaid) {
                                       type.vacationType =
-                                          VacationType.vacationNonPaid;
+                                          VacationType.VACNONPAID;
                                     } else {
-                                      type.vacationType =
-                                          VacationType.vacationPaid;
+                                      type.vacationType = VacationType.VACPAID;
                                     }
                                   }
                                   if (type.title == sickness) {
                                     if (value == nonPaid) {
-                                      type.vacationType =
-                                          VacationType.sickNonPaid;
+                                      type.vacationType = VacationType.SICKPAID;
                                     } else {
-                                      type.vacationType = VacationType.sickPaid;
+                                      type.vacationType = VacationType.SICKPAID;
                                     }
                                   }
                                 });
@@ -197,7 +195,6 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                               items:
                                   state.projects.where((ProjectModel project) {
                                 if (selectedUser == null ||
-                                    selectedUser.projects.isEmpty ||
                                     selectedUser.projects == null) {
                                   return true;
                                 }

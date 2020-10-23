@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/common/helpers/app-params.dart';
 import 'package:company_id_new/common/helpers/app-query.dart';
 import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
 import 'package:company_id_new/common/widgets/event-list/event-list.widget.dart';
@@ -68,8 +69,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             builder: (BuildContext context) =>
                                 AdminLogFilterWidget());
                     if (adminFilter != null) {
+                      final String logType = AppConverting.getTypeLogQuery(
+                          adminFilter.logType.logType);
                       final String vacQuery = AppQuery.vacationTypeQuery(
                           adminFilter.logType.vacationType);
+
                       final String vacModifedQuery =
                           vacQuery.isEmpty ? '' : '&$vacQuery';
                       String userQuery = '';
@@ -81,10 +85,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         projectQuery = '&project=${adminFilter.project.id}';
                       }
                       store.dispatch(SaveAdminFilter(adminFilter));
-                      // print(
-                      //     '?${AppQuery.dateQuery(firstDate)}${AppQuery.logTypeQuery(adminFilter.logType.logType)}$vacModifedQuery$userQuery$projectQuery');
                       store.dispatch(GetAdminLogsPending(
-                          '?${AppQuery.dateQuery(firstDate)}&${AppQuery.logTypeQuery(adminFilter.logType.logType)}$vacModifedQuery$userQuery$projectQuery'));
+                          '${AppParams.dateQuery(firstDate)}/$logType?$vacModifedQuery$userQuery'));
                       // store.dispatch(GetAdminLogByDatePending(
                       //     '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(DateTime.now())}'));
                     }
@@ -126,23 +128,23 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   void _onDaySelected(DateTime day, List<dynamic> events) {
     store.dispatch(GetAdminLogByDatePending(
-        '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(day)}'));
+        '${AppParams.dateQuery(day)}?${AppQuery.logTypeQuery(LogType.all)}'));
   }
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     firstDate = first;
     store.dispatch(GetAdminLogsPending(
-        '?${AppQuery.dateQuery(first)}&${AppQuery.logTypeQuery(LogType.timelog)}'));
+        '${AppParams.dateQuery(first)}${AppParams.logTypeQuery(LogType.timelog)}'));
   }
 
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     firstDate = first;
     store.dispatch(GetAdminLogsPending(
-        '?${AppQuery.dateQuery(first)}&${AppQuery.logTypeQuery(LogType.all)}'));
+        '${AppParams.dateQuery(first)}${AppParams.logTypeQuery(LogType.all)}'));
     store.dispatch(GetAdminLogByDatePending(
-        '?${AppQuery.logTypeQuery(LogType.all)}&${AppQuery.dateQuery(DateTime.now())}'));
+        '${AppParams.dateQuery(DateTime.now())}?${AppQuery.logTypeQuery(LogType.all)}'));
   }
 
   Future<bool> _onBackPressed() async {

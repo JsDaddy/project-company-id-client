@@ -31,5 +31,6 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<dynamic>(getAdminLogsEpic),
       EpicMiddleware<dynamic>(usersEpic),
       EpicMiddleware<dynamic>(getProjectsEpic),
+      EpicMiddleware<dynamic>(getDetailProjectEpic),
       EpicMiddleware<AppState>(userEpic),
     ]);

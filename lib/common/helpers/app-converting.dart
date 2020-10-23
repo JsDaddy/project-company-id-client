@@ -5,35 +5,35 @@ class AppConverting {
   static VacationType getVacationType(int type) {
     switch (type) {
       case 0:
-        return VacationType.vacationPaid;
+        return VacationType.VACPAID;
         break;
       case 1:
-        return VacationType.vacationNonPaid;
+        return VacationType.VACNONPAID;
         break;
       case 2:
-        return VacationType.sickPaid;
+        return VacationType.SICKPAID;
         break;
       case 3:
-        return VacationType.sickNonPaid;
+        return VacationType.SICKNONPAID;
         break;
       default:
         return null;
     }
   }
 
-  static int getVacationTypeQuery(VacationType type) {
+  static String getVacationTypeQuery(VacationType type) {
     switch (type) {
-      case VacationType.vacationPaid:
-        return 0;
+      case VacationType.VACPAID:
+        return 'VacationPaid';
         break;
-      case VacationType.vacationNonPaid:
-        return 1;
+      case VacationType.VACNONPAID:
+        return 'VacationNonPaid';
         break;
-      case VacationType.sickPaid:
-        return 2;
+      case VacationType.SICKPAID:
+        return 'SickPaid';
         break;
-      case VacationType.sickNonPaid:
-        return 3;
+      case VacationType.SICKNONPAID:
+        return 'SickNonPaid';
         break;
       default:
         return null;
@@ -42,16 +42,16 @@ class AppConverting {
 
   static String getVacationTypeString(VacationType type) {
     switch (type) {
-      case VacationType.vacationPaid:
+      case VacationType.VACPAID:
         return 'Vacation - paid';
         break;
-      case VacationType.vacationNonPaid:
+      case VacationType.VACNONPAID:
         return 'Vacation - non-paid';
         break;
-      case VacationType.sickPaid:
+      case VacationType.SICKPAID:
         return 'Sick - paid';
         break;
-      case VacationType.sickNonPaid:
+      case VacationType.SICKNONPAID:
         return 'Vacation - non-paid';
         break;
       default:

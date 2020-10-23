@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row-icon/social-row-icon.widget.dart';
@@ -16,8 +17,9 @@ import 'package:redux/redux.dart';
 import 'package:intl/intl.dart';
 
 class _ViewModel {
-  _ViewModel({this.user});
+  _ViewModel({this.user, this.authUser});
   UserModel user;
+  UserModel authUser;
 }
 
 class UserScreen extends StatefulWidget {
@@ -41,6 +43,7 @@ class _UserScreenState extends State<UserScreen> {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
               user: store.state.currentUser,
+              authUser: store.state.user,
             ),
         onInit: (Store<AppState> store) {
           store.dispatch(GetUserPending(widget.uid));
@@ -97,7 +100,7 @@ class _UserScreenState extends State<UserScreen> {
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 12,
                       child: SocialRowWidget(
-                        iconName: 'github-icon.png',
+                        iconName: AppImages.github,
                         title: state.user.github,
                       ),
                     ),
@@ -105,7 +108,7 @@ class _UserScreenState extends State<UserScreen> {
                       width: MediaQuery.of(context).size.width / 2 - 12,
                       child: SocialRowWidget(
                         width: MediaQuery.of(context).size.width / 2 - 36,
-                        iconName: 'skype-icon.png',
+                        iconName: AppImages.skype,
                         title: state.user.skype,
                       ),
                     ),
@@ -133,20 +136,22 @@ class _UserScreenState extends State<UserScreen> {
                   style: TextStyle(color: AppColors.lightGrey, fontSize: 18),
                 ),
                 const SizedBox(height: 8),
-                _projects(state.user.activeProjects, state.user.position),
+                _projects(
+                    state.user.activeProjects, state.authUser.position, true),
                 const SizedBox(height: 16),
                 const Text(
                   'Projects ',
                   style: TextStyle(color: AppColors.lightGrey, fontSize: 18),
                 ),
-                _projects(state.user.projects, state.user.position),
+                _projects(state.user.projects, state.authUser.position, false),
               ],
             ),
           );
         });
   }
 
-  Widget _projects(List<ProjectModel> projects, Positions position) {
+  Widget _projects(
+      List<ProjectModel> projects, Positions position, bool isActive) {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -158,7 +163,8 @@ class _UserScreenState extends State<UserScreen> {
             child: Slidable(
               controller: _slidableController,
               actionPane: const SlidableDrawerActionPane(),
-              enabled: position == Positions.OWNER,
+              // enabled: position == Positions.OWNER && isActive,
+              enabled: false,
               actionExtentRatio: 0.1,
               secondaryActions: <Widget>[
                 IconSlideAction(

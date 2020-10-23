@@ -26,11 +26,13 @@ class AppState {
       this.adminLogs,
       this.adminLogsByDate,
       this.projects,
+      this.project,
       this.currentUser,
       this.adminStatistic});
   bool isLoading;
   String title;
   List<ProjectModel> projects;
+  ProjectModel project;
   UserModel user;
   NotifyModel notify;
   List<LogModel> adminLogsByDate;
@@ -47,6 +49,7 @@ AppState appStateReducer(AppState state, dynamic action) => AppState(
     adminFilter: adminFilterReducers(state.adminFilter, action),
     title: titleReducer(state.title, action),
     holidays: holidaysReducers(state.holidays, action),
+    project: projectReducers(state.project, action),
     projects: projectsReducers(state.projects, action),
     users: usersReducers(state.users, action),
     currentUser: userReducers(state.currentUser, action),

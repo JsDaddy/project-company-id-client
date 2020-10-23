@@ -72,6 +72,6 @@ class LogModel {
 
 enum LogType { vacation, timelog, holiday, all }
 
-enum VacationType { vacationPaid, vacationNonPaid, sickPaid, sickNonPaid }
+enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 
 // enum VacationStatus { pending, approved, rejected }

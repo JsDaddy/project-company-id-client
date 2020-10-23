@@ -12,3 +12,12 @@ List<ProjectModel> _setProjects(
     List<ProjectModel> title, GetProjectsSuccess action) {
   return action.projects;
 }
+
+final Reducer<ProjectModel> projectReducers = combineReducers<
+    ProjectModel>(<ProjectModel Function(ProjectModel, dynamic)>[
+  TypedReducer<ProjectModel, GetDetailProjectSuccess>(_setProject),
+]);
+
+ProjectModel _setProject(ProjectModel project, GetDetailProjectSuccess action) {
+  return action.project;
+}

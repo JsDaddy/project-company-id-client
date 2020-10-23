@@ -5,6 +5,7 @@ import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:dio/dio.dart';
 
 Future<Map<String, dynamic>> getLogs(String query) async {
+  print('/logs$query');
   final Response<dynamic> res = await api.dio.get<dynamic>('/logs$query');
   final Map<String, dynamic> logs = res.data['logs'] as Map<String, dynamic>;
   final Map<String, dynamic> statistics =
@@ -22,7 +23,7 @@ Future<Map<String, dynamic>> getLogs(String query) async {
 }
 
 Future<List<LogModel>> getAdmingLogsByDate(String query) async {
-  final Response<dynamic> res = await api.dio.get<dynamic>('/logs/date$query');
+  final Response<dynamic> res = await api.dio.get<dynamic>('/logs/$query');
   final List<dynamic> logs = res.data['logs'] as List<dynamic>;
   return logs.isEmpty
       ? <LogModel>[]

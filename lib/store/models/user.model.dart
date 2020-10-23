@@ -99,4 +99,25 @@ class UserModel {
   }
 }
 
+class FilteredUserModel {
+  FilteredUserModel({
+    this.id,
+    this.name,
+    this.lastName,
+  });
+  String id;
+  String name;
+  String lastName;
+
+  static FilteredUserModel fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return FilteredUserModel(
+        id: json['_id'] as String,
+        name: json['name'] as String,
+        lastName: json['lastName'] as String);
+  }
+}
+
 enum Positions { OWNER, DEVELOPER }

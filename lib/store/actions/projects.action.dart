@@ -6,3 +6,13 @@ class GetProjectsSuccess {
   GetProjectsSuccess(this.projects);
   List<ProjectModel> projects;
 }
+
+class GetDetailProjectPending {
+  GetDetailProjectPending(this.projectId);
+  String projectId;
+}
+
+class GetDetailProjectSuccess {
+  GetDetailProjectSuccess(this.project);
+  ProjectModel project;
+}

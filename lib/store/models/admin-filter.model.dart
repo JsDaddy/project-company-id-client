@@ -3,20 +3,33 @@ import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class AdminFilterModel {
-  AdminFilterModel({this.logType, this.user, this.project});
+  AdminFilterModel(
+      {this.logType,
+      this.user,
+      this.project,
+      this.filteredProjects,
+      this.filteredUsers});
   FilterType logType;
   UserModel user;
   ProjectModel project;
+  List<FilteredProjectModel> filteredProjects;
+  List<FilteredUserModel> filteredUsers;
 
-  AdminFilterModel copyWith(
-          {FilterType logType,
-          String vacation,
-          UserModel user,
-          ProjectModel project}) =>
+  AdminFilterModel copyWith({
+    FilterType logType,
+    String vacation,
+    UserModel user,
+    ProjectModel project,
+    List<FilteredProjectModel> filteredProjects,
+    List<FilteredUserModel> filteredUsers,
+  }) =>
       AdminFilterModel(
-          logType: logType ?? this.logType,
-          user: user ?? this.user,
-          project: project ?? this.project);
+        logType: logType ?? this.logType,
+        user: user ?? this.user,
+        project: project ?? this.project,
+        filteredUsers: filteredUsers ?? this.filteredUsers,
+        filteredProjects: filteredProjects ?? this.filteredProjects,
+      );
 }
 
 class FilterType {

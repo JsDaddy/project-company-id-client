@@ -2,6 +2,7 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/main.dart';
+import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
@@ -36,12 +37,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ? <Widget>[
           StatisticsScreen(),
           UsersScreen(),
-          Container(),
+          ProjectsScreen(),
           Container(),
           Container(),
           Container()
         ]
-      : <Widget>[Container(), UsersScreen(), Container(), Container()];
+      : <Widget>[
+          StatisticsScreen(),
+          UsersScreen(),
+          ProjectsScreen(),
+          Container()
+        ];
   // ? <Widget>[
   //     StatisticsScreen(),
   //     UsersScreen(),
@@ -70,10 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               appBar: AppBarWidget(avatar: state.user.avatar),
               body: CustomNavigator(
                 navigatorKey: navigatorKey,
-                home: IndexedStack(
-                  children: _children,
-                  index: _currentIndex,
-                ),
+                home: _children[_currentIndex],
                 pageRoute: PageRoutes.materialPageRoute,
               ),
               bottomNavigationBar: _bottomNavigation(state),
