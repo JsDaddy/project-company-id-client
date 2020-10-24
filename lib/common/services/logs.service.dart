@@ -5,8 +5,9 @@ import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:dio/dio.dart';
 
 Future<Map<String, dynamic>> getLogs(String query) async {
+  print('logs by month');
   print('/logs$query');
-  final Response<dynamic> res = await api.dio.get<dynamic>('/logs$query');
+  final Response<dynamic> res = await api.dio.get<dynamic>('/logs/$query');
   final Map<String, dynamic> logs = res.data['logs'] as Map<String, dynamic>;
   final Map<String, dynamic> statistics =
       res.data['statistic'] as Map<String, dynamic>;
@@ -22,8 +23,10 @@ Future<Map<String, dynamic>> getLogs(String query) async {
   return <String, dynamic>{'logs': mappedLogs, 'statistic': mappedStatistic};
 }
 
-Future<List<LogModel>> getAdmingLogsByDate(String query) async {
-  final Response<dynamic> res = await api.dio.get<dynamic>('/logs/$query');
+Future<List<LogModel>> getLogsByDate(String query) async {
+  print('logs by date');
+  print('/logs/solo/$query');
+  final Response<dynamic> res = await api.dio.get<dynamic>('/logs/solo/$query');
   final List<dynamic> logs = res.data['logs'] as List<dynamic>;
   return logs.isEmpty
       ? <LogModel>[]
@@ -31,4 +34,13 @@ Future<List<LogModel>> getAdmingLogsByDate(String query) async {
           .map<LogModel>(
               (dynamic log) => LogModel.fromJson(log as Map<String, dynamic>))
           .toList();
+}
+
+Future<LogModel> addLog(LogModel log) async {
+  print(log.toJson());
+  final Response<dynamic> res = await api.dio
+      .post<dynamic>('/timelogs/${log.project.id}', data: log.toJson());
+  final Map<String, dynamic> addedLog =
+      res.data['logs'] as Map<String, dynamic>;
+  return LogModel.fromJson(addedLog);
 }

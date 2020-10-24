@@ -21,3 +21,16 @@ final Reducer<ProjectModel> projectReducers = combineReducers<
 ProjectModel _setProject(ProjectModel project, GetDetailProjectSuccess action) {
   return action.project;
 }
+
+final Reducer<String> lastProjectReducers =
+    combineReducers<String>(<String Function(String, dynamic)>[
+  TypedReducer<String, GetProjectPrefSuccess>(_getLastProject),
+  TypedReducer<String, SetProjectPrefSuccess>(_setLastProject),
+]);
+String _getLastProject(String state, GetProjectPrefSuccess action) {
+  return action.lastProjectId;
+}
+
+String _setLastProject(String state, SetProjectPrefSuccess action) {
+  return action.lastProjectId;
+}

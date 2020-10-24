@@ -1,7 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
-import 'package:company_id_new/common/widgets/app-gray-title/app-gray-tiitle.widget.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
@@ -67,22 +66,30 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               child: ListView(
                 children: <Widget>[
-                  const GrayTitleWidget(title: 'General info'),
+                  Text('General info',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
                   _projectInfo('Industry: ', state.project.industry),
                   _projectInfo('Duration: ',
                       '${converter.dateFromString((state.project.startDate).toString())} - ${state.project.endDate != null ? converter.dateFromString((state.project.endDate).toString()) : 'now'}'),
                   _projectInfo('Customer: ', state.project.customer),
                   const SizedBox(height: 12),
-                  const GrayTitleWidget(title: 'Stack'),
+                  Text('Stack',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
                   _stack(state.project.stack),
                   const SizedBox(height: 12),
-                  const GrayTitleWidget(title: 'Onboard'),
+                  Text('Onboard',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
                   _projectsList(state.project.onboard, state.user.position),
                   const SizedBox(height: 12),
-                  const GrayTitleWidget(title: 'History'),
+                  Text('History',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
                   _projectsList(state.project.history, state.user.position)
                 ],

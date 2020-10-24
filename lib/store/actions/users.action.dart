@@ -1,6 +1,9 @@
 import 'package:company_id_new/store/models/user.model.dart';
 
-class GetUsersPending {}
+class GetUsersPending {
+  GetUsersPending({this.isFilter = false});
+  bool isFilter;
+}
 
 class GetUsersSuccess {
   GetUsersSuccess(this.users);

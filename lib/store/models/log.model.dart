@@ -5,7 +5,7 @@ import 'package:company_id_new/store/models/user.model.dart';
 class LogModel {
   LogModel(
       {this.id,
-      // this.date,
+      this.date,
       this.time,
       this.desc,
       this.project,
@@ -17,7 +17,7 @@ class LogModel {
   String id;
   String desc;
   String time;
-  // DateTime date;
+  DateTime date;
   VacationType vacationType;
   String status;
   String name;
@@ -46,6 +46,14 @@ class LogModel {
             : null);
   }
 
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'time': time,
+      'desc': desc,
+      'date': date.toIso8601String()
+    };
+  }
+
   LogModel copyWith(
       String id,
       String desc,
@@ -60,7 +68,7 @@ class LogModel {
       id: id ?? this.id,
       desc: desc ?? this.desc,
       time: time ?? this.time,
-      // date: date ?? this.date,
+      date: date ?? this.date,
       vacationType: vacationType ?? this.vacationType,
       status: status ?? this.status,
       type: type ?? this.type,

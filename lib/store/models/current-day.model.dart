@@ -1,9 +1,10 @@
 class CurrentDateModel {
-  CurrentDateModel({this.log, this.logAdmin});
-  DateTime logAdmin;
-  DateTime log;
-  CurrentDateModel copyWith(DateTime logAdmin, DateTime log) {
+  CurrentDateModel({this.currentDay, this.currentMohth});
+  DateTime currentDay;
+  DateTime currentMohth;
+  CurrentDateModel copyWith({DateTime currentDay, DateTime currentMohth}) {
     return CurrentDateModel(
-        log: log ?? this.log, logAdmin: logAdmin ?? this.log);
+        currentDay: currentDay ?? this.currentDay,
+        currentMohth: currentMohth ?? this.currentMohth);
   }
 }

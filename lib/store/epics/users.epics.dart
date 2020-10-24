@@ -5,10 +5,14 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../actions/filter.action.dart';
+
 Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions.where((dynamic action) => action is GetUsersPending).switchMap(
-      (dynamic action) => Stream<List<UserModel>>.fromFuture(getUsers())
-          .map((List<UserModel> users) => GetUsersSuccess(users)));
+      (dynamic action) => Stream<List<UserModel>>.fromFuture(getUsers()).map(
+          (List<UserModel> users) => action.isFilter as bool
+              ? GetLogsFilterUsersSuccess(users)
+              : GetUsersSuccess(users)));
 }
 
 Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {

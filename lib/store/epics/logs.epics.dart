@@ -6,19 +6,21 @@ import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-Stream<void> getAdminLogsEpic(
-    Stream<dynamic> actions, EpicStore<dynamic> store) {
-  return actions
-      .where((dynamic action) => action is GetAdminLogsPending)
-      .switchMap((dynamic action) => Stream<Map<String, dynamic>>.fromFuture(
+import '../actions/logs.action.dart';
+import '../actions/logs.action.dart';
+import '../models/log.model.dart';
+
+Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions.where((dynamic action) => action is GetLogsPending).switchMap(
+      (dynamic action) => Stream<Map<String, dynamic>>.fromFuture(
                   getLogs(action.query as String))
               .expand<dynamic>((Map<String, dynamic> full) {
             return <dynamic>[
-              GetAdminLogsSuccess(
+              GetLogsSuccess(
                   full['logs'] as Map<DateTime, List<CalendarModel>>),
               GetHolidaysLogsSuccess(
                   full['logs'] as Map<DateTime, List<CalendarModel>>),
-              GetAdmingStatisticSuccess(full['statistic'] as StatisticModel)
+              GetStatisticSuccess(full['statistic'] as StatisticModel)
             ];
           }).onErrorReturnWith((dynamic e) {
             print(e);
@@ -26,14 +28,26 @@ Stream<void> getAdminLogsEpic(
           }));
 }
 
-Stream<void> getAdminLogByDateEpic(
+Stream<void> getLogByDateEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
-      .where((dynamic action) => action is GetAdminLogByDatePending)
+      .where((dynamic action) => action is GetLogByDatePending)
       .switchMap((dynamic action) => Stream<List<LogModel>>.fromFuture(
-                  getAdmingLogsByDate(action.query as String))
+                  getLogsByDate(action.query as String))
               .map<dynamic>((List<LogModel> logs) {
-            return GetAdminLogByDateSuccess(logs);
+            return GetLogByDateSuccess(logs);
+          }).onErrorReturnWith((dynamic e) {
+            print(e);
+            print(e.message);
+          }));
+}
+
+Stream<void> addLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions.where((dynamic action) => action is AddLogPending).switchMap(
+      (dynamic action) =>
+          Stream<LogModel>.fromFuture(addLog(action.log as LogModel))
+              .map<dynamic>((LogModel log) {
+            return AddLogSuccess(log);
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);

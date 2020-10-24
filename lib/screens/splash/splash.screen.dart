@@ -4,6 +4,7 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:company_id_new/store/actions/projects.action.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -14,6 +15,7 @@ class SplashScreen extends StatelessWidget {
           converter: (Store<AppState> store) {},
           onInit: (Store<AppState> store) {
             store.dispatch(CheckTokenPending());
+            store.dispatch(GetProjectPrefPending());
           },
           builder: (BuildContext context, dynamic state) {
             return const Center(

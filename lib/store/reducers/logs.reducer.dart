@@ -3,38 +3,44 @@ import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:redux/redux.dart';
+import 'package:company_id_new/store/models/current-day.model.dart';
 
-final Reducer<Map<DateTime, List<CalendarModel>>> adminLogsReducer =
+import '../actions/logs.action.dart';
+
+final Reducer<Map<DateTime, List<CalendarModel>>> logsReducer =
     combineReducers<Map<DateTime, List<CalendarModel>>>(<
         Map<DateTime, List<CalendarModel>> Function(
             Map<DateTime, List<CalendarModel>>, dynamic)>[
-  TypedReducer<Map<DateTime, List<CalendarModel>>, GetAdminLogsSuccess>(
-      _saveAdminLogs),
+  TypedReducer<Map<DateTime, List<CalendarModel>>, GetLogsSuccess>(_saveLogs),
 ]);
 
-Map<DateTime, List<CalendarModel>> _saveAdminLogs(
-    Map<DateTime, List<CalendarModel>> adminLogs, GetAdminLogsSuccess action) {
+Map<DateTime, List<CalendarModel>> _saveLogs(
+    Map<DateTime, List<CalendarModel>> logs, GetLogsSuccess action) {
   return action.logs;
 }
 
-final Reducer<StatisticModel> adminStatisticReducers = combineReducers<
+final Reducer<StatisticModel> statisticReducers = combineReducers<
     StatisticModel>(<StatisticModel Function(StatisticModel, dynamic)>[
-  TypedReducer<StatisticModel, GetAdmingStatisticSuccess>(_saveAdminStatistic)
+  TypedReducer<StatisticModel, GetStatisticSuccess>(_saveStatistic)
 ]);
 
-StatisticModel _saveAdminStatistic(
-    StatisticModel adminLogs, GetAdmingStatisticSuccess action) {
+StatisticModel _saveStatistic(StatisticModel logs, GetStatisticSuccess action) {
   return action.statistic;
 }
 
-final Reducer<List<LogModel>> adminByDateReducers = combineReducers<
+final Reducer<List<LogModel>> logsbyDateReducers = combineReducers<
     List<LogModel>>(<List<LogModel> Function(List<LogModel>, dynamic)>[
-  TypedReducer<List<LogModel>, GetAdminLogByDateSuccess>(_saveAdminLogsByDate)
+  TypedReducer<List<LogModel>, GetLogByDateSuccess>(_saveLogsByDate),
+  TypedReducer<List<LogModel>, AddLogSuccess>(_saveLogByDate)
 ]);
 
-List<LogModel> _saveAdminLogsByDate(
-    List<LogModel> adminLogs, GetAdminLogByDateSuccess action) {
+List<LogModel> _saveLogsByDate(
+    List<LogModel> logs, GetLogByDateSuccess action) {
   return action.logs;
+}
+
+List<LogModel> _saveLogByDate(List<LogModel> logs, AddLogSuccess action) {
+  return <LogModel>[action.log, ...logs];
 }
 
 final Reducer<Map<DateTime, List<CalendarModel>>> holidaysReducers =
@@ -59,4 +65,18 @@ Map<DateTime, List<CalendarModel>> _saveHolidays(
     }
   }
   return newHolidays;
+}
+
+final Reducer<CurrentDateModel> currentDateReducers = combineReducers<
+    CurrentDateModel>(<CurrentDateModel Function(CurrentDateModel, dynamic)>[
+  TypedReducer<CurrentDateModel, SetCurrentDay>(_setDay),
+  TypedReducer<CurrentDateModel, SetCurrentMonth>(_setMonth)
+]);
+
+CurrentDateModel _setDay(CurrentDateModel state, SetCurrentDay action) {
+  return state.copyWith(currentDay: action.currentDay);
+}
+
+CurrentDateModel _setMonth(CurrentDateModel state, SetCurrentMonth action) {
+  return state.copyWith(currentMohth: action.currentMonth);
 }

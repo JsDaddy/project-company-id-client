@@ -2,8 +2,8 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
-class AdminFilterModel {
-  AdminFilterModel(
+class FilterModel {
+  FilterModel(
       {this.logType,
       this.user,
       this.project,
@@ -15,7 +15,7 @@ class AdminFilterModel {
   List<FilteredProjectModel> filteredProjects;
   List<FilteredUserModel> filteredUsers;
 
-  AdminFilterModel copyWith({
+  FilterModel copyWith({
     FilterType logType,
     String vacation,
     UserModel user,
@@ -23,7 +23,7 @@ class AdminFilterModel {
     List<FilteredProjectModel> filteredProjects,
     List<FilteredUserModel> filteredUsers,
   }) =>
-      AdminFilterModel(
+      FilterModel(
         logType: logType ?? this.logType,
         user: user ?? this.user,
         project: project ?? this.project,

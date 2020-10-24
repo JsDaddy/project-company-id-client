@@ -1,7 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
-import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
@@ -19,8 +18,6 @@ class _ViewModel {
     this.user,
   });
   UserModel user;
-  // DateTime currentDay;
-  // List<VacationModel> requests;
 }
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -48,27 +45,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ProjectsScreen(),
           Container()
         ];
-  // ? <Widget>[
-  //     StatisticsScreen(),
-  //     UsersScreen(),
-  //     ProjectsScreen(),
-  //     TimeLogScreen(),
-  //     InfoScreen(),
-  //     RequestsScreen(),
-  //   ]
-  // : <Widget>[
-  //     TimeLogScreen(),
-  //     UsersScreen(),
-  //     ProjectsScreen(),
-  //     InfoScreen()
-  //   ];
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
               user: store.state.user,
-              // requests: store.state.requests,
             ),
         builder: (BuildContext context, _ViewModel state) {
           return Notifier(
@@ -93,13 +75,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         onTap: (int index) => _onTabTapped(index),
         currentIndex: _currentIndex,
         items: state.user.position == Positions.OWNER
-            // ? _adminBottomNav(state.requests)
             ? _adminBottomNav()
             : _userBottomNav());
   }
 
-  // List<BottomNavigationBarItem> _adminBottomNav(List<VacationModel> requests) {
-  //TODO do it
   List<BottomNavigationBarItem> _adminBottomNav() {
     return <BottomNavigationBarItem>[
       const BottomNavigationBarItem(

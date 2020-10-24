@@ -30,10 +30,10 @@ class AppApi {
   final LocalStorageService localStorageService;
   final Dio dio = Dio(BaseOptions(
     connectTimeout: 10000,
-    // baseUrl: 'http://10.0.2.2:8090',
+    baseUrl: 'http://10.0.2.2:8090',
     // baseUrl: 'http://localhost:8090',
     // baseUrl: 'http://192.168.88.70:8090',
-    baseUrl: 'https://jsdaddy.io/company-id/api',
+    // baseUrl: 'https://jsdaddy.io/company-id/api',
     responseType: ResponseType.json,
     contentType: ContentType.json.toString(),
   ));

@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/splash/splash.screen.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';

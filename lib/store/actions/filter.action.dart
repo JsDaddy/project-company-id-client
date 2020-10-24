@@ -1,11 +1,13 @@
-import 'package:company_id_new/store/models/admin-filter.model.dart';
+import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
-class SaveAdminFilter {
-  SaveAdminFilter(this.adminFilter);
-  AdminFilterModel adminFilter;
+class SaveFilter {
+  SaveFilter(this.adminFilter);
+  FilterModel adminFilter;
 }
+
+class ClearFilter {}
 
 class FilteredUsersPending {
   FilteredUsersPending(this.projectId);
@@ -26,3 +28,15 @@ class FilteredProjectsSuccess {
   FilteredProjectsSuccess(this.projects);
   List<FilteredProjectModel> projects;
 }
+
+class GetLogsFilterUsersSuccess {
+  GetLogsFilterUsersSuccess(this.users);
+  List<UserModel> users;
+}
+
+class GetLogsFilterProjectsSucess {
+  GetLogsFilterProjectsSucess(this.projects);
+  List<ProjectModel> projects;
+}
+
+class ClearFilterLogsUsersProjects {}
