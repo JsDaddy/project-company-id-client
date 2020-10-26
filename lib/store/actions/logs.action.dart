@@ -5,8 +5,8 @@ import 'package:company_id_new/store/models/statistic.model.dart';
 import '../models/log.model.dart';
 
 class GetLogsPending {
-  GetLogsPending(this.query);
-  String query;
+  GetLogsPending(this.date);
+  String date;
 }
 
 class GetLogsSuccess {
@@ -35,8 +35,8 @@ class SetCurrentMonth {
 }
 
 class GetLogByDatePending {
-  GetLogByDatePending(this.query);
-  String query;
+  GetLogByDatePending(this.date);
+  String date;
 }
 
 class GetLogByDateSuccess {

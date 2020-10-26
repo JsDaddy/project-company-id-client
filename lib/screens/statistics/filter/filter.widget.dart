@@ -241,20 +241,13 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                 Navigator.pop(context);
                                 return;
                               }
-                              if (selectedType.logType == LogType.vacation) {
-                                Navigator.pop(
-                                    context,
-                                    FilterModel(
-                                        logType: selectedType,
-                                        user: selectedUser));
-                              } else {
-                                Navigator.pop(
-                                    context,
-                                    FilterModel(
-                                        logType: selectedType,
-                                        user: selectedUser,
-                                        project: selectedProject));
+                              final FilterModel filter = FilterModel(
+                                  logType: selectedType, user: selectedUser);
+                              if (selectedType.logType != LogType.vacation) {
+                                filter.project = selectedProject;
                               }
+                              store.dispatch(SaveFilter(filter));
+                              Navigator.pop(context);
                             })
                       ],
                     ),

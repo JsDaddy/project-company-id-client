@@ -5,15 +5,12 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../actions/logs.action.dart';
-import '../actions/logs.action.dart';
-import '../models/log.model.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions.where((dynamic action) => action is GetLogsPending).switchMap(
       (dynamic action) => Stream<Map<String, dynamic>>.fromFuture(
-                  getLogs(action.query as String))
+                  getLogs(action.date as String, s.store.state.filter))
               .expand<dynamic>((Map<String, dynamic> full) {
             return <dynamic>[
               GetLogsSuccess(
@@ -33,7 +30,7 @@ Stream<void> getLogByDateEpic(
   return actions
       .where((dynamic action) => action is GetLogByDatePending)
       .switchMap((dynamic action) => Stream<List<LogModel>>.fromFuture(
-                  getLogsByDate(action.query as String))
+                  getLogsByDate(action.date as String, s.store.state.filter))
               .map<dynamic>((List<LogModel> logs) {
             return GetLogByDateSuccess(logs);
           }).onErrorReturnWith((dynamic e) {

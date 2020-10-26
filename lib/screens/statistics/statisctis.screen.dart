@@ -46,12 +46,6 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   CalendarController _calendarController;
-  String logType = AppConverting.getTypeLogQuery(LogType.all);
-  String vacQuery = '';
-  String userQuery = '';
-  String projectQuery = '';
-  List<String> queries = <String>[];
-  String fullQuery = '';
   List<SpeedDialChild> speedDials = <SpeedDialChild>[];
   @override
   void initState() {
@@ -80,32 +74,15 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     if (store.state.user.position == Positions.OWNER) {
       speedDials.add(speedDialChild(() async {
         //TODO REDUX !
-        final FilterModel filter = await showModalBottomSheet<FilterModel>(
+        await showModalBottomSheet<dynamic>(
             context: context,
             useRootNavigator: true,
             builder: (BuildContext context) => AdminLogFilterWidget());
-        queries = <String>[];
-        fullQuery = '';
-        if (filter != null) {
-          logType = AppConverting.getTypeLogQuery(filter.logType.logType);
-          vacQuery = AppQuery.vacationTypeQuery(filter.logType.vacationType);
-          queries.add(vacQuery);
-          if (filter.user != null) {
-            userQuery = 'uid=${filter.user.id}';
-            queries.add(userQuery);
-          }
 
-          if (filter.project != null) {
-            projectQuery = 'project=${filter.project.id}';
-            queries.add(projectQuery);
-          }
-          getFullQuery();
-          store.dispatch(SaveFilter(filter));
-        }
-        store.dispatch(GetLogsPending(
-            '${store.state.currentDate.currentMohth}/$logType$fullQuery'));
-        store.dispatch(GetLogByDatePending(
-            '${store.state.currentDate.currentDay}/$logType$fullQuery'));
+        store.dispatch(
+            GetLogsPending('${store.state.currentDate.currentMohth}'));
+        store.dispatch(
+            GetLogByDatePending('${store.state.currentDate.currentDay}'));
       },
           Stack(
             children: <Widget>[
@@ -117,32 +94,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           )));
     }
     _calendarController = CalendarController();
-
-    if (vacQuery.isNotEmpty) {
-      queries.add(vacQuery);
-    }
-    if (userQuery.isNotEmpty) {
-      queries.add(userQuery);
-    }
-
-    if (projectQuery.isNotEmpty) {
-      queries.add(projectQuery);
-    }
-    getFullQuery();
     super.initState();
-  }
-
-  String getFullQuery() {
-    if (queries.isNotEmpty) {
-      for (int i = 0; i < queries.length; i++) {
-        if (i == 0) {
-          fullQuery = '?${queries[i]}';
-        } else {
-          fullQuery = '$fullQuery&${queries[i]}';
-        }
-      }
-    }
-    return fullQuery;
   }
 
   @override
@@ -210,7 +162,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       store
           .dispatch(GetLogByDatePending('$day/all?uid=${store.state.user.id}'));
     } else {
-      store.dispatch(GetLogByDatePending('$day/$logType$fullQuery'));
+      store.dispatch(GetLogByDatePending('$day'));
     }
   }
 
@@ -220,7 +172,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     if (store.state.user.position == Positions.DEVELOPER) {
       store.dispatch(GetLogsPending('$first/all?uid=${store.state.user.id}'));
     } else {
-      store.dispatch(GetLogsPending('$first/$logType$fullQuery'));
+      store.dispatch(GetLogsPending('$first'));
     }
   }
 
@@ -232,10 +184,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       store.dispatch(GetLogByDatePending(
           '${store.state.currentDate.currentDay}/all?uid=${store.state.user.id}'));
     } else {
-      store.dispatch(GetLogsPending(
-          '${store.state.currentDate.currentMohth}/$logType$fullQuery'));
-      store.dispatch(
-          GetLogByDatePending('${DateTime.now()}/$logType$fullQuery'));
+      store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
+      store.dispatch(GetLogByDatePending('${DateTime.now()}'));
     }
   }
 

@@ -52,7 +52,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                   ? Wrap(children: <Widget>[
                       state.filter?.logType?.logType != LogType.all
                           ? FilterItemWidget(
-                              title: state.filter.logType.title,
+                              title: state.filter.logType?.title,
                               icon: Icons.history,
                             )
                           : Container(),
