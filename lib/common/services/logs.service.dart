@@ -11,17 +11,20 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
   final List<String> queriesArr = <String>[];
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
-  print('cxzcjkascdasdasdascascas');
-  print(logType);
-  if (filter?.user != null) {
+
+  if (filter?.user?.id != null) {
     queriesArr.add(AppQuery.userQuery(filter.user.id));
   }
-  if (filter?.project != null) {
+  if (filter?.project?.id != null) {
     queriesArr.add(AppQuery.projectQuery(filter.project.id));
   }
-  if (filter?.logType?.logType == LogType.vacation) {
-    logType = AppConverting.getTypeLogQuery(LogType.vacation);
-    queriesArr.add(AppQuery.vacationTypeQuery(filter.logType.vacationType));
+
+  if (filter?.logType?.logType != LogType.all &&
+      filter?.logType?.logType != null) {
+    logType = AppConverting.getTypeLogQuery(filter.logType?.logType);
+    if (filter?.logType?.logType == LogType.vacation) {
+      queriesArr.add(AppQuery.vacationTypeQuery(filter.logType?.vacationType));
+    }
   }
   for (final String query in queriesArr) {
     if (fullQuery.isEmpty) {
@@ -30,8 +33,7 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
       fullQuery += '&$query';
     }
   }
-  print(fullQuery);
-  print('/logs/$date/$logType/$fullQuery');
+
   final Response<dynamic> res =
       await api.dio.get<dynamic>('/logs/$date/$logType$fullQuery');
   final Map<String, dynamic> logs = res.data['logs'] as Map<String, dynamic>;
@@ -54,15 +56,18 @@ Future<List<LogModel>> getLogsByDate(String date, FilterModel filter) async {
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
 
-  if (filter?.user != null) {
+  if (filter?.user?.id != null) {
     queriesArr.add(AppQuery.userQuery(filter.user.id));
   }
-  if (filter?.project != null) {
+  if (filter?.project?.id != null) {
     queriesArr.add(AppQuery.projectQuery(filter.project.id));
   }
-  if (filter?.logType?.logType == LogType.vacation) {
-    logType = AppConverting.getTypeLogQuery(LogType.vacation);
-    queriesArr.add(AppQuery.vacationTypeQuery(filter.logType.vacationType));
+  if (filter?.logType?.logType != LogType.all &&
+      filter?.logType?.logType != null) {
+    logType = AppConverting.getTypeLogQuery(filter.logType?.logType);
+    if (filter?.logType?.logType == LogType.vacation) {
+      queriesArr.add(AppQuery.vacationTypeQuery(filter.logType?.vacationType));
+    }
   }
   for (final String query in queriesArr) {
     if (fullQuery.isEmpty) {
@@ -71,8 +76,7 @@ Future<List<LogModel>> getLogsByDate(String date, FilterModel filter) async {
       fullQuery += '&$query';
     }
   }
-  print(fullQuery);
-  print('/logs/solo/$date$fullQuery');
+
   final Response<dynamic> res =
       await api.dio.get<dynamic>('/logs/solo/$date/$logType$fullQuery');
   final List<dynamic> logs = res.data['logs'] as List<dynamic>;
@@ -85,9 +89,21 @@ Future<List<LogModel>> getLogsByDate(String date, FilterModel filter) async {
 }
 
 Future<LogModel> addLog(LogModel log) async {
-  final Response<dynamic> res = await api.dio
+  await api.dio
       .post<dynamic>('/timelogs/${log.project.id}', data: log.toJson());
-  final Map<String, dynamic> addedLog =
-      res.data['logs'] as Map<String, dynamic>;
-  return LogModel.fromJson(addedLog);
+  return log;
+}
+
+Future<LogModel> editLog(LogModel log) async {
+  await api.dio.put<dynamic>('/timelogs/${log.id}', data: log.toJson());
+  return log;
+}
+
+Future<String> deleteLog(String id) async {
+  await api.dio.delete<dynamic>('/timelogs/$id');
+  return id;
+}
+
+Future<void> requestVacation(LogModel vacation) async {
+  await api.dio.post<dynamic>('/vacations', data: vacation.toVacJson());
 }

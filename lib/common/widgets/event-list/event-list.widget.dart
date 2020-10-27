@@ -3,7 +3,10 @@ import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget
 import 'package:company_id_new/common/widgets/app-vacation-tile/app-vacation.tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
+import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
 import 'package:company_id_new/store/models/log.model.dart';
+import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -17,10 +20,11 @@ import 'package:company_id_new/store/models/current-day.model.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 
 class _ViewModel {
-  _ViewModel({this.filter, this.logs, this.currentDate});
+  _ViewModel({this.filter, this.logs, this.currentDate, this.authUser});
   FilterModel filter;
   CurrentDateModel currentDate;
   List<LogModel> logs;
+  UserModel authUser;
 }
 
 class EventListWidget extends StatefulWidget {
@@ -41,6 +45,7 @@ class _EventListWidgetState extends State<EventListWidget> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
+            authUser: store.state.user,
             filter: store.state.filter,
             currentDate: store.state.currentDate,
             logs: store.state.logsByDate),
@@ -50,46 +55,63 @@ class _EventListWidgetState extends State<EventListWidget> {
             children: <Widget>[
               state.filter != null
                   ? Wrap(children: <Widget>[
-                      state.filter?.logType?.logType != LogType.all
-                          ? FilterItemWidget(
-                              title: state.filter.logType?.title,
-                              icon: Icons.history,
+                      state.filter?.logType?.logType == LogType.timelog
+                          ? InkWell(
+                              onTap: () {
+                                store.dispatch(SaveFilter(store.state.filter
+                                    .copyWith(
+                                        logType:
+                                            FilterType('All', LogType.all))));
+                                _updateLogs(state);
+                              },
+                              child: FilterItemWidget(
+                                title: state.filter.logType?.title,
+                                icon: Icons.history,
+                              ),
                             )
                           : Container(),
-                      state.filter?.logType?.logType != null &&
-                              state.filter?.logType?.logType == LogType.vacation
-                          ? FilterItemWidget(
-                              title: AppConverting.getVacationTypeString(
-                                  state.filter.logType.vacationType),
-                              icon: Icons.history,
+                      state.filter?.logType?.logType == LogType.vacation
+                          ? InkWell(
+                              onTap: () {
+                                store.dispatch(SaveFilter(store.state.filter
+                                    .copyWith(
+                                        logType:
+                                            FilterType('All', LogType.all))));
+                                _updateLogs(state);
+                              },
+                              child: FilterItemWidget(
+                                title: AppConverting.getVacationTypeString(
+                                    state.filter.logType.vacationType),
+                                icon: Icons.history,
+                              ))
+                          : Container(),
+                      state.filter?.user?.id != null
+                          ? InkWell(
+                              onTap: () {
+                                store.dispatch(SaveFilter(store.state.filter
+                                    .copyWith(user: UserModel())));
+                                _updateLogs(state);
+                              },
+                              child: FilterItemWidget(
+                                title:
+                                    '${state.filter.user.name} ${state.filter.user.lastName}',
+                                icon: Icons.person,
+                              ),
                             )
                           : Container(),
-                      state.filter?.user != null
-                          ? FilterItemWidget(
-                              title:
-                                  '${state.filter.user.name} ${state.filter.user.lastName}',
-                              icon: Icons.person,
+                      state.filter?.project?.id != null
+                          ? InkWell(
+                              onTap: () {
+                                store.dispatch(SaveFilter(store.state.filter
+                                    .copyWith(project: ProjectModel())));
+                                _updateLogs(state);
+                              },
+                              child: FilterItemWidget(
+                                title: state.filter.project.name,
+                                icon: Icons.desktop_mac,
+                              ),
                             )
                           : Container(),
-                      state.filter?.project != null
-                          ? FilterItemWidget(
-                              title: state.filter.project.name,
-                              icon: Icons.desktop_mac,
-                            )
-                          : Container(),
-                      InkWell(
-                        onTap: () {
-                          store.dispatch(ClearFilter());
-                          store.dispatch(GetLogsPending(
-                              '${state.currentDate.currentMohth}/all'));
-                          store.dispatch(GetLogByDatePending(
-                              '${state.currentDate.currentDay}/all'));
-                        },
-                        child: const FilterItemWidget(
-                          title: 'Clear',
-                          icon: Icons.close,
-                        ),
-                      )
                     ])
                   : Container(),
               const SizedBox(height: 16),
@@ -119,22 +141,82 @@ class _EventListWidgetState extends State<EventListWidget> {
                   .toList(),
               ...state.logs
                   .where((LogModel log) => log.type == LogType.timelog)
-                  .map((LogModel log) => AppListTile(
-                        leading:
-                            AvatarWidget(avatar: log.user.avatar, sizes: 50),
-                        textSpan: TextSpan(
-                            text: log.project.name,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15)),
-                        textSpan2: TextSpan(
-                          text: ' - ${log.desc}',
+                  .map((LogModel log) => Slidable(
+                        controller: _slidableController,
+                        enabled: state.authUser.id == log.user.id,
+                        actionPane: const SlidableDrawerActionPane(),
+                        actionExtentRatio: 0.1,
+                        secondaryActions: <IconSlideAction>[
+                          IconSlideAction(
+                            color: AppColors.bg,
+                            iconWidget: IconButton(
+                              icon: const Icon(Icons.edit),
+                              color: Colors.brown,
+                              onPressed: () {
+                                showModalBottomSheet<dynamic>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    useRootNavigator: true,
+                                    builder: (BuildContext ontext) =>
+                                        AddEditTimelogDialogWidget(
+                                            timelogId: log.id,
+                                            project: log.project,
+                                            hhMm: log.time,
+                                            desc: log.desc,
+                                            choosedDate:
+                                                state.currentDate.currentDay));
+                                const Icon(Icons.alarm_add);
+                                // showModalBottomSheet(
+                                //     context: context,
+                                //     isScrollControlled: true,
+                                //     useRootNavigator: true,
+                                //     builder: (BuildContext context) =>
+                                //         AddEditTimelogDialogWidget(
+                                //             timelogId: event.id,
+                                //             project: ProjectModel(
+                                //               projectId: event.projectId,
+                                //               name: event.projectName,
+                                //             ),
+                                //             hhMm: event.time,
+                                //             desc: event.desc,
+                                //             choosedDate: event.date));
+                                _slidableController.activeState?.close();
+                              },
+                            ),
+                          ),
+                          IconSlideAction(
+                              color: AppColors.bg,
+                              iconWidget: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  color: AppColors.red,
+                                  onPressed: () {
+                                    store.dispatch(DeleteLogPending(log.id));
+                                    _slidableController.activeState?.close();
+                                  })),
+                        ],
+                        child: AppListTile(
+                          leading: state.authUser.id != log.user.id
+                              ? AvatarWidget(avatar: log.user.avatar, sizes: 50)
+                              : null,
+                          textSpan: TextSpan(
+                              text: log.project.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15)),
+                          textSpan2: TextSpan(
+                            text: ' - ${log.desc}',
+                          ),
+                          // onTap: () => _pushToUserScreen(event, context),
+                          trailing: Text(log.time),
                         ),
-                        // onTap: () => _pushToUserScreen(event, context),
-                        trailing: Text(log.time),
                       ))
                   .toList()
             ],
           );
         });
+  }
+
+  void _updateLogs(_ViewModel state) {
+    store.dispatch(GetLogsPending('${state.currentDate.currentMohth}'));
+    store.dispatch(GetLogByDatePending('${state.currentDate.currentDay}'));
   }
 }

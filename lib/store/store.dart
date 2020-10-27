@@ -44,7 +44,10 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<dynamic>(getProjectsEpic),
       EpicMiddleware<dynamic>(getDetailProjectEpic),
       EpicMiddleware<AppState>(userEpic),
-      EpicMiddleware<AppState>(addLogEpic),
       EpicMiddleware<AppState>(getLastProjectEpic),
       EpicMiddleware<AppState>(setLastProjectEpic),
+      EpicMiddleware<AppState>(addLogEpic),
+      EpicMiddleware<AppState>(editLogEpic),
+      EpicMiddleware<AppState>(deleteLogEpic),
+      EpicMiddleware<AppState>(requestVacationEpic)
     ]);

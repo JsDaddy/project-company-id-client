@@ -31,7 +31,10 @@ StatisticModel _saveStatistic(StatisticModel logs, GetStatisticSuccess action) {
 final Reducer<List<LogModel>> logsbyDateReducers = combineReducers<
     List<LogModel>>(<List<LogModel> Function(List<LogModel>, dynamic)>[
   TypedReducer<List<LogModel>, GetLogByDateSuccess>(_saveLogsByDate),
-  TypedReducer<List<LogModel>, AddLogSuccess>(_saveLogByDate)
+  TypedReducer<List<LogModel>, AddLogSuccess>(_saveLogByDate),
+  TypedReducer<List<LogModel>, EditLogSuccess>(_editLogByDate),
+  TypedReducer<List<LogModel>, DeleteLogSuccess>(_deleteLogByDate),
+  TypedReducer<List<LogModel>, RequestVacationSuccess>(_addRequest),
 ]);
 
 List<LogModel> _saveLogsByDate(
@@ -39,8 +42,24 @@ List<LogModel> _saveLogsByDate(
   return action.logs;
 }
 
+List<LogModel> _addRequest(List<LogModel> logs, RequestVacationSuccess action) {
+  return <LogModel>[action.vacation, ...logs];
+}
+
 List<LogModel> _saveLogByDate(List<LogModel> logs, AddLogSuccess action) {
   return <LogModel>[action.log, ...logs];
+}
+
+List<LogModel> _editLogByDate(List<LogModel> logs, EditLogSuccess action) {
+  final List<LogModel> newLogs = <LogModel>[...logs];
+  newLogs.removeWhere((LogModel log) => log.id == action.log.id);
+  return <LogModel>[action.log, ...newLogs];
+}
+
+List<LogModel> _deleteLogByDate(List<LogModel> logs, DeleteLogSuccess action) {
+  final List<LogModel> newLogs = <LogModel>[...logs];
+  newLogs.removeWhere((LogModel log) => log.id == action.id);
+  return newLogs;
 }
 
 final Reducer<Map<DateTime, List<CalendarModel>>> holidaysReducers =

@@ -28,6 +28,7 @@ class LogModel {
     if (json == null) {
       return null;
     }
+
     return LogModel(
         id: json['_id'] as String,
         desc: json['desc'] as String,
@@ -50,7 +51,15 @@ class LogModel {
     return <String, dynamic>{
       'time': time,
       'desc': desc,
-      'date': date.toIso8601String()
+      'date': date.toIso8601String(),
+    };
+  }
+
+  Map<String, dynamic> toVacJson() {
+    return <String, dynamic>{
+      'desc': desc,
+      'date': date.toIso8601String(),
+      'type': AppConverting.getVacationTypeQuery(vacationType)
     };
   }
 

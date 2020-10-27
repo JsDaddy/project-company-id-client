@@ -123,7 +123,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         children: users
             .map(
               (UserModel user) => Slidable(
-                // controller: _slidableControllerProjects,
+                controller:
+                    position == Positions.OWNER ? _slidableController : null,
                 actionPane: const SlidableDrawerActionPane(),
                 enabled: position == Positions.OWNER,
                 actionExtentRatio: 0.1,

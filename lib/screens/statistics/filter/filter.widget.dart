@@ -243,6 +243,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                               }
                               final FilterModel filter = FilterModel(
                                   logType: selectedType, user: selectedUser);
+
                               if (selectedType.logType != LogType.vacation) {
                                 filter.project = selectedProject;
                               }

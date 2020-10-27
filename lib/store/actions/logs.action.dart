@@ -53,3 +53,33 @@ class AddLogSuccess {
   AddLogSuccess(this.log);
   LogModel log;
 }
+
+class EditLogPending {
+  EditLogPending(this.log);
+  LogModel log;
+}
+
+class EditLogSuccess {
+  EditLogSuccess(this.log);
+  LogModel log;
+}
+
+class DeleteLogPending {
+  DeleteLogPending(this.id);
+  String id;
+}
+
+class DeleteLogSuccess {
+  DeleteLogSuccess(this.id);
+  String id;
+}
+
+class RequestVacationPending {
+  RequestVacationPending(this.vacation);
+  LogModel vacation;
+}
+
+class RequestVacationSuccess {
+  RequestVacationSuccess(this.vacation);
+  LogModel vacation;
+}

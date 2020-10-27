@@ -3,7 +3,9 @@ import 'package:company_id_new/common/helpers/app-query.dart';
 import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
 import 'package:company_id_new/common/widgets/event-list/event-list.widget.dart';
 import 'package:company_id_new/common/widgets/event-markers/event-markers.widget.dart';
+import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
+import 'package:company_id_new/screens/statistics/add-vacation/add-vacation.widget.dart';
 import 'package:company_id_new/screens/statistics/filter/filter.widget.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -51,15 +53,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   void initState() {
     speedDials = <SpeedDialChild>[
       speedDialChild(
-          () {},
-          // () => showModalBottomSheet<dynamic>(
-          //     context: context,
-          //     useRootNavigator: true,
-          //     isScrollControlled: true,
-          //     builder: (BuildContext context) =>
-          //         AddVacationDialogWidget(
-          //           choosedDate: state.currentDay,
-          //         )),
+          () => showModalBottomSheet<dynamic>(
+              context: context,
+              useRootNavigator: true,
+              isScrollControlled: true,
+              builder: (BuildContext context) => AddVacationDialogWidget(
+                    choosedDate: store.state.currentDate.currentDay,
+                  )),
           const Icon(Icons.snooze)),
       speedDialChild(
           () => showModalBottomSheet<dynamic>(
@@ -99,61 +99,63 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () => _onBackPressed(),
-        child: StoreConnector<AppState, _ViewModel>(
-            converter: (Store<AppState> store) => _ViewModel(
-                statistic: store.state.statistic,
-                currentDate: store.state.currentDate,
-                holidays: store.state.holidays,
-                filter: store.state.filter,
-                logs: store.state.logs),
-            builder: (BuildContext context, _ViewModel state) {
-              return Scaffold(
-                floatingActionButton: SpeedDial(
-                  child: const Icon(Icons.menu),
-                  elevation: 8.0,
-                  shape: const CircleBorder(),
-                  curve: Curves.bounceIn,
-                  animatedIcon: AnimatedIcons.menu_close,
-                  animatedIconTheme: const IconThemeData(size: 22.0),
-                  overlayColor: Colors.black,
-                  overlayOpacity: 0.5,
-                  children: speedDials,
-                ),
-                body: CalendarWidget(
-                  headerSubTitle: state.filter?.user != null &&
-                          state.filter.project == null &&
-                          state.filter.logType.logType != LogType.vacation
-                      ? '\n ${state.statistic.workedOut} / ${state.statistic.toBeWorkedOut} / ${state.statistic.overtime} '
-                      : '',
-                  title: 'Timelog',
-                  holidays: state.holidays,
-                  onCalendarCreated: _onCalendarCreated,
-                  onVisibleDaysChanged: _onVisibleDaysChanged,
-                  events: state.logs,
-                  calendarController: _calendarController,
-                  builders: CalendarBuilders(
-                    markersBuilder: (BuildContext context, DateTime date,
-                        List<dynamic> events, List<dynamic> holidays) {
-                      final List<Widget> children = <Widget>[];
-                      if (events.isNotEmpty) {
-                        children.add(
-                          Positioned(
-                            right: 1,
-                            bottom: 1,
-                            child: EventMarkersWidget(date, events),
-                          ),
-                        );
-                      }
-                      return children;
-                    },
+    return Notifier(
+      child: WillPopScope(
+          onWillPop: () => _onBackPressed(),
+          child: StoreConnector<AppState, _ViewModel>(
+              converter: (Store<AppState> store) => _ViewModel(
+                  statistic: store.state.statistic,
+                  currentDate: store.state.currentDate,
+                  holidays: store.state.holidays,
+                  filter: store.state.filter,
+                  logs: store.state.logs),
+              builder: (BuildContext context, _ViewModel state) {
+                return Scaffold(
+                  floatingActionButton: SpeedDial(
+                    child: const Icon(Icons.menu),
+                    elevation: 8.0,
+                    shape: const CircleBorder(),
+                    curve: Curves.bounceIn,
+                    animatedIcon: AnimatedIcons.menu_close,
+                    animatedIconTheme: const IconThemeData(size: 22.0),
+                    overlayColor: Colors.black,
+                    overlayOpacity: 0.5,
+                    children: speedDials,
                   ),
-                  onDaySelected: _onDaySelected,
-                  buildEventList: EventListWidget(),
-                ),
-              );
-            }));
+                  body: CalendarWidget(
+                    headerSubTitle: state.filter?.user?.id != null &&
+                            state.filter.project == null &&
+                            state.filter.logType.logType != LogType.vacation
+                        ? '\n ${state.statistic.workedOut} / ${state.statistic.toBeWorkedOut} / ${state.statistic.overtime} '
+                        : '',
+                    title: 'Timelog',
+                    holidays: state.holidays,
+                    onCalendarCreated: _onCalendarCreated,
+                    onVisibleDaysChanged: _onVisibleDaysChanged,
+                    events: state.logs,
+                    calendarController: _calendarController,
+                    builders: CalendarBuilders(
+                      markersBuilder: (BuildContext context, DateTime date,
+                          List<dynamic> events, List<dynamic> holidays) {
+                        final List<Widget> children = <Widget>[];
+                        if (events.isNotEmpty) {
+                          children.add(
+                            Positioned(
+                              right: 1,
+                              bottom: 1,
+                              child: EventMarkersWidget(date, events),
+                            ),
+                          );
+                        }
+                        return children;
+                      },
+                    ),
+                    onDaySelected: _onDaySelected,
+                    buildEventList: EventListWidget(),
+                  ),
+                );
+              })),
+    );
   }
 
   void _onDaySelected(DateTime day, List<dynamic> events) {

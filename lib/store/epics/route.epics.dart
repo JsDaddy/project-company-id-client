@@ -34,8 +34,6 @@ Stream<void> routePopEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
       } else {
         navigatorKey.currentState.pop<dynamic>();
       }
-      navigatorKey.currentState.push<dynamic>(MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => action.destination as Widget));
     }
   });
 }
