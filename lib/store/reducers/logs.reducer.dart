@@ -1,4 +1,5 @@
 import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
@@ -35,6 +36,8 @@ final Reducer<List<LogModel>> logsbyDateReducers = combineReducers<
   TypedReducer<List<LogModel>, EditLogSuccess>(_editLogByDate),
   TypedReducer<List<LogModel>, DeleteLogSuccess>(_deleteLogByDate),
   TypedReducer<List<LogModel>, RequestVacationSuccess>(_addRequest),
+  TypedReducer<List<LogModel>, ChangeStatusVacationSuccess>(
+      _changeVacationStatus),
 ]);
 
 List<LogModel> _saveLogsByDate(
@@ -54,6 +57,17 @@ List<LogModel> _editLogByDate(List<LogModel> logs, EditLogSuccess action) {
   final List<LogModel> newLogs = <LogModel>[...logs];
   newLogs.removeWhere((LogModel log) => log.id == action.log.id);
   return <LogModel>[action.log, ...newLogs];
+}
+
+List<LogModel> _changeVacationStatus(
+    List<LogModel> logs, ChangeStatusVacationSuccess action) {
+  final List<LogModel> newLogs = <LogModel>[...logs];
+  final int index =
+      newLogs.indexWhere((LogModel log) => log.id == action.vacationId);
+  if (index != -1) {
+    newLogs[index].status = action.status;
+  }
+  return newLogs;
 }
 
 List<LogModel> _deleteLogByDate(List<LogModel> logs, DeleteLogSuccess action) {

@@ -3,6 +3,7 @@ import 'package:company_id_new/store/epics/logs.epics.dart';
 import 'package:company_id_new/store/epics/projects.epics.dart';
 import 'package:company_id_new/store/epics/route.epics.dart';
 import 'package:company_id_new/store/epics/users.epics.dart';
+import 'package:company_id_new/store/epics/vacations.epics.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -49,5 +50,6 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(addLogEpic),
       EpicMiddleware<AppState>(editLogEpic),
       EpicMiddleware<AppState>(deleteLogEpic),
-      EpicMiddleware<AppState>(requestVacationEpic)
+      EpicMiddleware<AppState>(requestVacationEpic),
+      EpicMiddleware<AppState>(changeStatusVacationEpic)
     ]);

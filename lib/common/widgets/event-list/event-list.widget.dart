@@ -195,7 +195,8 @@ class _EventListWidgetState extends State<EventListWidget> {
                                   })),
                         ],
                         child: AppListTile(
-                          leading: state.authUser.id != log.user.id
+                          leading: state.authUser.id != log.user.id ||
+                                  state.authUser.position == Positions.OWNER
                               ? AvatarWidget(avatar: log.user.avatar, sizes: 50)
                               : null,
                           textSpan: TextSpan(

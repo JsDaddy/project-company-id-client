@@ -9,9 +9,11 @@ import 'package:company_id_new/screens/statistics/add-vacation/add-vacation.widg
 import 'package:company_id_new/screens/statistics/filter/filter.widget.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -27,18 +29,19 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class _ViewModel {
-  _ViewModel({
-    this.logs,
-    this.statistic,
-    this.currentDate,
-    this.filter,
-    this.holidays,
-  });
+  _ViewModel(
+      {this.logs,
+      this.statistic,
+      this.currentDate,
+      this.filter,
+      this.holidays,
+      this.logsByDate});
   Map<DateTime, List<CalendarModel>> logs;
   Map<DateTime, List<CalendarModel>> holidays;
   CurrentDateModel currentDate;
   FilterModel filter;
   StatisticModel statistic;
+  List<LogModel> logsByDate;
 }
 
 class StatisticsScreen extends StatefulWidget {
@@ -53,13 +56,16 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   void initState() {
     speedDials = <SpeedDialChild>[
       speedDialChild(
-          () => showModalBottomSheet<dynamic>(
-              context: context,
-              useRootNavigator: true,
-              isScrollControlled: true,
-              builder: (BuildContext context) => AddVacationDialogWidget(
-                    choosedDate: store.state.currentDate.currentDay,
-                  )),
+          () => !_isExisted(store.state)
+              ? showModalBottomSheet<dynamic>(
+                  context: context,
+                  useRootNavigator: true,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) => AddVacationDialogWidget(
+                        choosedDate: store.state.currentDate.currentDay,
+                      ))
+              : store.dispatch(Notify(NotifyModel(
+                  NotificationType.error, 'Only one vacation per day'))),
           const Icon(Icons.snooze)),
       speedDialChild(
           () => showModalBottomSheet<dynamic>(
@@ -73,7 +79,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     ];
     if (store.state.user.position == Positions.OWNER) {
       speedDials.add(speedDialChild(() async {
-        //TODO REDUX !
         await showModalBottomSheet<dynamic>(
             context: context,
             useRootNavigator: true,
@@ -108,7 +113,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   currentDate: store.state.currentDate,
                   holidays: store.state.holidays,
                   filter: store.state.filter,
-                  logs: store.state.logs),
+                  logs: store.state.logs,
+                  logsByDate: store.state.logsByDate),
               builder: (BuildContext context, _ViewModel state) {
                 return Scaffold(
                   floatingActionButton: SpeedDial(
@@ -189,6 +195,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
       store.dispatch(GetLogByDatePending('${DateTime.now()}'));
     }
+  }
+
+  bool _isExisted(AppState state) {
+    final String authId = state.user.id;
+    return state.logsByDate.any(
+        (LogModel log) => log.user.id == authId && log.vacationType != null);
   }
 
   Future<bool> _onBackPressed() async {
