@@ -92,3 +92,28 @@ enum LogType { vacation, timelog, holiday, all }
 enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 
 // enum VacationStatus { pending, approved, rejected }
+
+class LogResponse {
+  LogResponse({this.logs, this.vacationAvailable, this.sickAvailable});
+  int vacationAvailable;
+  int sickAvailable;
+  List<LogModel> logs;
+  static LogResponse fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return LogResponse(
+        vacationAvailable: json['vacationAvailable'] as int,
+        sickAvailable: json['sickAvailable'] as int,
+        logs: json['logs']
+            .map<LogModel>(
+                (dynamic log) => LogModel.fromJson(log as Map<String, dynamic>))
+            .toList() as List<LogModel>);
+  }
+}
+
+class VacationSickAvailable {
+  VacationSickAvailable({this.vacationAvailable, this.sickAvailable});
+  int vacationAvailable;
+  int sickAvailable;
+}

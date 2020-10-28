@@ -131,12 +131,7 @@ class _AddVacationDialogWidgetState extends State<AddVacationDialogWidget> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    print(LogModel(
-            desc: _descController.text,
-            date: widget.choosedDate,
-            type: LogType.vacation,
-            vacationType: selectedReason)
-        .toVacJson());
+
     store.dispatch(RequestVacationPending(LogModel(
         desc: _descController.text,
         date: widget.choosedDate,

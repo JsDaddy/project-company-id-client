@@ -14,6 +14,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:redux_logging/redux_logging.dart';
 
+import 'epics/filter.epics.dart';
 import 'models/current-day.model.dart';
 
 final Store<AppState> store = Store<AppState>(appStateReducer,
@@ -51,5 +52,7 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(editLogEpic),
       EpicMiddleware<AppState>(deleteLogEpic),
       EpicMiddleware<AppState>(requestVacationEpic),
-      EpicMiddleware<AppState>(changeStatusVacationEpic)
+      EpicMiddleware<AppState>(changeStatusVacationEpic),
+      EpicMiddleware<AppState>(filteredUsersEpic),
+      EpicMiddleware<AppState>(filteredProjectsEpic),
     ]);

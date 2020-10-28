@@ -51,7 +51,7 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
   return <String, dynamic>{'logs': mappedLogs, 'statistic': mappedStatistic};
 }
 
-Future<List<LogModel>> getLogsByDate(String date, FilterModel filter) async {
+Future<LogResponse> getLogsByDate(String date, FilterModel filter) async {
   final List<String> queriesArr = <String>[];
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
@@ -79,13 +79,8 @@ Future<List<LogModel>> getLogsByDate(String date, FilterModel filter) async {
 
   final Response<dynamic> res =
       await api.dio.get<dynamic>('/logs/solo/$date/$logType$fullQuery');
-  final List<dynamic> logs = res.data['logs'] as List<dynamic>;
-  return logs.isEmpty
-      ? <LogModel>[]
-      : logs
-          .map<LogModel>(
-              (dynamic log) => LogModel.fromJson(log as Map<String, dynamic>))
-          .toList();
+  final Map<String, dynamic> logResponse = res.data as Map<String, dynamic>;
+  return LogResponse.fromJson(logResponse);
 }
 
 Future<LogModel> addLog(LogModel log) async {

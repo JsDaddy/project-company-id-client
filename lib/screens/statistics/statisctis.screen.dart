@@ -79,11 +79,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     ];
     if (store.state.user.position == Positions.OWNER) {
       speedDials.add(speedDialChild(() async {
-        await showModalBottomSheet<dynamic>(
+        final FilterModel filter = await showModalBottomSheet<FilterModel>(
             context: context,
             useRootNavigator: true,
             builder: (BuildContext context) => AdminLogFilterWidget());
-
+        store.dispatch(SaveFilter(filter));
         store.dispatch(
             GetLogsPending('${store.state.currentDate.currentMohth}'));
         store.dispatch(

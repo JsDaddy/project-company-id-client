@@ -83,3 +83,8 @@ class RequestVacationSuccess {
   RequestVacationSuccess(this.vacation);
   LogModel vacation;
 }
+
+class SetVacationSickAvail {
+  SetVacationSickAvail(this.vacationSickAvailable);
+  VacationSickAvailable vacationSickAvailable;
+}

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:company_id_new/common/services/logs.service.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -33,10 +35,15 @@ Stream<void> getLogByDateEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is GetLogByDatePending)
-      .switchMap((dynamic action) => Stream<List<LogModel>>.fromFuture(
+      .switchMap((dynamic action) => Stream<LogResponse>.fromFuture(
                   getLogsByDate(action.date as String, s.store.state.filter))
-              .map<dynamic>((List<LogModel> logs) {
-            return GetLogByDateSuccess(logs);
+              .expand<dynamic>((LogResponse logResponse) {
+            return <dynamic>[
+              GetLogByDateSuccess(logResponse.logs),
+              SetVacationSickAvail(VacationSickAvailable(
+                  sickAvailable: logResponse.sickAvailable,
+                  vacationAvailable: logResponse.vacationAvailable))
+            ];
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);

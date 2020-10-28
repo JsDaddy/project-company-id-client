@@ -1,4 +1,5 @@
 import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -27,6 +28,18 @@ final Reducer<StatisticModel> statisticReducers = combineReducers<
 
 StatisticModel _saveStatistic(StatisticModel logs, GetStatisticSuccess action) {
   return action.statistic;
+}
+
+final Reducer<VacationSickAvailable> vacacationSickReducers =
+    combineReducers<VacationSickAvailable>(<
+        VacationSickAvailable Function(VacationSickAvailable, dynamic)>[
+  TypedReducer<VacationSickAvailable, SetVacationSickAvail>(
+      _saveVacationSickAvail)
+]);
+
+VacationSickAvailable _saveVacationSickAvail(
+    VacationSickAvailable vacationSickAvailable, SetVacationSickAvail action) {
+  return action.vacationSickAvailable;
 }
 
 final Reducer<List<LogModel>> logsbyDateReducers = combineReducers<

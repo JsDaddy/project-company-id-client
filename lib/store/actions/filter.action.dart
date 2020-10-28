@@ -9,24 +9,14 @@ class SaveFilter {
 
 class ClearFilter {}
 
-class FilteredUsersPending {
-  FilteredUsersPending(this.projectId);
+class GetLogsFilterUsersPending {
+  GetLogsFilterUsersPending(this.projectId);
   String projectId;
 }
 
-class FilteredUsersSuccess {
-  FilteredUsersSuccess(this.users);
-  List<FilteredUserModel> users;
-}
-
-class FilteredProjectsPending {
-  FilteredProjectsPending(this.userId);
+class GetLogsFilterProjectsPending {
+  GetLogsFilterProjectsPending(this.userId);
   String userId;
-}
-
-class FilteredProjectsSuccess {
-  FilteredProjectsSuccess(this.projects);
-  List<FilteredProjectModel> projects;
 }
 
 class GetLogsFilterUsersSuccess {
