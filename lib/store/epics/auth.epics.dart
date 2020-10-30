@@ -30,6 +30,28 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           }));
 }
 
+// Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
+//   return actions.where((dynamic action) {
+//     return action is Logout;
+//   }).map((dynamic action) {
+//     PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
+//   }).onErrorReturnWith((dynamic e) {
+//     print('logout error: $e');
+//   });
+// }
+
+Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions
+      .where((dynamic action) => action is Logout)
+      .switchMap((dynamic action) => Stream<void>.fromFuture(logout()).map((_) {
+            print('lOutEp');
+            return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
+          }))
+      .onErrorReturnWith((dynamic e) {
+    print('logout error: $e');
+  });
+}
+
 Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions.where((dynamic action) => action is SignInPending).switchMap(
       (dynamic action) => Stream<UserModel>.fromFuture(

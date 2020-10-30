@@ -13,6 +13,7 @@ class LogModel {
       this.type,
       this.name,
       this.user,
+      this.fullName,
       this.vacationType});
   String id;
   String desc;
@@ -24,6 +25,7 @@ class LogModel {
   LogType type;
   ProjectModel project;
   UserModel user;
+  String fullName;
   static LogModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;
@@ -34,13 +36,16 @@ class LogModel {
         desc: json['desc'] as String,
         time: json['time'] as String,
         name: json['name'] as String,
+        fullName: json['fullName'] as String,
         status: json['status'] as String,
         vacationType: json['type'] != null
             ? AppConverting.getVacationType(json['type'] as int)
             : null,
         type: json['type'] != null
             ? LogType.vacation
-            : json['name'] != null ? LogType.holiday : LogType.timelog,
+            : json['name'] != null
+                ? LogType.holiday
+                : json['fullName'] != null ? LogType.birthday : LogType.timelog,
         user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
         project: json['project'] != null
             ? ProjectModel.fromJson(json['project'] as Map<String, dynamic>)
@@ -87,7 +92,7 @@ class LogModel {
   }
 }
 
-enum LogType { vacation, timelog, holiday, all }
+enum LogType { vacation, timelog, holiday, birthday, all }
 
 enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 

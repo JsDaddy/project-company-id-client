@@ -25,15 +25,15 @@ class ConfirmDialogWidget extends StatelessWidget {
         AppButtonWidget(
           color: AppColors.green,
           onClick: () {
-            store.dispatch(PopAction());
-            // Navigator.pop(context, true);
+            // store.dispatch(PopAction());
+            Navigator.pop(context, true);
           },
           title: 'Confirm',
         ),
         AppButtonWidget(
           title: 'Cancel',
-          onClick: () => store.dispatch(PopAction(params: false)),
-          // onClick: () => Navigator.pop(context, false),
+          // onClick: () => store.dispatch(PopAction(params: false)),
+          onClick: () => Navigator.pop(context, false),
         )
       ],
     );

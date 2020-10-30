@@ -141,6 +141,19 @@ class _EventListWidgetState extends State<EventListWidget> {
                       ),
                     )
                   : Container(),
+              ...state.logs
+                  .where((LogModel log) => log.type == LogType.birthday)
+                  .toList()
+                  .map((LogModel log) => Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Center(
+                          child: Text(
+                            'Birthday: ' + log.fullName,
+                            style: const TextStyle(
+                                fontSize: 24, color: AppColors.yellow),
+                          ),
+                        ),
+                      )),
               state.filter?.user?.id != null
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -153,6 +166,11 @@ class _EventListWidgetState extends State<EventListWidget> {
                                 'Sick available: ${state.vacationSickAvailable.sickAvailable} of 5'),
                           ]),
                     )
+                  : Container(),
+              state.logs.isEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Text('No data'))
                   : Container(),
               ...state.logs
                   .where((LogModel log) => log.type == LogType.vacation)

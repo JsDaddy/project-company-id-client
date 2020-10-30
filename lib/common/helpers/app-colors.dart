@@ -8,6 +8,7 @@ class AppColors {
   static const Color green = Color.fromRGBO(46, 161, 120, 1);
   static const Color darkRed = Color.fromRGBO(227, 76, 76, 1);
   static const Color yellow = Color.fromRGBO(231, 190, 51, 1);
+  static const Color orange = Color.fromRGBO(231, 143, 52, 1);
   static Color getColorTextVacation(String text) {
     switch (text) {
       case 'pending':
