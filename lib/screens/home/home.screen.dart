@@ -2,10 +2,12 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
+import 'package:company_id_new/screens/requests/requests.screen.dart';
 import 'package:company_id_new/screens/rules/rules.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -15,10 +17,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({
-    this.user,
-  });
+  _ViewModel({this.user, this.requests});
   UserModel user;
+  List<LogModel> requests;
 }
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -37,15 +38,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           UsersScreen(),
           ProjectsScreen(),
           Container(),
-          RulesScreen(),
-          Container()
+          const RulesScreen(),
+          RequestsScreen()
         ]
       : <Widget>[
           StatisticsScreen(),
           UsersScreen(),
           ProjectsScreen(),
           Container(),
-          RulesScreen()
+          const RulesScreen()
         ];
 
   @override
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
               user: store.state.user,
+              requests: store.state.requests,
             ),
         builder: (BuildContext context, _ViewModel state) {
           return Notifier(
@@ -77,11 +79,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         onTap: (int index) => _onTabTapped(index),
         currentIndex: _currentIndex,
         items: state.user.position == Positions.OWNER
-            ? _adminBottomNav()
+            ? _adminBottomNav(state)
             : _userBottomNav());
   }
 
-  List<BottomNavigationBarItem> _adminBottomNav() {
+  List<BottomNavigationBarItem> _adminBottomNav(_ViewModel state) {
     return <BottomNavigationBarItem>[
       const BottomNavigationBarItem(
         icon: Icon(Icons.history),
@@ -101,17 +103,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         icon: Icon(Icons.info_outline),
         title: Text('Info'),
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.mail_outline),
-        //  requests.isEmpty
-        //     ? const Icon(Icons.mail_outline)
-        //     : Stack(
-        //         children: <Widget>[
-        //           const Icon(Icons.mail_outline),
-        //           requestsBadge(requests.length.toString())
-        //         ],
-        //       ),
-        title: Text('Requests'),
+      BottomNavigationBarItem(
+        icon: state.requests.isEmpty
+            ? const Icon(Icons.mail_outline)
+            : Stack(
+                children: <Widget>[
+                  const Icon(Icons.mail_outline),
+                  requestsBadge(state.requests.length.toString())
+                ],
+              ),
+        title: const Text('Requests'),
       ),
     ];
   }

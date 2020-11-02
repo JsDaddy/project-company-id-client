@@ -13,7 +13,8 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, GetLogsFilterProjectsSucess>(_setFalse),
   TypedReducer<bool, GetLogsFilterUsersSuccess>(_setFalse),
   TypedReducer<bool, GetLogsSuccess>(_setFalse),
-  TypedReducer<bool, GetLogsSuccess>(_setFalse),
+  TypedReducer<bool, GetRequestsSuccess>(_setFalse),
+  TypedReducer<bool, GetRequestsPending>(_setTrue),
 ]);
 bool _setTrue(bool isLoading, dynamic action) {
   return true;

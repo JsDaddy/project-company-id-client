@@ -13,6 +13,7 @@ import 'package:company_id_new/store/reducers/loading.reducer.dart';
 import 'package:company_id_new/store/reducers/logs.reducer.dart';
 import 'package:company_id_new/store/reducers/notify.reducer.dart';
 import 'package:company_id_new/store/reducers/projects.reducer.dart';
+import 'package:company_id_new/store/reducers/requests.reducer.dart';
 import 'package:company_id_new/store/reducers/rules.reducer.dart';
 import 'package:company_id_new/store/reducers/ui.reducer.dart';
 import 'package:company_id_new/store/reducers/users.reducer.dart';
@@ -39,7 +40,8 @@ class AppState {
       this.vacationSickAvailable,
       this.filterLogsUsersProjects,
       this.statistic,
-      this.rules});
+      this.rules,
+      this.requests});
   bool isLoading;
   String lastProject;
   String title;
@@ -60,6 +62,7 @@ class AppState {
   VacationSickAvailable vacationSickAvailable;
   Map<DateTime, List<CalendarModel>> logs;
   List<RulesModel> rules;
+  List<LogModel> requests;
 }
 
 AppState appStateReducer(AppState state, dynamic action) => AppState(
@@ -82,4 +85,5 @@ AppState appStateReducer(AppState state, dynamic action) => AppState(
     logs: logsReducer(state.logs, action),
     user: authReducers(state.user, action),
     rules: rulesReducers(state.rules, action),
+    requests: requestsReducer(state.requests, action),
     notify: notifyReducers(state.notify, action));
