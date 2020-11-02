@@ -96,8 +96,6 @@ enum LogType { vacation, timelog, holiday, birthday, all }
 
 enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 
-// enum VacationStatus { pending, approved, rejected }
-
 class LogResponse {
   LogResponse({this.logs, this.vacationAvailable, this.sickAvailable});
   int vacationAvailable;

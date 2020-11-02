@@ -116,19 +116,4 @@ class AppConverting {
         return null;
     }
   }
-  // static VacationStatus getVacationStatus(String status) {
-  //   switch (status) {
-  //     case 'approved':
-  //       return VacationStatus.approved;
-  //       break;
-  //     case 'pending':
-  //       return VacationStatus.pending;
-  //       break;
-  //     case 'rejected':
-  //       return VacationStatus.rejected;
-  //       break;
-  //     default:
-  //       return null;
-  //   }
-  // }
 }

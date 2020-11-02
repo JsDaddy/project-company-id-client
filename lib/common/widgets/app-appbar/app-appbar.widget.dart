@@ -21,7 +21,6 @@ class _ViewModel {
 
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   AppBarWidget({this.avatar, Key key}) : super(key: key);
-  // final GlobalKey<NavigatorState> navigatorKey;
   final String avatar;
 
   @override
@@ -30,7 +29,6 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
         converter: (Store<AppState> store) => _ViewModel(
             // requests: store.state.requests,
             user: store.state.user,
-            // notifications: store.state.notifications,
             title: store.state.title),
         builder: (BuildContext context, _ViewModel state) {
           return AppBar(
@@ -130,5 +128,5 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   // }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

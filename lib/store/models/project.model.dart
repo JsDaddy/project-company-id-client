@@ -64,20 +64,3 @@ class ProjectModel {
     );
   }
 }
-
-class FilteredProjectModel {
-  FilteredProjectModel({
-    this.id,
-    this.name,
-  });
-  String id;
-  String name;
-
-  static FilteredProjectModel fromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      return null;
-    }
-    return FilteredProjectModel(
-        id: json['_id'] as String, name: json['name'] as String);
-  }
-}

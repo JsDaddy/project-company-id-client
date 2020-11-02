@@ -36,9 +36,7 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                   store.dispatch(
                       ChangeStatusVacationPending(widget.log.id, 'approved'));
                   widget.slidableController.activeState?.close();
-                }
-                // _approve(event)
-                ),
+                }),
           ),
           IconSlideAction(
             color: AppColors.bg,
@@ -49,9 +47,7 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                   store.dispatch(
                       ChangeStatusVacationPending(widget.log.id, 'rejected'));
                   widget.slidableController.activeState?.close();
-                }
-                //  _reject(event)
-                ),
+                }),
           ),
         ],
         child: AppListTile(
