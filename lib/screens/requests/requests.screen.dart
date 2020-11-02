@@ -69,18 +69,19 @@ class _RequestsScreenState extends State<RequestsScreen> {
                   ? const Center(
                       child:
                           Text('No requests', style: TextStyle(fontSize: 24)))
-                  : _requests(state),
+                  : _requests(state.requests),
             ),
           );
         });
   }
 
-  Widget _requests(_ViewModel state) {
+  Widget _requests(List<LogModel> requests) {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: state.requests.length,
+        itemCount: requests.length,
         itemBuilder: (BuildContext context, int index) {
+          final LogModel request = requests[index];
           return Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: Slidable(
@@ -93,44 +94,36 @@ class _RequestsScreenState extends State<RequestsScreen> {
                         iconWidget: IconButton(
                             icon: const Icon(Icons.check),
                             color: Colors.green,
-                            onPressed: () => _changeStatus(
-                                state,
-                                index,
-                                context,
-                                'approved',
-                                'Are you sure about approving?'))),
+                            onPressed: () => _changeStatus(request.id, context,
+                                'approved', 'Are you sure about approving?'))),
                     IconSlideAction(
                         color: AppColors.bg,
                         iconWidget: IconButton(
                             icon: const Icon(Icons.close),
                             color: AppColors.red,
-                            onPressed: () => _changeStatus(
-                                state,
-                                index,
-                                context,
-                                'rejected',
-                                'Are you sure about rejecting?'))),
+                            onPressed: () => _changeStatus(request.id, context,
+                                'rejected', 'Are you sure about rejecting?'))),
                   ],
                   child: AppListTile(
-                      onTap: () => store.dispatch(PushAction(
-                          UserScreen(uid: state.requests[index].user.id))),
-                      leading: AvatarWidget(
-                          avatar: state.requests[index].user.avatar, sizes: 50),
+                      onTap: () => store.dispatch(
+                          PushAction(UserScreen(uid: request.user.id))),
+                      leading:
+                          AvatarWidget(avatar: request.user.avatar, sizes: 50),
                       textSpan: TextSpan(
-                          text: converter.dateFromString(
-                                  state.requests[index].date.toString()) +
+                          text: converter
+                                  .dateFromString(request.date.toString()) +
                               ' - ' +
-                              state.requests[index].desc,
+                              request.desc,
                           style: const TextStyle(color: Colors.white)),
                       trailing: Text(
                         AppConverting.getVacationTypeString(
-                            state.requests[index].vacationType),
+                            request.vacationType),
                       ))));
         });
   }
 
-  Future<void> _changeStatus(_ViewModel state, int index, BuildContext context,
-      String status, String titleText) async {
+  Future<void> _changeStatus(
+      String id, BuildContext context, String status, String titleText) async {
     final bool isConfirm = await showDialog(
         barrierDismissible: false,
         context: context,
@@ -140,8 +133,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
     if (!isConfirm) {
       return;
     }
-    store.dispatch(
-        ChangeStatusVacationPending(state.requests[index].id, status));
+    store.dispatch(ChangeStatusVacationPending(id, status));
     _slidableController.activeState?.close();
   }
 }

@@ -4,7 +4,6 @@ final _Converter converter = _Converter();
 
 class _Converter {
   String dateFromString(String strDate) {
-    print(strDate);
     final DateTime todayDate = DateTime.parse(strDate);
     return formatDate(todayDate, <String>[dd, '/', mm, '/', yyyy]);
   }

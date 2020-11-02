@@ -209,12 +209,10 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                     style: AppDropDownStyles.hintStyle),
                                 value: selectedUser,
                                 onChanged: (UserModel value) => setState(() {
-                                      print(value.lastName);
                                       store.dispatch(
                                           GetLogsFilterProjectsPending(
                                               value.id));
                                       selectedUser = value;
-                                      print(selectedUser.lastName);
                                     }),
                                 items: state.filterLogsUsersProjects.users
                                     .map((UserModel user) {

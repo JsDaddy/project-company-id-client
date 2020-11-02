@@ -50,7 +50,6 @@ class _UserScreenState extends State<UserScreen> {
               authUser: store.state.user,
             ),
         onInit: (Store<AppState> store) {
-          print(widget.uid);
           store.dispatch(GetUserPending(widget.uid));
         },
         builder: (BuildContext context, _ViewModel state) {
