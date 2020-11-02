@@ -16,7 +16,9 @@ class UserModel {
       this.projects,
       this.id,
       this.englishLevel,
-      this.initialLogin});
+      this.initialLogin,
+      this.sickAvailable,
+      this.vacationAvailable});
   final String avatar;
   final String github;
   final DateTime date;
@@ -31,6 +33,8 @@ class UserModel {
   final String englishLevel;
   final bool initialLogin;
   final List<ProjectModel> projects;
+  final int vacationAvailable;
+  final int sickAvailable;
 
   static UserModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
@@ -38,6 +42,8 @@ class UserModel {
     }
     return UserModel(
       avatar: json['avatar'] as String,
+      vacationAvailable: json['vacationAvailable'] as int,
+      sickAvailable: json['sickAvailable'] as int,
       englishLevel: json['englishLevel'] as String,
       github: json['github'] as String,
       date: json['dob'] == null ? null : DateTime.parse(json['dob'] as String),
@@ -76,6 +82,8 @@ class UserModel {
       String name,
       String phone,
       Positions position,
+      int sickAvailable,
+      int vacationAvailable,
       String skype,
       String englishLevel,
       String documentId,
@@ -90,6 +98,8 @@ class UserModel {
         email: email ?? this.email,
         id: id ?? this.id,
         lastName: lastName ?? this.lastName,
+        sickAvailable: sickAvailable ?? this.sickAvailable,
+        vacationAvailable: vacationAvailable ?? this.vacationAvailable,
         name: name ?? this.name,
         phone: phone ?? this.phone,
         projects: projects ?? this.projects,
