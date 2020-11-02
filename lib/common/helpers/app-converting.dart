@@ -5,16 +5,16 @@ class AppConverting {
   static VacationType getVacationType(int type) {
     switch (type) {
       case 0:
-        return VacationType.VACPAID;
-        break;
-      case 1:
         return VacationType.VACNONPAID;
         break;
+      case 1:
+        return VacationType.VACPAID;
+        break;
       case 2:
-        return VacationType.SICKPAID;
+        return VacationType.SICKNONPAID;
         break;
       case 3:
-        return VacationType.SICKNONPAID;
+        return VacationType.SICKPAID;
         break;
       default:
         return null;
@@ -24,16 +24,16 @@ class AppConverting {
   static VacationType getIntFromVacationType(int type) {
     switch (type) {
       case 0:
-        return VacationType.VACPAID;
-        break;
-      case 1:
         return VacationType.VACNONPAID;
         break;
+      case 1:
+        return VacationType.VACPAID;
+        break;
       case 2:
-        return VacationType.SICKPAID;
+        return VacationType.SICKNONPAID;
         break;
       case 3:
-        return VacationType.SICKNONPAID;
+        return VacationType.SICKPAID;
         break;
       default:
         return null;

@@ -50,6 +50,7 @@ class _UserScreenState extends State<UserScreen> {
               authUser: store.state.user,
             ),
         onInit: (Store<AppState> store) {
+          print(widget.uid);
           store.dispatch(GetUserPending(widget.uid));
         },
         builder: (BuildContext context, _ViewModel state) {
@@ -157,6 +158,18 @@ class _UserScreenState extends State<UserScreen> {
                     ),
                   ],
                 ),
+                state.authUser.position == Positions.OWNER
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                  'Vacations available: ${state.user.vacationAvailable} of 18'),
+                              Text(
+                                  'Sick available: ${state.user.sickAvailable} of 5'),
+                            ]))
+                    : Container(),
                 const SizedBox(height: 16),
                 const Text(
                   'Active Projects ',
