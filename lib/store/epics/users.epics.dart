@@ -4,8 +4,8 @@ import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../actions/filter.action.dart';
+import '../models/user.model.dart';
 
 Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions.where((dynamic action) => action is GetUsersPending).switchMap(

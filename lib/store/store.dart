@@ -5,7 +5,6 @@ import 'package:company_id_new/store/epics/route.epics.dart';
 import 'package:company_id_new/store/epics/users.epics.dart';
 import 'package:company_id_new/store/epics/vacations.epics.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -58,4 +57,5 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(filteredUsersEpic),
       EpicMiddleware<AppState>(filteredProjectsEpic),
       EpicMiddleware<AppState>(getRulesEpic),
+      EpicMiddleware<AppState>(addUserToProjectEpic),
     ]);

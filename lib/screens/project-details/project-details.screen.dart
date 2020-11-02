@@ -16,6 +16,14 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:redux/redux.dart';
 
+import '../../common/widgets/notifier/notifier.widget.dart';
+import '../../store/actions/users.action.dart';
+import '../../store/models/project.model.dart';
+import '../../store/models/project.model.dart';
+import '../../store/models/project.model.dart';
+import '../../store/models/project.model.dart';
+import '../../store/models/user.model.dart';
+
 class _ViewModel {
   _ViewModel({this.project, this.user});
   ProjectModel project;
@@ -47,52 +55,61 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           store.dispatch(GetDetailProjectPending(widget.projectId));
         },
         builder: (BuildContext context, _ViewModel state) {
-          return Scaffold(
-            floatingActionButton: state.user.position == Positions.OWNER &&
-                    state.project.endDate == null
-                ? FloatingActionButton(
-                    child: const Icon(Icons.add),
-                    onPressed: () {
-                      // showModalBottomSheet(
-                      //     context: context,
-                      //     useRootNavigator: true,
-                      //     builder: (BuildContext context) {
-                      //       return BottomAddUserWidget(project: project);
-                      //     });
-                    },
-                  )
-                : Container(),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-              child: ListView(
-                children: <Widget>[
-                  Text('General info',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  _projectInfo('Industry: ', state.project.industry),
-                  _projectInfo('Duration: ',
-                      '${converter.dateFromString((state.project.startDate).toString())} - ${state.project.endDate != null ? converter.dateFromString((state.project.endDate).toString()) : 'now'}'),
-                  _projectInfo('Customer: ', state.project.customer),
-                  const SizedBox(height: 12),
-                  Text('Stack',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  _stack(state.project.stack),
-                  const SizedBox(height: 12),
-                  Text('Onboard',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  _projectsList(state.project.onboard, state.user.position),
-                  const SizedBox(height: 12),
-                  Text('History',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  _projectsList(state.project.history, state.user.position)
-                ],
+          return Notifier(
+            child: Scaffold(
+              floatingActionButton: state.user.position == Positions.OWNER &&
+                      state.project.endDate == null
+                  ? FloatingActionButton(
+                      child: const Icon(Icons.add),
+                      onPressed: () {
+                        // showModalBottomSheet(
+                        //     context: context,
+                        //     useRootNavigator: true,
+                        //     builder: (BuildContext context) {
+                        //       return BottomAddUserWidget(project: project);
+                        //     });
+                      },
+                    )
+                  : Container(),
+              body: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+                child: ListView(
+                  children: <Widget>[
+                    Text('General info',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.6),
+                            fontSize: 18)),
+                    const SizedBox(height: 12),
+                    _projectInfo('Industry: ', state.project.industry),
+                    _projectInfo('Duration: ',
+                        '${converter.dateFromString((state.project.startDate).toString())} - ${state.project.endDate != null ? converter.dateFromString((state.project.endDate).toString()) : 'now'}'),
+                    _projectInfo('Customer: ', state.project.customer),
+                    const SizedBox(height: 12),
+                    Text('Stack',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.6),
+                            fontSize: 18)),
+                    const SizedBox(height: 12),
+                    _stack(state.project.stack),
+                    const SizedBox(height: 12),
+                    Text('Onboard',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.6),
+                            fontSize: 18)),
+                    const SizedBox(height: 12),
+                    _projectsList(state.project, state.project.onboard,
+                        state.user.position),
+                    const SizedBox(height: 12),
+                    Text('History',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.6),
+                            fontSize: 18)),
+                    const SizedBox(height: 12),
+                    _projectsList(state.project, state.project.history,
+                        state.user.position)
+                  ],
+                ),
               ),
             ),
           );
@@ -118,7 +135,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             .toList());
   }
 
-  Widget _projectsList(List<UserModel> users, Positions position) {
+  Widget _projectsList(
+      ProjectModel project, List<UserModel> users, Positions position) {
     return Column(
         children: users
             .map(
@@ -130,7 +148,22 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 actionExtentRatio: 0.1,
                 secondaryActions: <Widget>[
                   IconSlideAction(
-                      color: AppColors.bg, icon: Icons.history, onTap: () {})
+                      color: AppColors.bg,
+                      icon: Icons.history,
+                      onTap: () {
+                        final bool isUserOnboard = project.onboard.any(
+                            (UserModel userOnBoard) =>
+                                userOnBoard.id ==
+                                project.history
+                                    .firstWhere(
+                                        (UserModel userHis) =>
+                                            userHis.id == user.id,
+                                        orElse: () => null)
+                                    ?.id);
+
+                        // store.dispatch(AddUserToProjectPending(
+                        //     user, store.state.project.id));
+                      })
                 ],
                 child: AppListTile(
                   onTap: () => _pushToUser(user),

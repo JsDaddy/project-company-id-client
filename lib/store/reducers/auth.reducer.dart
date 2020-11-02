@@ -1,12 +1,14 @@
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:redux/redux.dart';
+import '../models/user.model.dart';
 
 final Reducer<UserModel> authReducers =
     combineReducers<UserModel>(<UserModel Function(UserModel, dynamic)>[
   TypedReducer<UserModel, SignInSuccess>(_signIn),
   TypedReducer<UserModel, CheckTokenSuccess>(_checkToken),
   TypedReducer<UserModel, Logout>(_logout),
+ 
 ]);
 UserModel _signIn(UserModel user, SignInSuccess action) {
   return action.user;

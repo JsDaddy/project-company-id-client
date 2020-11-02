@@ -1,5 +1,7 @@
 import 'package:company_id_new/store/models/project.model.dart';
 
+import '../models/user.model.dart';
+
 class GetProjectsPending {
   GetProjectsPending({this.isFilter = false});
   bool isFilter;
@@ -36,3 +38,16 @@ class SetProjectPrefSuccess {
   SetProjectPrefSuccess(this.lastProjectId);
   String lastProjectId;
 }
+
+class AddUserToProjectPending {
+  AddUserToProjectPending(this.user, this.projectId);
+  UserModel user;
+  String projectId;
+}
+
+class AddUserToProjectSuccess {
+  AddUserToProjectSuccess(this.user);
+  UserModel user;
+}
+
+class AddUserToProjectError {}

@@ -18,3 +18,7 @@ Future<UserModel> getUser(String id) async {
   final Map<String, dynamic> user = res.data as Map<String, dynamic>;
   return UserModel.fromJson(user);
 }
+
+Future<void> addUserToProject(UserModel user, String projectId) async {
+  await api.dio.post<dynamic>('/user/${user.id}/projects/$projectId');
+}
