@@ -36,18 +36,18 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
     // ignore: always_specify_types
     middleware: [
       LoggingMiddleware<dynamic>.printer(),
-      EpicMiddleware<dynamic>(checkTokenEpic),
-      EpicMiddleware<dynamic>(signInEpic),
+      EpicMiddleware<dynamic>(checkTokenEpic), // handled
+      EpicMiddleware<dynamic>(signInEpic), // handled
       EpicMiddleware<dynamic>(logoutEpic),
       EpicMiddleware<dynamic>(routeEpic),
       EpicMiddleware<dynamic>(routePopEpic),
       EpicMiddleware<dynamic>(routePushReplacmentEpic),
-      EpicMiddleware<dynamic>(getLogByDateEpic),
+      EpicMiddleware<dynamic>(getLogByDateEpic), // handled
       EpicMiddleware<dynamic>(setPasswordEpic),
-      EpicMiddleware<dynamic>(getLogsEpic),
-      EpicMiddleware<dynamic>(usersEpic),
-      EpicMiddleware<dynamic>(getProjectsEpic),
-      EpicMiddleware<dynamic>(getDetailProjectEpic),
+      EpicMiddleware<dynamic>(getLogsEpic), //handled
+      EpicMiddleware<dynamic>(usersEpic), // handled
+      EpicMiddleware<dynamic>(getProjectsEpic), // handled
+      EpicMiddleware<dynamic>(getDetailProjectEpic), // handled
       EpicMiddleware<AppState>(userEpic),
       EpicMiddleware<AppState>(getLastProjectEpic),
       EpicMiddleware<AppState>(setLastProjectEpic),
@@ -59,5 +59,5 @@ final Store<AppState> store = Store<AppState>(appStateReducer,
       EpicMiddleware<AppState>(changeStatusVacationEpic),
       EpicMiddleware<AppState>(filteredUsersEpic),
       EpicMiddleware<AppState>(filteredProjectsEpic),
-      EpicMiddleware<AppState>(getRulesEpic),
+      EpicMiddleware<AppState>(getRulesEpic), //handled
     ]);

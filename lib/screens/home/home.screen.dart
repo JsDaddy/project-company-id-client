@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
+import 'package:company_id_new/common/widgets/loader-test/loader-test.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/requests/requests.screen.dart';
@@ -37,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           StatisticsScreen(),
           UsersScreen(),
           ProjectsScreen(),
-          Container(),
           const RulesScreen(),
           RequestsScreen()
         ]
@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           StatisticsScreen(),
           UsersScreen(),
           ProjectsScreen(),
-          Container(),
           const RulesScreen()
         ];
 
@@ -58,14 +57,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
         builder: (BuildContext context, _ViewModel state) {
           return Notifier(
-            child: Scaffold(
-              appBar: AppBarWidget(avatar: state.user.avatar),
-              body: CustomNavigator(
-                navigatorKey: navigatorKey,
-                home: _children[_currentIndex],
-                pageRoute: PageRoutes.materialPageRoute,
+            child: LoaderWrapper(
+              child: Scaffold(
+                appBar: AppBarWidget(avatar: state.user.avatar),
+                body: CustomNavigator(
+                  navigatorKey: navigatorKey,
+                  home: _children[_currentIndex],
+                  pageRoute: PageRoutes.materialPageRoute,
+                ),
+                bottomNavigationBar: _bottomNavigation(state),
               ),
-              bottomNavigationBar: _bottomNavigation(state),
             ),
           );
         });
@@ -94,10 +95,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       const BottomNavigationBarItem(
         icon: Icon(Icons.desktop_mac),
         title: Text('Projects'),
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.access_alarms),
-        title: Text('Timelog'),
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.info_outline),
@@ -183,10 +180,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 2:
         return 'Projects';
       case 3:
-        return 'Timelog';
-      case 4:
         return 'Info';
-      case 5:
+      case 4:
         return 'Requests';
       default:
         return '';

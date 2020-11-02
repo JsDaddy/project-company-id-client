@@ -77,7 +77,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
               if (!isConfirm) {
                 return;
               }
-              store.dispatch(Logout());
+              store.dispatch(LogoutPending());
             }),
       ],
     );

@@ -34,9 +34,12 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
 
 Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
-      .where((dynamic action) => action is Logout)
+      .where((dynamic action) => action is LogoutPending)
       .switchMap((dynamic action) => Stream<void>.fromFuture(logout()).map((_) {
-            return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
+            return <dynamic>[
+              LogoutSuccess(),
+              PushReplacementAction(LoginScreen(), key: mainNavigatorKey)
+            ];
           }))
       .onErrorReturnWith((dynamic e) {
     print('logout error: $e');
