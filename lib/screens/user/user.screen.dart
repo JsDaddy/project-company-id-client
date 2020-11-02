@@ -5,16 +5,20 @@ import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row-icon/social-row-icon.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row.widget.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
+import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:redux/redux.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class _ViewModel {
   _ViewModel({this.user, this.authUser});
@@ -99,35 +103,58 @@ class _UserScreenState extends State<UserScreen> {
                   children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowWidget(
-                        iconName: AppImages.github,
-                        title: state.user.github,
-                      ),
+                      child: state.user.github != null
+                          ? GestureDetector(
+                              onTap: () => _openUrl(
+                                    'https://github.com/${state.user.github}',
+                                  ),
+                              child: SocialRowWidget(
+                                  iconName: AppImages.github,
+                                  title: state.user.github))
+                          : Container(),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowWidget(
-                        width: MediaQuery.of(context).size.width / 2 - 36,
-                        iconName: AppImages.skype,
-                        title: state.user.skype,
-                      ),
+                      child: state.user.skype != null
+                          ? GestureDetector(
+                              onTap: () => _openUrl(
+                                    'skype:${state.user.skype}',
+                                  ),
+                              child: SocialRowWidget(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      36,
+                                  iconName: AppImages.skype,
+                                  title: state.user.skype))
+                          : Container(),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowIconWidget(
-                        width: MediaQuery.of(context).size.width / 2 - 36,
-                        icon: Icons.email,
-                        title: state.user.email,
-                      ),
+                      child: state.user.email != null
+                          ? GestureDetector(
+                              onTap: () => _openUrl(
+                                    'mailto:${state.user.email}',
+                                  ),
+                              child: SocialRowIconWidget(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      36,
+                                  icon: Icons.email,
+                                  title: state.user.email))
+                          : Container(),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowIconWidget(
-                        width: MediaQuery.of(context).size.width / 2 - 36,
-                        icon: Icons.phone,
-                        title: state.user.phone,
-                      ),
-                    )
+                      child: state.user.phone != null
+                          ? GestureDetector(
+                              onTap: () => _openUrl(
+                                    'tel://:${state.user.phone}',
+                                  ),
+                              child: SocialRowIconWidget(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      36,
+                                  icon: Icons.phone,
+                                  title: state.user.phone))
+                          : Container(),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -205,5 +232,14 @@ class _UserScreenState extends State<UserScreen> {
             ),
           );
         });
+  }
+
+  Future<dynamic> _openUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      store.dispatch(
+          Notify(NotifyModel(NotificationType.error, 'Could not launch $url')));
+    }
   }
 }

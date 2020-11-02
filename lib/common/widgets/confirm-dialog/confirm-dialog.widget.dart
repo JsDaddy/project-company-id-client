@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
+import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
@@ -24,17 +25,14 @@ class ConfirmDialogWidget extends StatelessWidget {
       actions: <Widget>[
         AppButtonWidget(
           color: AppColors.green,
-          onClick: () {
-            // store.dispatch(PopAction());
-            Navigator.pop(context, true);
-          },
+          onClick: () =>
+              store.dispatch(PopAction(params: true, key: mainNavigatorKey)),
           title: 'Confirm',
         ),
         AppButtonWidget(
-          title: 'Cancel',
-          // onClick: () => store.dispatch(PopAction(params: false)),
-          onClick: () => Navigator.pop(context, false),
-        )
+            title: 'Cancel',
+            onClick: () =>
+                store.dispatch(PopAction(params: false, key: mainNavigatorKey)))
       ],
     );
   }

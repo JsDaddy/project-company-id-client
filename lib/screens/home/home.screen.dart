@@ -2,6 +2,7 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
+import 'package:company_id_new/screens/rules/rules.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
@@ -36,14 +37,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           UsersScreen(),
           ProjectsScreen(),
           Container(),
-          Container(),
+          RulesScreen(),
           Container()
         ]
       : <Widget>[
           StatisticsScreen(),
           UsersScreen(),
           ProjectsScreen(),
-          Container()
+          Container(),
+          RulesScreen()
         ];
 
   @override

@@ -210,11 +210,9 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                 value: selectedUser,
                                 onChanged: (UserModel value) => setState(() {
                                       print(value.lastName);
-                                      // if (selectedProject == null) {
                                       store.dispatch(
                                           GetLogsFilterProjectsPending(
                                               value.id));
-                                      // }
                                       selectedUser = value;
                                       print(selectedUser.lastName);
                                     }),
@@ -242,11 +240,9 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                         value: selectedProject,
                                         onChanged: (ProjectModel value) =>
                                             setState(() {
-                                              // if (selectedUser == null) {
                                               store.dispatch(
                                                   GetLogsFilterUsersPending(
                                                       value.id));
-                                              // }
                                               selectedProject = value;
                                             }),
                                         items: state

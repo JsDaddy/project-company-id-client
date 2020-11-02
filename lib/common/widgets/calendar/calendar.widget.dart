@@ -43,9 +43,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         TableCalendar(
             holidays: widget.holidays,
             daysOfWeekStyle: const DaysOfWeekStyle(
-              // dowTextBuilder: (DateTime date) {
-              //   return date.weekday.toString();
-              // },
               weekendStyle: TextStyle(color: AppColors.red),
             ),
             calendarStyle: const CalendarStyle(

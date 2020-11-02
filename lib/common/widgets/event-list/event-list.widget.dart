@@ -150,7 +150,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                           child: Text(
                             'Birthday: ' + log.fullName,
                             style: const TextStyle(
-                                fontSize: 24, color: AppColors.yellow),
+                                fontSize: 18, color: AppColors.orange),
                           ),
                         ),
                       )),
@@ -204,20 +204,6 @@ class _EventListWidgetState extends State<EventListWidget> {
                                             choosedDate:
                                                 state.currentDate.currentDay));
                                 const Icon(Icons.alarm_add);
-                                // showModalBottomSheet(
-                                //     context: context,
-                                //     isScrollControlled: true,
-                                //     useRootNavigator: true,
-                                //     builder: (BuildContext context) =>
-                                //         AddEditTimelogDialogWidget(
-                                //             timelogId: event.id,
-                                //             project: ProjectModel(
-                                //               projectId: event.projectId,
-                                //               name: event.projectName,
-                                //             ),
-                                //             hhMm: event.time,
-                                //             desc: event.desc,
-                                //             choosedDate: event.date));
                                 _slidableController.activeState?.close();
                               },
                             ),
