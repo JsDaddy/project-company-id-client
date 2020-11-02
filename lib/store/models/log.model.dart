@@ -13,6 +13,7 @@ class LogModel {
       this.type,
       this.name,
       this.user,
+      this.fullName,
       this.vacationType});
   String id;
   String desc;
@@ -24,22 +25,27 @@ class LogModel {
   LogType type;
   ProjectModel project;
   UserModel user;
+  String fullName;
   static LogModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;
     }
+
     return LogModel(
         id: json['_id'] as String,
         desc: json['desc'] as String,
         time: json['time'] as String,
         name: json['name'] as String,
+        fullName: json['fullName'] as String,
         status: json['status'] as String,
         vacationType: json['type'] != null
             ? AppConverting.getVacationType(json['type'] as int)
             : null,
         type: json['type'] != null
             ? LogType.vacation
-            : json['name'] != null ? LogType.holiday : LogType.timelog,
+            : json['name'] != null
+                ? LogType.holiday
+                : json['fullName'] != null ? LogType.birthday : LogType.timelog,
         user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
         project: json['project'] != null
             ? ProjectModel.fromJson(json['project'] as Map<String, dynamic>)
@@ -50,7 +56,15 @@ class LogModel {
     return <String, dynamic>{
       'time': time,
       'desc': desc,
-      'date': date.toIso8601String()
+      'date': date.toIso8601String(),
+    };
+  }
+
+  Map<String, dynamic> toVacJson() {
+    return <String, dynamic>{
+      'desc': desc,
+      'date': date.toIso8601String(),
+      'type': AppConverting.getVacationTypeQuery(vacationType)
     };
   }
 
@@ -78,8 +92,33 @@ class LogModel {
   }
 }
 
-enum LogType { vacation, timelog, holiday, all }
+enum LogType { vacation, timelog, holiday, birthday, all }
 
 enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 
 // enum VacationStatus { pending, approved, rejected }
+
+class LogResponse {
+  LogResponse({this.logs, this.vacationAvailable, this.sickAvailable});
+  int vacationAvailable;
+  int sickAvailable;
+  List<LogModel> logs;
+  static LogResponse fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return LogResponse(
+        vacationAvailable: json['vacationAvailable'] as int,
+        sickAvailable: json['sickAvailable'] as int,
+        logs: json['logs']
+            .map<LogModel>(
+                (dynamic log) => LogModel.fromJson(log as Map<String, dynamic>))
+            .toList() as List<LogModel>);
+  }
+}
+
+class VacationSickAvailable {
+  VacationSickAvailable({this.vacationAvailable, this.sickAvailable});
+  int vacationAvailable;
+  int sickAvailable;
+}

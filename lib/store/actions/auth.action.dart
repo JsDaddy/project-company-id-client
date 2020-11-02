@@ -24,3 +24,5 @@ class SetPasswordPending {
 }
 
 class SetPasswordSuccess {}
+
+class Logout {}

@@ -11,7 +11,7 @@ class AppQuery {
   }
 
   static String userQuery(String uid) {
-    return 'user=$uid';
+    return 'uid=$uid';
   }
 
   static String projectQuery(String projectId) {

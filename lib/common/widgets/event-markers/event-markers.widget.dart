@@ -10,7 +10,8 @@ class EventMarkersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return events[0].timelogs != null
         ? EventMarkerWidget(
-            color: AppColors.red,
+            color:
+                events[0].birthdays != null ? AppColors.orange : AppColors.red,
             size: 24,
             child: Center(
               child: Text(
@@ -22,14 +23,19 @@ class EventMarkersWidget extends StatelessWidget {
                 ),
               ),
             ))
-        : events[0].vacations != null
-            ? Container(
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: AppColors.green),
-                child: Center(child: Text(events.length.toString())),
-                width: 16.0,
-                height: 16.0,
+        : events[0].birthdays != null
+            ? const EventMarkerWidget(
+                color: AppColors.orange,
+                size: 18,
               )
-            : Container();
+            : events[0].vacations != null
+                ? Container(
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: AppColors.green),
+                    child: Center(child: Text(events.length.toString())),
+                    width: 16.0,
+                    height: 16.0,
+                  )
+                : Container();
   }
 }

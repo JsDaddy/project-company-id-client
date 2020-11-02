@@ -34,6 +34,7 @@ class AppState {
       this.currentUser,
       this.lastProject,
       this.currentDate,
+      this.vacationSickAvailable,
       this.filterLogsUsersProjects,
       this.statistic});
   bool isLoading;
@@ -53,11 +54,14 @@ class AppState {
   CurrentDateModel currentDate;
   List<UserModel> filterUsers;
   Map<DateTime, List<CalendarModel>> holidays;
+  VacationSickAvailable vacationSickAvailable;
   Map<DateTime, List<CalendarModel>> logs;
 }
 
 AppState appStateReducer(AppState state, dynamic action) => AppState(
     isLoading: loadingReducers(state.isLoading, action),
+    vacationSickAvailable:
+        vacacationSickReducers(state.vacationSickAvailable, action),
     filter: filterReducers(state.filter, action),
     title: titleReducer(state.title, action),
     filterLogsUsersProjects: filterLogsUserProjectsFilterReducers(

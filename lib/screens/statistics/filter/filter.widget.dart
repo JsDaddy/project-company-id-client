@@ -2,6 +2,8 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-dropdowns.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-wrapper.widget.dart';
+import 'package:company_id_new/main.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -79,9 +81,25 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
             filterLogsUsersProjects: store.state.filterLogsUsersProjects,
             isLoading: store.state.isLoading,
             filter: store.state.filter),
-        onDidChange: (_ViewModel state) {
+        onWillChange: (_, _ViewModel state) {
+          if (selectedProject != null) {
+            setState(() {
+              selectedProject = state.filterLogsUsersProjects.projects
+                  .firstWhere(
+                      (ProjectModel project) =>
+                          project.id == selectedProject.id,
+                      orElse: () => null);
+            });
+          }
+          if (selectedUser != null) {
+            setState(() {
+              selectedUser = state.filterLogsUsersProjects.users.firstWhere(
+                  (UserModel user) => user.id == selectedUser.id,
+                  orElse: () => null);
+            });
+          }
+
           if (state.filterLogsUsersProjects.projects.isNotEmpty &&
-              selectedProject == null &&
               state.filter?.project?.id != null) {
             setState(() {
               selectedProject = state.filterLogsUsersProjects.projects
@@ -92,7 +110,6 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
             });
           }
           if (state.filterLogsUsersProjects.users.isNotEmpty &&
-              selectedUser == null &&
               state.filter?.user?.id != null) {
             setState(() {
               selectedUser = state.filterLogsUsersProjects.users.firstWhere(
@@ -192,7 +209,14 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                     style: AppDropDownStyles.hintStyle),
                                 value: selectedUser,
                                 onChanged: (UserModel value) => setState(() {
+                                      print(value.lastName);
+                                      // if (selectedProject == null) {
+                                      store.dispatch(
+                                          GetLogsFilterProjectsPending(
+                                              value.id));
+                                      // }
                                       selectedUser = value;
+                                      print(selectedUser.lastName);
                                     }),
                                 items: state.filterLogsUsersProjects.users
                                     .map((UserModel user) {
@@ -218,6 +242,11 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                         value: selectedProject,
                                         onChanged: (ProjectModel value) =>
                                             setState(() {
+                                              // if (selectedUser == null) {
+                                              store.dispatch(
+                                                  GetLogsFilterUsersPending(
+                                                      value.id));
+                                              // }
                                               selectedProject = value;
                                             }),
                                         items: state
@@ -238,23 +267,17 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                               if (selectedType.logType == LogType.all &&
                                   selectedUser == null &&
                                   selectedProject == null) {
-                                Navigator.pop(context);
+                                store
+                                    .dispatch(PopAction(key: mainNavigatorKey));
                                 return;
                               }
-                              if (selectedType.logType == LogType.vacation) {
-                                Navigator.pop(
-                                    context,
-                                    FilterModel(
-                                        logType: selectedType,
-                                        user: selectedUser));
-                              } else {
-                                Navigator.pop(
-                                    context,
-                                    FilterModel(
-                                        logType: selectedType,
-                                        user: selectedUser,
-                                        project: selectedProject));
+                              final FilterModel filter = FilterModel(
+                                  logType: selectedType, user: selectedUser);
+                              if (selectedType.logType != LogType.vacation) {
+                                filter.project = selectedProject;
                               }
+                              store.dispatch(PopAction(
+                                  key: mainNavigatorKey, params: filter));
                             })
                       ],
                     ),

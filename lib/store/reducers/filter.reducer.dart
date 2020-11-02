@@ -15,7 +15,7 @@ FilterModel _saveFilter(FilterModel title, SaveFilter action) {
   return action.adminFilter;
 }
 
-FilterModel _clearFilter(FilterModel title, ClearFilter action) {
+FilterModel _clearFilter(FilterModel state, ClearFilter action) {
   return null;
 }
 

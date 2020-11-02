@@ -2,6 +2,7 @@ import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
+import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -78,7 +79,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
               if (!isConfirm) {
                 return;
               }
-              // store.dispatch(Logout());
+              store.dispatch(Logout());
             }),
       ],
     );

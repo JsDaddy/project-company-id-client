@@ -3,26 +3,28 @@ import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 
-Future<List<FilteredUserModel>> getFilteredUsers(String projectId) async {
+Future<List<UserModel>> getFilteredUsers(String projectId) async {
   final Response<dynamic> res =
-      await api.dio.get<dynamic>('/filter/logs/users/$projectId');
+      await api.dio.get<dynamic>('/user/projects/$projectId');
+
   final List<dynamic> users = res.data as List<dynamic>;
   return users.isEmpty
-      ? <FilteredUserModel>[]
+      ? <UserModel>[]
       : users
-          .map<FilteredUserModel>((dynamic log) =>
-              FilteredUserModel.fromJson(log as Map<String, dynamic>))
+          .map<UserModel>((dynamic user) =>
+              UserModel.fromJson(user as Map<String, dynamic>))
           .toList();
 }
 
-Future<List<FilteredProjectModel>> getFilteredProjects(String userId) async {
+Future<List<ProjectModel>> getFilteredProjects(String userId) async {
   final Response<dynamic> res =
-      await api.dio.get<dynamic>('/filter/logs/projects/$userId');
+      await api.dio.get<dynamic>('/projects/users/$userId');
+
   final List<dynamic> projects = res.data as List<dynamic>;
   return projects.isEmpty
-      ? <FilteredProjectModel>[]
+      ? <ProjectModel>[]
       : projects
-          .map<FilteredProjectModel>((dynamic log) =>
-              FilteredProjectModel.fromJson(log as Map<String, dynamic>))
+          .map<ProjectModel>((dynamic project) =>
+              ProjectModel.fromJson(project as Map<String, dynamic>))
           .toList();
 }

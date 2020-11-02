@@ -54,11 +54,6 @@ class _AddEditTimelogDialogWidgetState
   void initState() {
     _descController.text = widget.desc;
     _hhController.text = widget.hhMm;
-    // if (widget.timelogId != null) {
-    //   selectedProject = store.state.projects.firstWhere(
-    //       (ProjectModel project) =>
-    //           project.projectId == widget.project.projectId);
-    // }
     store.dispatch(GetProjectsPending());
     super.initState();
   }
@@ -79,13 +74,6 @@ class _AddEditTimelogDialogWidgetState
             });
           }
         },
-        // onInit: (Store<AppState> store) {
-        //   if (store.state.lastProject != null ?? selectedProject == null) {
-        //     selectedProject = store.state.projects.firstWhere(
-        //         (ProjectModel project) =>
-        //             project.name == store.state.lastProject);
-        //   }
-        // },
         builder: (BuildContext context, _ViewModel state) {
           return Padding(
             padding: EdgeInsets.only(
@@ -158,7 +146,7 @@ class _AddEditTimelogDialogWidgetState
                     children: <Widget>[
                       AppButtonWidget(
                           color: AppColors.green,
-                          onClick: () => _addUpdateTimeLog(),
+                          onClick: () => _addUpdateTimeLog(state.user),
                           title: 'Add'),
                       const SizedBox(width: 10),
                       AppButtonWidget(
@@ -172,15 +160,27 @@ class _AddEditTimelogDialogWidgetState
         });
   }
 
-  void _addUpdateTimeLog() {
+  void _addUpdateTimeLog(UserModel user) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     store.dispatch(SetProjectPrefPending(selectedProject.name));
-    store.dispatch(AddLogPending(LogModel(
-        project: selectedProject,
-        date: widget.choosedDate,
-        time: _hhController.text,
-        desc: _descController.text)));
+
+    widget.timelogId == null
+        ? store.dispatch(AddLogPending(LogModel(
+            project: selectedProject,
+            date: widget.choosedDate,
+            time: _hhController.text,
+            type: LogType.timelog,
+            user: user,
+            desc: _descController.text)))
+        : store.dispatch(EditLogPending(LogModel(
+            id: widget.timelogId,
+            project: selectedProject,
+            date: widget.choosedDate,
+            time: _hhController.text,
+            type: LogType.timelog,
+            user: user,
+            desc: _descController.text)));
   }
 }

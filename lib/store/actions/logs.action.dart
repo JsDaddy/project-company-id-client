@@ -5,8 +5,8 @@ import 'package:company_id_new/store/models/statistic.model.dart';
 import '../models/log.model.dart';
 
 class GetLogsPending {
-  GetLogsPending(this.query);
-  String query;
+  GetLogsPending(this.date);
+  String date;
 }
 
 class GetLogsSuccess {
@@ -35,8 +35,8 @@ class SetCurrentMonth {
 }
 
 class GetLogByDatePending {
-  GetLogByDatePending(this.query);
-  String query;
+  GetLogByDatePending(this.date);
+  String date;
 }
 
 class GetLogByDateSuccess {
@@ -52,4 +52,39 @@ class AddLogPending {
 class AddLogSuccess {
   AddLogSuccess(this.log);
   LogModel log;
+}
+
+class EditLogPending {
+  EditLogPending(this.log);
+  LogModel log;
+}
+
+class EditLogSuccess {
+  EditLogSuccess(this.log);
+  LogModel log;
+}
+
+class DeleteLogPending {
+  DeleteLogPending(this.id);
+  String id;
+}
+
+class DeleteLogSuccess {
+  DeleteLogSuccess(this.id);
+  String id;
+}
+
+class RequestVacationPending {
+  RequestVacationPending(this.vacation);
+  LogModel vacation;
+}
+
+class RequestVacationSuccess {
+  RequestVacationSuccess(this.vacation);
+  LogModel vacation;
+}
+
+class SetVacationSickAvail {
+  SetVacationSickAvail(this.vacationSickAvailable);
+  VacationSickAvailable vacationSickAvailable;
 }
