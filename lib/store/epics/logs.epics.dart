@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:company_id_new/common/services/logs.service.dart';
+import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
@@ -122,4 +123,17 @@ Stream<void> requestVacationEpic(
             print(e);
             print(e.message);
           }));
+}
+
+Stream<void> getRequestsEpic(
+    Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions
+      .where((dynamic action) => action is GetRequestsPending)
+      .switchMap((dynamic action) =>
+          Stream<List<LogModel>>.fromFuture(getRequests())
+              .map((List<LogModel> requests) {
+            refresh.refreshController.refreshCompleted();
+            return GetRequestsSuccess(requests);
+          }))
+      .handleError((dynamic e) => print(e));
 }
