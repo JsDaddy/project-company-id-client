@@ -25,4 +25,6 @@ class SetPasswordPending {
 
 class SetPasswordSuccess {}
 
-class Logout {}
+class LogoutPending {}
+
+class LogoutSuccess {}

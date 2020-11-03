@@ -30,9 +30,13 @@ class _RulesScreenState extends State<RulesScreen>
       Tween<double>(begin: 0.0, end: 0.5);
   @override
   void initState() {
-    store.dispatch(GetRulesPending());
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
+    if (store.state.rules != null && store.state.rules.isNotEmpty) {
+      return;
+    }
+    store.dispatch(GetRulesPending());
+
     super.initState();
   }
 
@@ -51,46 +55,49 @@ class _RulesScreenState extends State<RulesScreen>
                   style: TextStyle(fontSize: 24),
                 ),
               ),
-              ...state.rules.map(
-                (RulesModel rule) => ExpansionTile(
-                  onExpansionChanged: (bool exp) => setState(() {
-                    _isExpanded[state.rules.indexWhere((RulesModel stateRule) =>
-                        stateRule.title == rule.title)] = exp;
-                  }),
-                  trailing: RotationTransition(
-                      turns: _iconTurns,
-                      child: !_isExpanded[state.rules.indexWhere(
-                              (RulesModel stateRule) =>
-                                  stateRule.title == rule.title)]
-                          ? const Icon(
-                              Icons.expand_more,
-                              color: AppColors.red,
-                            )
-                          : const Icon(
-                              Icons.expand_less,
-                              color: AppColors.red,
-                            )),
-                  key: PageStorageKey<int>(state.rules.indexWhere(
-                      (RulesModel stateRule) => stateRule.title == rule.title)),
-                  title: Text(
-                    rule.title,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            rule.desc,
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
+              if (state.rules != null && state.rules.isNotEmpty)
+                ...state.rules.map(
+                  (RulesModel rule) => ExpansionTile(
+                    onExpansionChanged: (bool exp) => setState(() {
+                      _isExpanded[state.rules.indexWhere(
+                          (RulesModel stateRule) =>
+                              stateRule.title == rule.title)] = exp;
+                    }),
+                    trailing: RotationTransition(
+                        turns: _iconTurns,
+                        child: !_isExpanded[state.rules.indexWhere(
+                                (RulesModel stateRule) =>
+                                    stateRule.title == rule.title)]
+                            ? const Icon(
+                                Icons.expand_more,
+                                color: AppColors.red,
+                              )
+                            : const Icon(
+                                Icons.expand_less,
+                                color: AppColors.red,
+                              )),
+                    key: PageStorageKey<int>(state.rules.indexWhere(
+                        (RulesModel stateRule) =>
+                            stateRule.title == rule.title)),
+                    title: Text(
+                      rule.title,
+                      style: const TextStyle(color: Colors.white),
                     ),
-                  ],
-                ),
-              )
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              rule.desc,
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
             ],
           );
         });

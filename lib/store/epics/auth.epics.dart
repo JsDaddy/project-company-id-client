@@ -34,13 +34,14 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
 
 Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
-      .where((dynamic action) => action is Logout)
-      .switchMap((dynamic action) => Stream<void>.fromFuture(logout()).map((_) {
-            return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
-          }))
-      .onErrorReturnWith((dynamic e) {
-    print('logout error: $e');
-  });
+      .where((dynamic action) => action is LogoutPending)
+      .switchMap<dynamic>((dynamic action) =>
+          Stream<void>.fromFuture(logout()).map<dynamic>((_) {
+            return <dynamic>[
+              LogoutSuccess(),
+              PushReplacementAction(LoginScreen(), key: mainNavigatorKey)
+            ];
+          }));
 }
 
 Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
@@ -69,6 +70,7 @@ Stream<void> setPasswordEpic(
           Stream<void>.fromFuture(setPassword(action.password as String))
               .expand<dynamic>((_) {
             return <dynamic>[
+              SetPasswordSuccess,
               Notify(NotifyModel(
                   NotificationType.success, 'Your password has been changed')),
               SetTitle('Statistics'),

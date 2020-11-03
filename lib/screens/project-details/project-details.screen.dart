@@ -3,6 +3,7 @@ import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
+import 'package:company_id_new/screens/project-details/add-user/add-user.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
@@ -15,14 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:redux/redux.dart';
-
-import '../../common/widgets/notifier/notifier.widget.dart';
-import '../../store/actions/users.action.dart';
-import '../../store/models/project.model.dart';
-import '../../store/models/project.model.dart';
-import '../../store/models/project.model.dart';
-import '../../store/models/project.model.dart';
-import '../../store/models/user.model.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
 
 class _ViewModel {
   _ViewModel({this.project, this.user});
@@ -52,64 +47,68 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         converter: (Store<AppState> store) =>
             _ViewModel(project: store.state.project, user: store.state.user),
         onInit: (Store<AppState> store) {
+          store.dispatch(ClearDetailProject());
           store.dispatch(GetDetailProjectPending(widget.projectId));
         },
         builder: (BuildContext context, _ViewModel state) {
-          return Notifier(
-            child: Scaffold(
-              floatingActionButton: state.user.position == Positions.OWNER &&
-                      state.project.endDate == null
-                  ? FloatingActionButton(
-                      child: const Icon(Icons.add),
-                      onPressed: () {
-                        // showModalBottomSheet(
-                        //     context: context,
-                        //     useRootNavigator: true,
-                        //     builder: (BuildContext context) {
-                        //       return BottomAddUserWidget(project: project);
-                        //     });
-                      },
-                    )
-                  : Container(),
-              body: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-                child: ListView(
-                  children: <Widget>[
-                    Text('General info',
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 18)),
-                    const SizedBox(height: 12),
-                    _projectInfo('Industry: ', state.project.industry),
-                    _projectInfo('Duration: ',
-                        '${converter.dateFromString((state.project.startDate).toString())} - ${state.project.endDate != null ? converter.dateFromString((state.project.endDate).toString()) : 'now'}'),
-                    _projectInfo('Customer: ', state.project.customer),
-                    const SizedBox(height: 12),
-                    Text('Stack',
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 18)),
-                    const SizedBox(height: 12),
-                    _stack(state.project.stack),
-                    const SizedBox(height: 12),
-                    Text('Onboard',
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 18)),
-                    const SizedBox(height: 12),
-                    _projectsList(state.project, state.project.onboard,
-                        state.user.position),
-                    const SizedBox(height: 12),
-                    Text('History',
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 18)),
-                    const SizedBox(height: 12),
-                    _projectsList(state.project, state.project.history,
-                        state.user.position)
-                  ],
-                ),
+          return Scaffold(
+            floatingActionButton: state.user.position == Positions.OWNER &&
+                    state.project?.endDate == null
+                ? FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      showModalBottomSheet<dynamic>(
+                          context: context,
+                          useRootNavigator: true,
+                          builder: (BuildContext context) {
+                            return AddUserWidget();
+                          });
+                    },
+                  )
+                : Container(),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              child: ListView(
+                children: <Widget>[
+                  Text('General info',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
+                  const SizedBox(height: 12),
+                  _projectInfo('Industry: ', state.project?.industry),
+                  state.project?.startDate != null
+                      ? _projectInfo('Duration: ',
+                          '${converter.dateFromString((state.project.startDate).toString())} - ${state.project?.endDate != null ? converter.dateFromString((state.project?.endDate).toString()) : 'now'}')
+                      : Container(),
+                  _projectInfo('Customer: ', state.project?.customer),
+                  const SizedBox(height: 12),
+                  Text('Stack',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
+                  const SizedBox(height: 12),
+                  state.project?.stack != null && state.project.stack.isNotEmpty
+                      ? _stack(state.project?.stack)
+                      : Container(),
+                  const SizedBox(height: 12),
+                  Text('Onboard',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
+                  const SizedBox(height: 12),
+                  state.project?.onboard != null &&
+                          state.project.onboard.isNotEmpty
+                      ? _projectsList(state.project, state.project.onboard,
+                          state.user.position, true)
+                      : Container(),
+                  const SizedBox(height: 12),
+                  Text('History',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
+                  const SizedBox(height: 12),
+                  state.project?.history != null &&
+                          state.project.history.isNotEmpty
+                      ? _projectsList(state.project, state.project.history,
+                          state.user.position, false)
+                      : Container()
+                ],
               ),
             ),
           );
@@ -135,8 +134,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             .toList());
   }
 
-  Widget _projectsList(
-      ProjectModel project, List<UserModel> users, Positions position) {
+  Widget _projectsList(ProjectModel project, List<UserModel> users,
+      Positions position, bool isOnboard) {
     return Column(
         children: users
             .map(
@@ -149,20 +148,30 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 secondaryActions: <Widget>[
                   IconSlideAction(
                       color: AppColors.bg,
-                      icon: Icons.history,
+                      icon: isOnboard ? Icons.history : Icons.person_add,
                       onTap: () {
-                        final bool isUserOnboard = project.onboard.any(
-                            (UserModel userOnBoard) =>
-                                userOnBoard.id ==
-                                project.history
-                                    .firstWhere(
-                                        (UserModel userHis) =>
-                                            userHis.id == user.id,
-                                        orElse: () => null)
-                                    ?.id);
-
-                        // store.dispatch(AddUserToProjectPending(
-                        //     user, store.state.project.id));
+                        if (!isOnboard) {
+                          final bool isUserOnboard = project.onboard.any(
+                              (UserModel userOnBoard) =>
+                                  userOnBoard.id ==
+                                  project.history
+                                      .firstWhere(
+                                          (UserModel userHis) =>
+                                              userHis.id == user.id,
+                                          orElse: () => null)
+                                      ?.id);
+                          if (!isUserOnboard) {
+                            store.dispatch(AddUserToProjectPending(
+                                user, store.state.project, true));
+                          } else {
+                            store.dispatch(Notify(NotifyModel(
+                                NotificationType.error,
+                                'This user is already on the project')));
+                          }
+                        } else {
+                          store.dispatch(RemoveUserFromProjectPending(
+                              user, store.state.project.id));
+                        }
                       })
                 ],
                 child: AppListTile(

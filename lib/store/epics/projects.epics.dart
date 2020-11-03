@@ -1,29 +1,35 @@
 import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/services/projects.service.dart';
+import 'package:company_id_new/store/actions/filter.action.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
+import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../common/services/local-storage.service.dart';
-import '../../common/services/users.service.dart';
-import '../actions/filter.action.dart';
-import '../actions/notifier.action.dart';
-import '../actions/users.action.dart';
-import '../models/notify.model.dart';
-import '../models/user.model.dart';
-import '../reducers/reducer.dart';
+import 'package:company_id_new/common/services/local-storage.service.dart';
 
 Stream<void> getProjectsEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is GetProjectsPending)
-      .switchMap((dynamic action) =>
-          Stream<List<ProjectModel>>.fromFuture(getProjects())
-              .map((List<ProjectModel> projects) {
-            return action.isFilter as bool
-                ? GetLogsFilterProjectsSucess(projects)
-                : GetProjectsSuccess(projects);
+      .switchMap<dynamic>((dynamic action) =>
+          Stream<List<ProjectModel>>.fromFuture(getProjects(
+                  action.projectTypes as ProjectsType, action.userId as String))
+              .map<dynamic>((List<ProjectModel> projects) {
+            switch (action.projectTypes as ProjectsType) {
+              case ProjectsType.Default:
+                return GetProjectsSuccess(projects);
+              case ProjectsType.Filter:
+                return GetLogsFilterProjectsSucess(projects);
+              case ProjectsType.Absent:
+                return GetAbsentProjectsSuccess(
+                    projects, action.projectTypes as ProjectsType);
+              default:
+                return null;
+            }
           }))
       .handleError((dynamic e) => print(e));
 }
@@ -67,13 +73,36 @@ Stream<void> addUserToProjectEpic(
     Stream<dynamic> actions, EpicStore<AppState> store) {
   return actions
       .where((dynamic action) => action is AddUserToProjectPending)
+      .switchMap<dynamic>((dynamic action) => Stream<UserModel>.fromFuture(
+              addUserToProject(action.user as UserModel,
+                  action.project as ProjectModel, action.isActive as bool))
+          .expand<dynamic>((UserModel user) => <dynamic>[
+                action.isAddedUserToProject as bool
+                    ? AddUserToProjectSuccess(
+                        action.isActive as bool
+                            ? action.user as UserModel
+                            : user,
+                        action.isActive as bool)
+                    : AddProjectToUserSuccess(
+                        action.project as ProjectModel,
+                      ),
+                Notify(NotifyModel(NotificationType.success,
+                    'User has been added to the project')),
+              ]))
+      .handleError((dynamic e) => print(e));
+}
+
+Stream<void> removeUserFromProjectEpic(
+    Stream<dynamic> actions, EpicStore<AppState> store) {
+  return actions
+      .where((dynamic action) => action is RemoveUserFromProjectPending)
       .switchMap<dynamic>((dynamic action) => Stream<void>.fromFuture(
-              addUserToProject(
+              removeUserFromActiveProject(
                   action.user as UserModel, action.projectId as String))
           .expand<dynamic>((_) => <dynamic>[
-                AddUserToProjectSuccess(action.user as UserModel),
+                RemoveUserFromProjectSuccess(action.user as UserModel),
                 Notify(NotifyModel(NotificationType.success,
-                    'User has been added to the project'))
+                    'User has been removed from the project')),
               ]))
       .handleError((dynamic e) => print(e));
 }
