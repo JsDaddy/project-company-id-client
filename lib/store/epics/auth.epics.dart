@@ -4,6 +4,7 @@ import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/login/login.screen.dart';
 import 'package:company_id_new/screens/set-password/set-password.screen.dart';
 import 'package:company_id_new/store/actions/auth.action.dart';
+import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
@@ -20,6 +21,7 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
             return <dynamic>[
               SetTitle('Statistics'),
               SignInSuccess(user),
+              user.position == Positions.OWNER ? GetRequestsPending() : null,
               PushReplacementAction(
                   user.initialLogin ? SetPasswordScreen() : HomeScreen(),
                   key: mainNavigatorKey)
@@ -34,7 +36,6 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is Logout)
       .switchMap((dynamic action) => Stream<void>.fromFuture(logout()).map((_) {
-            print('lOutEp');
             return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
           }))
       .onErrorReturnWith((dynamic e) {

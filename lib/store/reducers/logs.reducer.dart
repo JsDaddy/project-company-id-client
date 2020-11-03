@@ -1,13 +1,10 @@
 import 'package:company_id_new/store/actions/logs.action.dart';
-import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:redux/redux.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
-
-import '../actions/logs.action.dart';
 
 final Reducer<Map<DateTime, List<CalendarModel>>> logsReducer =
     combineReducers<Map<DateTime, List<CalendarModel>>>(<

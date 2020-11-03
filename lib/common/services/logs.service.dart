@@ -102,3 +102,16 @@ Future<String> deleteLog(String id) async {
 Future<void> requestVacation(LogModel vacation) async {
   await api.dio.post<dynamic>('/vacations', data: vacation.toVacJson());
 }
+
+Future<List<LogModel>> getRequests() async {
+  final Response<dynamic> res =
+      await api.dio.get<dynamic>('/vacations/requests');
+
+  final List<dynamic> requests = res.data as List<dynamic>;
+  return requests.isEmpty
+      ? <LogModel>[]
+      : requests
+          .map<LogModel>((dynamic request) =>
+              LogModel.fromJson(request as Map<String, dynamic>))
+          .toList();
+}

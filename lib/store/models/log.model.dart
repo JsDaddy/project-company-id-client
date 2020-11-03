@@ -35,6 +35,9 @@ class LogModel {
         id: json['_id'] as String,
         desc: json['desc'] as String,
         time: json['time'] as String,
+        date: json['date'] != null
+            ? DateTime.parse(json['date'] as String)
+            : null,
         name: json['name'] as String,
         fullName: json['fullName'] as String,
         status: json['status'] as String,
