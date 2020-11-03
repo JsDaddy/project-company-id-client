@@ -18,7 +18,7 @@ import 'package:redux_logging/redux_logging.dart';
 
 final AppState initalState = AppState(
     isLoading: false,
-    title: '',
+    titles: <String>[],
     projects: <ProjectModel>[],
     logsByDate: <LogModel>[],
     requests: <LogModel>[],

@@ -2,11 +2,13 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
+import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/requests/requests.screen.dart';
 import 'package:company_id_new/screens/rules/rules.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -56,16 +58,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               requests: store.state.requests,
             ),
         builder: (BuildContext context, _ViewModel state) {
-          return Notifier(
-            child: LoaderWrapper(
-              child: Scaffold(
-                appBar: AppBarWidget(avatar: state.user.avatar),
-                body: CustomNavigator(
-                  navigatorKey: navigatorKey,
-                  home: _children[_currentIndex],
-                  pageRoute: PageRoutes.materialPageRoute,
+          return WillPopScope(
+            onWillPop: () async {
+              if (navigatorKey.currentState.canPop()) {
+                store.dispatch(PopAction());
+              }
+              return false;
+            },
+            child: Notifier(
+              child: LoaderWrapper(
+                child: Scaffold(
+                  appBar: AppBarWidget(avatar: state.user.avatar),
+                  body: CustomNavigator(
+                    navigatorKey: navigatorKey,
+                    home: _children[_currentIndex],
+                    pageRoute: PageRoutes.materialPageRoute,
+                  ),
+                  bottomNavigationBar: _bottomNavigation(state),
                 ),
-                bottomNavigationBar: _bottomNavigation(state),
               ),
             ),
           );
@@ -165,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 2:
         return 'Projects';
       case 3:
-        return 'Info';
+        return 'Rules';
       default:
         return '';
     }
@@ -180,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 2:
         return 'Projects';
       case 3:
-        return 'Info';
+        return 'Rules';
       case 4:
         return 'Requests';
       default:
@@ -190,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _onTabTapped(int index) {
     navigatorKey.currentState.popUntil((Route<dynamic> route) => route.isFirst);
-    store.dispatch(SetTitle(store.state.user.position == Positions.OWNER
+    store.dispatch(SetClearTitle(store.state.user.position == Positions.OWNER
         ? _getAdminTitleAppBar(index)
         : _getTitleAppBar(index)));
 

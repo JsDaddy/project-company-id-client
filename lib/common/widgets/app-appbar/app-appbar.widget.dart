@@ -12,9 +12,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.user, this.title});
-  // List<VacationModel> requests;
-  String title;
+  _ViewModel({this.user, this.titles});
+  List<String> titles;
   UserModel user;
 }
 
@@ -26,30 +25,28 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) =>
-            _ViewModel(user: store.state.user, title: store.state.title),
+            _ViewModel(user: store.state.user, titles: store.state.titles),
         builder: (BuildContext context, _ViewModel state) {
           return AppBar(
             elevation: 0,
             centerTitle: true,
             leading: GestureDetector(
                 onTap: () {
-                  if ('${state.user.name} ${state.user.lastName}' ==
-                      state.title) {
+                  final String fullName =
+                      '${state.user.name} ${state.user.lastName}';
+                  if (fullName == state.titles.last) {
                     return;
                   }
+
                   store.dispatch(
-                      SetTitle('${state.user.name} ${state.user.lastName}'));
-                  store.dispatch(PushAction(UserScreen(uid: state.user.id)));
+                      PushAction(UserScreen(uid: state.user.id), fullName));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AvatarWidget(avatar: avatar, sizes: 20),
                 )),
-            title: Text(state.title),
-            actions: <Widget>[
-              // notificationBadge(state),
-              logout(context)
-            ],
+            title: Text(state.titles.last),
+            actions: <Widget>[logout(context)],
             automaticallyImplyLeading: false,
           );
         });
@@ -76,50 +73,6 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       ],
     );
   }
-
-  // Widget notificationBadge(_ViewModel state) {
-  //   return Stack(
-  //     children: <Widget>[
-  //       IconButton(
-  //         icon: Icon(Icons.notifications),
-  //         onPressed: () {
-  //           if ('Notifications' == state.title) {
-  //             return;
-  //           }
-  //           store.dispatch(SetTitle('Notifications'));
-  //           navigatorKey.currentState.push(MaterialPageRoute<void>(
-  //               builder: (BuildContext context) => NotificationsScreen()));
-  //         },
-  //       ),
-  //       Positioned(
-  //         right: 8,
-  //         top: 8,
-  //         child: state.notifications.length > 0
-  //             ? Container(
-  //                 padding: EdgeInsets.all(1),
-  //                 decoration: BoxDecoration(
-  //                   color: bgColor,
-  //                   shape: BoxShape.circle,
-  //                 ),
-  //                 constraints: BoxConstraints(
-  //                   minWidth: 17,
-  //                   minHeight: 17,
-  //                 ),
-  //                 child: Center(
-  //                   child: Text(
-  //                     state.notifications.length.toString(),
-  //                     style: TextStyle(
-  //                       fontSize: 10,
-  //                     ),
-  //                     textAlign: TextAlign.center,
-  //                   ),
-  //                 ),
-  //               )
-  //             : Container(),
-  //       )
-  //     ],
-  //   );
-  // }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
