@@ -24,8 +24,8 @@ Future<List<ProjectModel>> getProjects(
 Future<ProjectModel> getDetailProject(String projectId) async {
   final Response<dynamic> res =
       await api.dio.get<dynamic>('/projects/$projectId');
-  final dynamic project = res.data;
-  return ProjectModel.fromJson(project as Map<String, dynamic>);
+  final Map<String, dynamic> project = res.data as Map<String, dynamic>;
+  return ProjectModel.fromJson(project);
 }
 
 Future<UserModel> addUserToProject(
