@@ -73,51 +73,65 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     },
                   )
                 : Container(),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-              child: ListView(
-                children: <Widget>[
-                  Text('General info',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  _projectInfo('Industry: ', state.project?.industry),
-                  state.project?.startDate != null
-                      ? _projectInfo('Duration: ',
-                          '${converter.dateFromString((state.project.startDate).toString())} - ${state.project?.endDate != null ? converter.dateFromString((state.project?.endDate).toString()) : 'now'}')
-                      : Container(),
-                  _projectInfo('Customer: ', state.project?.customer),
-                  const SizedBox(height: 12),
-                  Text('Stack',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  state.project?.stack != null && state.project.stack.isNotEmpty
-                      ? _stack(state.project?.stack)
-                      : Container(),
-                  const SizedBox(height: 12),
-                  Text('Onboard',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  state.project?.onboard != null &&
-                          state.project.onboard.isNotEmpty
-                      ? _projectsList(state.project, state.project.onboard,
-                          state.user.position, true)
-                      : Container(),
-                  const SizedBox(height: 12),
-                  Text('History',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 18)),
-                  const SizedBox(height: 12),
-                  state.project?.history != null &&
-                          state.project.history.isNotEmpty
-                      ? _projectsList(state.project, state.project.history,
-                          state.user.position, false)
-                      : Container()
-                ],
-              ),
-            ),
+            body: state.isLoading
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 24),
+                    child: ListView(
+                      children: <Widget>[
+                        Text('General info',
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: 18)),
+                        const SizedBox(height: 12),
+                        _projectInfo('Industry: ', state.project?.industry),
+                        state.project?.startDate != null
+                            ? _projectInfo('Duration: ',
+                                '${converter.dateFromString((state.project.startDate).toString())} - ${state.project?.endDate != null ? converter.dateFromString((state.project?.endDate).toString()) : 'now'}')
+                            : Container(),
+                        _projectInfo('Customer: ', state.project?.customer),
+                        const SizedBox(height: 12),
+                        Text('Stack',
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: 18)),
+                        const SizedBox(height: 12),
+                        state.project?.stack != null &&
+                                state.project.stack.isNotEmpty
+                            ? _stack(state.project?.stack)
+                            : Container(),
+                        const SizedBox(height: 12),
+                        Text('Onboard',
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: 18)),
+                        const SizedBox(height: 12),
+                        state.project?.onboard != null &&
+                                state.project.onboard.isNotEmpty
+                            ? _projectsList(
+                                state.project,
+                                state.project.onboard,
+                                state.user.position,
+                                true)
+                            : Container(),
+                        const SizedBox(height: 12),
+                        Text('History',
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: 18)),
+                        const SizedBox(height: 12),
+                        state.project?.history != null &&
+                                state.project.history.isNotEmpty
+                            ? _projectsList(
+                                state.project,
+                                state.project.history,
+                                state.user.position,
+                                false)
+                            : Container()
+                      ],
+                    ),
+                  ),
           );
         });
   }
