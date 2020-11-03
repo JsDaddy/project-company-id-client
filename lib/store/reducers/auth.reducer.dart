@@ -16,6 +16,6 @@ UserModel _checkToken(UserModel notify, CheckTokenSuccess action) {
   return action.user;
 }
 
-UserModel _logout(UserModel user, LogoutSuccess action) {
+UserModel _logout(UserModel state, LogoutSuccess action) {
   return null;
 }

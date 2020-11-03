@@ -25,10 +25,8 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) => _ViewModel(
-            // requests: store.state.requests,
-            user: store.state.user,
-            title: store.state.title),
+        converter: (Store<AppState> store) =>
+            _ViewModel(user: store.state.user, title: store.state.title),
         builder: (BuildContext context, _ViewModel state) {
           return AppBar(
             elevation: 0,
@@ -41,10 +39,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                   }
                   store.dispatch(
                       SetTitle('${state.user.name} ${state.user.lastName}'));
-                  // store.dispatch(SetCurrentUser(state.user));
                   store.dispatch(PushAction(UserScreen(uid: state.user.id)));
-                  // Navigator.of(context).push(MaterialPageRoute<void>(
-                  //     builder: (BuildContext context) => UserScreen()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

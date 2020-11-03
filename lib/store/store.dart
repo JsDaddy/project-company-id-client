@@ -16,23 +16,25 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:redux_logging/redux_logging.dart';
 
-final Store<AppState> store = Store<AppState>(appStateReducer,
-    initialState: AppState(
-        isLoading: false,
-        title: '',
-        projects: <ProjectModel>[],
-        logsByDate: <LogModel>[],
-        requests: <LogModel>[],
-        currentDate: CurrentDateModel(
-            currentDay: DateTime.now(),
-            currentMohth: DateTime(DateTime.now().year, DateTime.now().month, 1,
-                DateTime.now().hour)),
-        filterLogsUsersProjects: FilterLogsUsersProjects(
-            projects: <ProjectModel>[], users: <UserModel>[]),
-        users: <UserModel>[]),
+final AppState initalState = AppState(
+    isLoading: false,
+    title: '',
+    projects: <ProjectModel>[],
+    logsByDate: <LogModel>[],
+    requests: <LogModel>[],
+    currentDate: CurrentDateModel(
+        currentDay: DateTime.now(),
+        currentMohth: DateTime(
+            DateTime.now().year, DateTime.now().month, 1, DateTime.now().hour)),
+    filterLogsUsersProjects: FilterLogsUsersProjects(
+        projects: <ProjectModel>[], users: <UserModel>[]),
+    users: <UserModel>[]);
 
-    // ignore: always_specify_types
-    middleware: [
+final Store<AppState> store =
+    Store<AppState>(appStateReducer, initialState: initalState,
+
+        // ignore: always_specify_types
+        middleware: [
       LoggingMiddleware<dynamic>.printer(),
       EpicMiddleware<dynamic>(checkTokenEpic), //h
       EpicMiddleware<dynamic>(signInEpic), //h

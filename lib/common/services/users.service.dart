@@ -3,9 +3,7 @@ import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 
 Future<List<UserModel>> getUsers() async {
-  // loader.showLoading();
   final Response<dynamic> res = await api.dio.get<dynamic>('/user');
-  // loader.hideLoading();
   final List<dynamic> users = res.data as List<dynamic>;
   return users.isEmpty
       ? <UserModel>[]
