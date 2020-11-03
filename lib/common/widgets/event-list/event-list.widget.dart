@@ -4,6 +4,8 @@ import 'package:company_id_new/common/widgets/app-vacation-tile/app-vacation.til
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
+import 'package:company_id_new/screens/user/user.screen.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -230,7 +232,9 @@ class _EventListWidgetState extends State<EventListWidget> {
                           textSpan2: TextSpan(
                             text: ' - ${log.desc}',
                           ),
-                          // onTap: () => _pushToUserScreen(event, context),
+                          onTap: () => store.dispatch(PushAction(
+                              UserScreen(uid: log.user.id),
+                              '${log.user.name} ${log.user.lastName}')),
                           trailing: Text(log.time),
                         ),
                       ))
