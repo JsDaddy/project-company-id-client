@@ -8,10 +8,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({
-    this.markAsHandled,
-    this.notify,
-  });
+  _ViewModel({this.markAsHandled, this.notify, this.isLoading});
+  final bool isLoading;
   final Function markAsHandled;
   final NotifyModel notify;
 }
@@ -25,6 +23,7 @@ class Notifier extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) => _ViewModel(
           notify: store.state.notify,
+          isLoading: store.state.isLoading,
           markAsHandled: () => store.dispatch(NotifyHandled())),
       builder: (BuildContext context, _ViewModel state) => child,
       onWillChange: (_ViewModel state, _ViewModel a) {

@@ -48,6 +48,15 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, GetLogsFilterProjectsSucess>(_setFalse),
   TypedReducer<bool, SetPasswordPending>(_setTrue),
   TypedReducer<bool, SetPasswordSuccess>(_setFalse),
+  TypedReducer<bool, GetAbsentUsersSuccess>(_setFalse),
+  TypedReducer<bool, RemoveUserFromProjectPending>(_setTrue),
+  TypedReducer<bool, RemoveUserFromProjectSuccess>(_setFalse),
+  TypedReducer<bool, AddUserToProjectPending>(_setTrue),
+  TypedReducer<bool, AddUserToProjectSuccess>(_setFalse),
+  TypedReducer<bool, RemoveProjectFromUserPending>(_setTrue),
+  TypedReducer<bool, RemoveProjectFromUserSuccess>(_setFalse),
+  TypedReducer<bool, AddProjectToUserSuccess>(_setFalse),
+  TypedReducer<bool, GetAbsentProjectsSuccess>(_setFalse),
 ]);
 bool _setTrue(bool isLoading, dynamic action) {
   return true;

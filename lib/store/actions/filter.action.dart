@@ -1,3 +1,4 @@
+import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -20,8 +21,9 @@ class GetLogsFilterProjectsPending {
 }
 
 class GetLogsFilterUsersSuccess {
-  GetLogsFilterUsersSuccess(this.users);
+  GetLogsFilterUsersSuccess(this.users, {this.usersType});
   List<UserModel> users;
+  UsersType usersType;
 }
 
 class GetLogsFilterProjectsSucess {

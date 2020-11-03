@@ -1,5 +1,6 @@
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
 import 'package:redux/redux.dart';
 
 final Reducer<List<ProjectModel>> projectsReducers =
@@ -16,7 +17,10 @@ List<ProjectModel> _setProjects(
 final Reducer<ProjectModel> projectReducers = combineReducers<
     ProjectModel>(<ProjectModel Function(ProjectModel, dynamic)>[
   TypedReducer<ProjectModel, GetDetailProjectSuccess>(_setProject),
+  TypedReducer<ProjectModel, AddUserToProjectSuccess>(_addUserToProject),
   TypedReducer<ProjectModel, ClearDetailProject>(_clearProject),
+  TypedReducer<ProjectModel, RemoveUserFromProjectSuccess>(
+      _removeUserFromProject),
 ]);
 
 ProjectModel _setProject(ProjectModel project, GetDetailProjectSuccess action) {
@@ -25,6 +29,22 @@ ProjectModel _setProject(ProjectModel project, GetDetailProjectSuccess action) {
 
 ProjectModel _clearProject(ProjectModel project, ClearDetailProject action) {
   return null;
+}
+
+ProjectModel _addUserToProject(
+    ProjectModel project, AddUserToProjectSuccess action) {
+  if (!action.isActive) {
+    project.history.add(action.user);
+  }
+  project.onboard.add(action.user);
+  return project;
+}
+
+ProjectModel _removeUserFromProject(
+    ProjectModel project, RemoveUserFromProjectSuccess action) {
+  project.onboard
+      .removeWhere((UserModel userOnBoard) => userOnBoard.id == action.user.id);
+  return project;
 }
 
 final Reducer<String> lastProjectReducers =
@@ -38,4 +58,16 @@ String _getLastProject(String state, GetProjectPrefSuccess action) {
 
 String _setLastProject(String state, SetProjectPrefSuccess action) {
   return action.lastProjectId;
+}
+
+final Reducer<List<ProjectModel>> absentProjectsReducers =
+    combineReducers<List<ProjectModel>>(<
+        List<ProjectModel> Function(List<ProjectModel>, dynamic)>[
+  TypedReducer<List<ProjectModel>, GetAbsentProjectsSuccess>(
+      _setAbsentProjects),
+]);
+
+List<ProjectModel> _setAbsentProjects(
+    List<ProjectModel> title, GetAbsentProjectsSuccess action) {
+  return action.absentProjects;
 }

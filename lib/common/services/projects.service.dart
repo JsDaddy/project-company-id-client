@@ -1,9 +1,17 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
+import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 
-Future<List<ProjectModel>> getProjects() async {
-  final Response<dynamic> res = await api.dio.get<dynamic>('/projects');
+Future<List<ProjectModel>> getProjects(
+    ProjectsType projectTypes, String uid) async {
+  Response<dynamic> res;
+  if (projectTypes == ProjectsType.Absent) {
+    res = await api.dio.get<dynamic>('/projects/absent/users/$uid');
+  } else {
+    res = await api.dio.get<dynamic>('/projects');
+  }
   final List<dynamic> projects = res.data as List<dynamic>;
   return projects.isEmpty
       ? <ProjectModel>[]
@@ -18,4 +26,17 @@ Future<ProjectModel> getDetailProject(String projectId) async {
       await api.dio.get<dynamic>('/projects/$projectId');
   final dynamic project = res.data;
   return ProjectModel.fromJson(project as Map<String, dynamic>);
+}
+
+Future<UserModel> addUserToProject(
+    UserModel user, ProjectModel project, bool isActive) async {
+  final Response<dynamic> res = await api.dio
+      .post<dynamic>('/user/${user.id}/projects/${project.id}/$isActive');
+  final Map<String, dynamic> newUser = res.data as Map<String, dynamic>;
+  return UserModel.fromJson(newUser);
+}
+
+Future<void> removeUserFromActiveProject(
+    UserModel user, String projectId) async {
+  await api.dio.delete<dynamic>('/user/${user.id}/active-project/$projectId');
 }

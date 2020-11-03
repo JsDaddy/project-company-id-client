@@ -15,6 +15,9 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:redux_logging/redux_logging.dart';
+import 'epics/filter.epics.dart';
+import 'epics/rules.epics.dart';
+import 'models/current-day.model.dart';
 
 final AppState initalState = AppState(
     isLoading: false,
@@ -22,6 +25,8 @@ final AppState initalState = AppState(
     projects: <ProjectModel>[],
     logsByDate: <LogModel>[],
     requests: <LogModel>[],
+    absentUsers: <UserModel>[],
+    absentProjects: <ProjectModel>[],
     currentDate: CurrentDateModel(
         currentDay: DateTime.now(),
         currentMohth: DateTime(
@@ -29,7 +34,6 @@ final AppState initalState = AppState(
     filterLogsUsersProjects: FilterLogsUsersProjects(
         projects: <ProjectModel>[], users: <UserModel>[]),
     users: <UserModel>[]);
-
 final Store<AppState> store =
     Store<AppState>(appStateReducer, initialState: initalState,
 
@@ -51,6 +55,7 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(userEpic), //h
       EpicMiddleware<AppState>(getLastProjectEpic), //h
       EpicMiddleware<AppState>(setLastProjectEpic),
+      EpicMiddleware<AppState>(addUserToProjectEpic),
       EpicMiddleware<AppState>(addLogEpic), //h
       EpicMiddleware<AppState>(editLogEpic), //h
       EpicMiddleware<AppState>(deleteLogEpic), //h
@@ -60,4 +65,6 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(filteredUsersEpic), //h
       EpicMiddleware<AppState>(filteredProjectsEpic), //h
       EpicMiddleware<AppState>(getRulesEpic), //h
+      EpicMiddleware<AppState>(removeUserFromProjectEpic),
+      EpicMiddleware<AppState>(removeProjectFromUserEpic),
     ]);

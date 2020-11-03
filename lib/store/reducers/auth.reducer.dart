@@ -1,7 +1,6 @@
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:redux/redux.dart';
-
 final Reducer<UserModel> authReducers =
     combineReducers<UserModel>(<UserModel Function(UserModel, dynamic)>[
   TypedReducer<UserModel, SignInSuccess>(_signIn),

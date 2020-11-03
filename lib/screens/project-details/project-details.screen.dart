@@ -3,6 +3,7 @@ import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
+import 'package:company_id_new/screens/project-details/add-user/add-user.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:redux/redux.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/models/notify.model.dart';
 
 class _ViewModel {
   _ViewModel({this.project, this.user, this.isLoading});
@@ -55,25 +58,24 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           store.dispatch(GetDetailProjectPending(widget.projectId));
         },
         builder: (BuildContext context, _ViewModel state) {
-          return state.isLoading
-              ? Container()
-              : Scaffold(
-                  floatingActionButton:
-                      state.user.position == Positions.OWNER &&
-                              state.project?.endDate == null
-                          ? FloatingActionButton(
-                              child: const Icon(Icons.add),
-                              onPressed: () {
-                                // showModalBottomSheet(
-                                //     context: context,
-                                //     useRootNavigator: true,
-                                //     builder: (BuildContext context) {
-                                //       return BottomAddUserWidget(project: project);
-                                //     });
-                              },
-                            )
-                          : Container(),
-                  body: Padding(
+          return Scaffold(
+            floatingActionButton: state.user.position == Positions.OWNER &&
+                    state.project?.endDate == null
+                ? FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      showModalBottomSheet<dynamic>(
+                          context: context,
+                          useRootNavigator: true,
+                          builder: (BuildContext context) {
+                            return AddUserWidget();
+                          });
+                    },
+                  )
+                : Container(),
+            body: state.isLoading
+                ? Container()
+                : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 24),
                     child: ListView(
@@ -108,7 +110,10 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         state.project?.onboard != null &&
                                 state.project.onboard.isNotEmpty
                             ? _projectsList(
-                                state.project?.onboard, state.user.position)
+                                state.project,
+                                state.project.onboard,
+                                state.user.position,
+                                true)
                             : Container(),
                         const SizedBox(height: 12),
                         Text('History',
@@ -119,12 +124,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         state.project?.history != null &&
                                 state.project.history.isNotEmpty
                             ? _projectsList(
-                                state.project?.history, state.user.position)
+                                state.project,
+                                state.project.history,
+                                state.user.position,
+                                false)
                             : Container()
                       ],
                     ),
                   ),
-                );
+          );
         });
   }
 
@@ -147,7 +155,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             .toList());
   }
 
-  Widget _projectsList(List<UserModel> users, Positions position) {
+  Widget _projectsList(ProjectModel project, List<UserModel> users,
+      Positions position, bool isOnboard) {
     return Column(
         children: users
             .map(
@@ -159,7 +168,32 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 actionExtentRatio: 0.1,
                 secondaryActions: <Widget>[
                   IconSlideAction(
-                      color: AppColors.bg, icon: Icons.history, onTap: () {})
+                      color: AppColors.bg,
+                      icon: isOnboard ? Icons.history : Icons.person_add,
+                      onTap: () {
+                        if (!isOnboard) {
+                          final bool isUserOnboard = project.onboard.any(
+                              (UserModel userOnBoard) =>
+                                  userOnBoard.id ==
+                                  project.history
+                                      .firstWhere(
+                                          (UserModel userHis) =>
+                                              userHis.id == user.id,
+                                          orElse: () => null)
+                                      ?.id);
+                          if (!isUserOnboard) {
+                            store.dispatch(AddUserToProjectPending(
+                                user, store.state.project, true));
+                          } else {
+                            store.dispatch(Notify(NotifyModel(
+                                NotificationType.error,
+                                'This user is already on the project')));
+                          }
+                        } else {
+                          store.dispatch(RemoveUserFromProjectPending(
+                              user, store.state.project.id));
+                        }
+                      })
                 ],
                 child: AppListTile(
                   onTap: () => _pushToUser(user),

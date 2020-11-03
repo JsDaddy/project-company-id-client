@@ -1,13 +1,20 @@
+import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class GetUsersPending {
-  GetUsersPending({this.isFilter = false});
-  bool isFilter;
+  GetUsersPending({this.usersType = UsersType.Default, this.projectId});
+  UsersType usersType;
+  String projectId;
 }
 
 class GetUsersSuccess {
   GetUsersSuccess(this.users);
   List<UserModel> users;
+}
+
+class GetAbsentUsersSuccess {
+  GetAbsentUsersSuccess(this.absentUsers);
+  List<UserModel> absentUsers;
 }
 
 class GetUserPending {
@@ -19,3 +26,20 @@ class GetUserSuccess {
   GetUserSuccess(this.user);
   UserModel user;
 }
+
+enum UsersType { Default, Filter, Absent }
+
+class AddProjectToUserError {}
+
+class RemoveProjectFromUserPending {
+  RemoveProjectFromUserPending(this.userId, this.project);
+  String userId;
+  ProjectModel project;
+}
+
+class RemoveProjectFromUserSuccess {
+  RemoveProjectFromUserSuccess(this.project);
+  ProjectModel project;
+}
+
+class RemoveProjectFromUserError {}

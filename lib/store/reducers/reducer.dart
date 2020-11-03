@@ -36,6 +36,8 @@ class AppState {
       this.project,
       this.currentUser,
       this.lastProject,
+      this.absentUsers,
+      this.absentProjects,
       this.currentDate,
       this.vacationSickAvailable,
       this.filterLogsUsersProjects,
@@ -57,6 +59,8 @@ class AppState {
   List<UserModel> users;
   FilterLogsUsersProjects filterLogsUsersProjects;
   CurrentDateModel currentDate;
+  List<UserModel> absentUsers;
+  List<ProjectModel> absentProjects;
   List<UserModel> filterUsers;
   Map<DateTime, List<CalendarModel>> holidays;
   VacationSickAvailable vacationSickAvailable;
@@ -77,6 +81,8 @@ AppState appStateReducer(AppState state, dynamic action) => AppState(
     project: projectReducers(state.project, action),
     lastProject: lastProjectReducers(state.lastProject, action),
     currentDate: currentDateReducers(state.currentDate, action),
+    absentUsers: absentUsersReducers(state.absentUsers, action),
+    absentProjects: absentProjectsReducers(state.absentProjects, action),
     projects: projectsReducers(state.projects, action),
     users: usersReducers(state.users, action),
     currentUser: userReducers(state.currentUser, action),
