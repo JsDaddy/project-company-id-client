@@ -44,6 +44,7 @@ dependencies:
   flutter_speed_dial: 1.2.5
   url_launcher: 5.7.5
   pull_to_refresh: 1.6.2
+  flutter_spinkit: 4.1.2+1
 
 dev_dependencies:
   flutter_launcher_icons: 0.7.5

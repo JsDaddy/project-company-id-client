@@ -16,10 +16,15 @@ List<ProjectModel> _setProjects(
 final Reducer<ProjectModel> projectReducers = combineReducers<
     ProjectModel>(<ProjectModel Function(ProjectModel, dynamic)>[
   TypedReducer<ProjectModel, GetDetailProjectSuccess>(_setProject),
+  TypedReducer<ProjectModel, ClearDetailProject>(_clearProject),
 ]);
 
 ProjectModel _setProject(ProjectModel project, GetDetailProjectSuccess action) {
   return action.project;
+}
+
+ProjectModel _clearProject(ProjectModel project, ClearDetailProject action) {
+  return null;
 }
 
 final Reducer<String> lastProjectReducers =

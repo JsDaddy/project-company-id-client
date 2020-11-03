@@ -1,4 +1,3 @@
-import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/rules.action.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
 import 'package:redux/redux.dart';

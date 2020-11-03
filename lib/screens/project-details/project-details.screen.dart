@@ -44,12 +44,13 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         converter: (Store<AppState> store) =>
             _ViewModel(project: store.state.project, user: store.state.user),
         onInit: (Store<AppState> store) {
+          store.dispatch(ClearDetailProject());
           store.dispatch(GetDetailProjectPending(widget.projectId));
         },
         builder: (BuildContext context, _ViewModel state) {
           return Scaffold(
             floatingActionButton: state.user.position == Positions.OWNER &&
-                    state.project.endDate == null
+                    state.project?.endDate == null
                 ? FloatingActionButton(
                     child: const Icon(Icons.add),
                     onPressed: () {
@@ -70,28 +71,40 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
-                  _projectInfo('Industry: ', state.project.industry),
-                  _projectInfo('Duration: ',
-                      '${converter.dateFromString((state.project.startDate).toString())} - ${state.project.endDate != null ? converter.dateFromString((state.project.endDate).toString()) : 'now'}'),
-                  _projectInfo('Customer: ', state.project.customer),
+                  _projectInfo('Industry: ', state.project?.industry),
+                  state.project?.startDate != null
+                      ? _projectInfo('Duration: ',
+                          '${converter.dateFromString((state.project.startDate).toString())} - ${state.project?.endDate != null ? converter.dateFromString((state.project?.endDate).toString()) : 'now'}')
+                      : Container(),
+                  _projectInfo('Customer: ', state.project?.customer),
                   const SizedBox(height: 12),
                   Text('Stack',
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
-                  _stack(state.project.stack),
+                  state.project?.stack != null && state.project.stack.isNotEmpty
+                      ? _stack(state.project?.stack)
+                      : Container(),
                   const SizedBox(height: 12),
                   Text('Onboard',
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
-                  _projectsList(state.project.onboard, state.user.position),
+                  state.project?.onboard != null &&
+                          state.project.onboard.isNotEmpty
+                      ? _projectsList(
+                          state.project?.onboard, state.user.position)
+                      : Container(),
                   const SizedBox(height: 12),
                   Text('History',
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.6), fontSize: 18)),
                   const SizedBox(height: 12),
-                  _projectsList(state.project.history, state.user.position)
+                  state.project?.history != null &&
+                          state.project.history.isNotEmpty
+                      ? _projectsList(
+                          state.project?.history, state.user.position)
+                      : Container()
                 ],
               ),
             ),

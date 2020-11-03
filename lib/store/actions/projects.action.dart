@@ -15,6 +15,8 @@ class GetDetailProjectPending {
   String projectId;
 }
 
+class ClearDetailProject {}
+
 class GetDetailProjectSuccess {
   GetDetailProjectSuccess(this.project);
   ProjectModel project;

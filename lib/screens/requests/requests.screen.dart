@@ -32,20 +32,10 @@ class RequestsScreen extends StatefulWidget {
 
 class _RequestsScreenState extends State<RequestsScreen> {
   final SlidableController _slidableController = SlidableController();
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
   @override
   void initState() {
-    // store.dispatch(GetRequestsPending());
-    super.initState();
-  }
-
-  void _onRefresh(bool isLoading) {
-    // monitor network fetch
     store.dispatch(GetRequestsPending());
-    // if (!isLoading) {
-    //   _refreshController.refreshCompleted();
-    // }
+    super.initState();
   }
 
   @override
@@ -58,7 +48,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
         builder: (BuildContext context, _ViewModel state) {
           return SmartRefresher(
             controller: refresh.refreshController,
-            onRefresh: () => _onRefresh(state.isLoading),
+            onRefresh: () => store.dispatch(GetRequestsPending()),
             enablePullDown: true,
             child: WillPopScope(
               onWillPop: () async {
@@ -131,6 +121,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
           return ConfirmDialogWidget(title: 'Request', text: titleText);
         });
     if (!isConfirm) {
+      _slidableController.activeState?.close();
       return;
     }
     store.dispatch(ChangeStatusVacationPending(id, status));

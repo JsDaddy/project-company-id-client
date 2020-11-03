@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:company_id_new/common/services/logs.service.dart';
 import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/main.dart';

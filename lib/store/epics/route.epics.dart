@@ -1,4 +1,3 @@
-import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:flutter/material.dart';
