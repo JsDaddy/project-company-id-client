@@ -21,8 +21,9 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class _ViewModel {
-  _ViewModel({this.user, this.authUser});
+  _ViewModel({this.user, this.authUser, this.isLoading});
   UserModel user;
+  bool isLoading;
   UserModel authUser;
 }
 
@@ -39,6 +40,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     _slidableController = SlidableController();
+
     super.initState();
   }
 
@@ -46,146 +48,165 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
-              user: store.state.currentUser,
-              authUser: store.state.user,
-            ),
+            user: store.state.currentUser,
+            authUser: store.state.user,
+            isLoading: store.state.isLoading),
         onInit: (Store<AppState> store) {
+          if (store.state.currentUser != null &&
+              store.state.currentUser.id == widget.uid) {
+            return;
+          }
           store.dispatch(GetUserPending(widget.uid));
         },
         builder: (BuildContext context, _ViewModel state) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: ListView(
-              children: <Widget>[
-                const SizedBox(height: 16),
-                const Text(
-                  'Personal details',
-                  style: TextStyle(color: AppColors.lightGrey, fontSize: 16),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 8,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowIconWidget(
-                        icon: Icons.cake,
-                        title: DateFormat('dd/MM/yyyy').format(state.user.date),
+          return state.isLoading
+              ? Container()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: ListView(
+                    children: <Widget>[
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Personal details',
+                        style:
+                            TextStyle(color: AppColors.lightGrey, fontSize: 16),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowIconWidget(
-                        icon: Icons.supervised_user_circle,
-                        title: AppConverting.getPositionFromString(
-                            state.user.position),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 8,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: SocialRowIconWidget(
+                              icon: Icons.cake,
+                              title: DateFormat('dd/MM/yyyy')
+                                  .format(state.user.date),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: SocialRowIconWidget(
+                              icon: Icons.supervised_user_circle,
+                              title: AppConverting.getPositionFromString(
+                                  state.user.position),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: SocialRowIconWidget(
+                              icon: Icons.language,
+                              title: state.user.englishLevel,
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: SocialRowIconWidget(
-                        icon: Icons.language,
-                        title: state.user.englishLevel,
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Contacts',
+                        style:
+                            TextStyle(color: AppColors.lightGrey, fontSize: 16),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Contacts',
-                  style: TextStyle(color: AppColors.lightGrey, fontSize: 16),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 8,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: state.user.github != null
-                          ? GestureDetector(
-                              onTap: () => _openUrl(
-                                    'https://github.com/${state.user.github}',
-                                  ),
-                              child: SocialRowWidget(
-                                  iconName: AppImages.github,
-                                  title: state.user.github))
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 8,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: state.user.github != null
+                                ? GestureDetector(
+                                    onTap: () => _openUrl(
+                                          'https://github.com/${state.user.github}',
+                                        ),
+                                    child: SocialRowWidget(
+                                        iconName: AppImages.github,
+                                        title: state.user.github))
+                                : Container(),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: state.user.skype != null
+                                ? GestureDetector(
+                                    onTap: () => _openUrl(
+                                          'skype:${state.user.skype}',
+                                        ),
+                                    child: SocialRowWidget(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                    2 -
+                                                36,
+                                        iconName: AppImages.skype,
+                                        title: state.user.skype))
+                                : Container(),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: state.user.email != null
+                                ? GestureDetector(
+                                    onTap: () => _openUrl(
+                                          'mailto:${state.user.email}',
+                                        ),
+                                    child: SocialRowIconWidget(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                    2 -
+                                                36,
+                                        icon: Icons.email,
+                                        title: state.user.email))
+                                : Container(),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 12,
+                            child: state.user.phone != null
+                                ? GestureDetector(
+                                    onTap: () => _openUrl(
+                                          'tel://:${state.user.phone}',
+                                        ),
+                                    child: SocialRowIconWidget(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                    2 -
+                                                36,
+                                        icon: Icons.phone,
+                                        title: state.user.phone))
+                                : Container(),
+                          ),
+                        ],
+                      ),
+                      state.authUser.position == Positions.OWNER
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                        'Vacations available: ${state.user.vacationAvailable} of 18'),
+                                    Text(
+                                        'Sick available: ${state.user.sickAvailable} of 5'),
+                                  ]))
                           : Container(),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: state.user.skype != null
-                          ? GestureDetector(
-                              onTap: () => _openUrl(
-                                    'skype:${state.user.skype}',
-                                  ),
-                              child: SocialRowWidget(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      36,
-                                  iconName: AppImages.skype,
-                                  title: state.user.skype))
-                          : Container(),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: state.user.email != null
-                          ? GestureDetector(
-                              onTap: () => _openUrl(
-                                    'mailto:${state.user.email}',
-                                  ),
-                              child: SocialRowIconWidget(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      36,
-                                  icon: Icons.email,
-                                  title: state.user.email))
-                          : Container(),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 12,
-                      child: state.user.phone != null
-                          ? GestureDetector(
-                              onTap: () => _openUrl(
-                                    'tel://:${state.user.phone}',
-                                  ),
-                              child: SocialRowIconWidget(
-                                  width: MediaQuery.of(context).size.width / 2 -
-                                      36,
-                                  icon: Icons.phone,
-                                  title: state.user.phone))
-                          : Container(),
-                    ),
-                  ],
-                ),
-                state.authUser.position == Positions.OWNER
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                  'Vacations available: ${state.user.vacationAvailable} of 18'),
-                              Text(
-                                  'Sick available: ${state.user.sickAvailable} of 5'),
-                            ]))
-                    : Container(),
-                const SizedBox(height: 16),
-                const Text(
-                  'Active Projects ',
-                  style: TextStyle(color: AppColors.lightGrey, fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                _projects(
-                    state.user.activeProjects, state.authUser.position, true),
-                const SizedBox(height: 16),
-                const Text(
-                  'Projects ',
-                  style: TextStyle(color: AppColors.lightGrey, fontSize: 18),
-                ),
-                _projects(state.user.projects, state.authUser.position, false),
-              ],
-            ),
-          );
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Active Projects ',
+                        style:
+                            TextStyle(color: AppColors.lightGrey, fontSize: 18),
+                      ),
+                      const SizedBox(height: 8),
+                      _projects(state.user.activeProjects,
+                          state.authUser.position, true),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Projects ',
+                        style:
+                            TextStyle(color: AppColors.lightGrey, fontSize: 18),
+                      ),
+                      _projects(
+                          state.user.projects, state.authUser.position, false),
+                    ],
+                  ),
+                );
         });
   }
 

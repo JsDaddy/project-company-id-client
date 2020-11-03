@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PushAction {
-  PushAction(this.destination, {this.key});
+  PushAction(this.destination, this.title, {this.key});
   GlobalKey<NavigatorState> key;
+  String title;
   final Widget destination;
 }
 
