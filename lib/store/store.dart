@@ -19,25 +19,26 @@ import 'epics/filter.epics.dart';
 import 'epics/rules.epics.dart';
 import 'models/current-day.model.dart';
 
-final Store<AppState> store = Store<AppState>(appStateReducer,
-    initialState: AppState(
-        isLoading: false,
-        title: '',
-        absentUsers: <UserModel>[],
-        absentProjects: <ProjectModel>[],
-        projects: <ProjectModel>[],
-        logsByDate: <LogModel>[],
-        requests: <LogModel>[],
-        currentDate: CurrentDateModel(
-            currentDay: DateTime.now(),
-            currentMohth: DateTime(DateTime.now().year, DateTime.now().month, 1,
-                DateTime.now().hour)),
-        filterLogsUsersProjects: FilterLogsUsersProjects(
-            projects: <ProjectModel>[], users: <UserModel>[]),
-        users: <UserModel>[]),
+final AppState initalState = AppState(
+    isLoading: false,
+    titles: <String>[],
+    projects: <ProjectModel>[],
+    logsByDate: <LogModel>[],
+    requests: <LogModel>[],
+    absentUsers: <UserModel>[],
+    absentProjects: <ProjectModel>[],
+    currentDate: CurrentDateModel(
+        currentDay: DateTime.now(),
+        currentMohth: DateTime(
+            DateTime.now().year, DateTime.now().month, 1, DateTime.now().hour)),
+    filterLogsUsersProjects: FilterLogsUsersProjects(
+        projects: <ProjectModel>[], users: <UserModel>[]),
+    users: <UserModel>[]);
+final Store<AppState> store =
+    Store<AppState>(appStateReducer, initialState: initalState,
 
-    // ignore: always_specify_types
-    middleware: [
+        // ignore: always_specify_types
+        middleware: [
       LoggingMiddleware<dynamic>.printer(),
       EpicMiddleware<dynamic>(checkTokenEpic), //h
       EpicMiddleware<dynamic>(signInEpic), //h

@@ -2,6 +2,8 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
+import 'package:company_id_new/screens/user/user.screen.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/store.dart';
@@ -51,7 +53,9 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
           ),
         ],
         child: AppListTile(
-          // onTap: () => _pushToUserScreen(users, event),
+          onTap: () => store.dispatch(PushAction(
+              UserScreen(uid: widget.log.user.id),
+              '${widget.log.user.name} ${widget.log.user.lastName}')),
           leading: AvatarWidget(avatar: widget.log.user.avatar, sizes: 50),
           textSpan: TextSpan(
               text:

@@ -12,8 +12,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.users, this.user});
+  _ViewModel({this.users, this.user, this.isLoading});
   List<UserModel> users;
+  bool isLoading;
   UserModel user;
 }
 
@@ -25,6 +26,9 @@ class UsersScreen extends StatefulWidget {
 class _UsersScreenState extends State<UsersScreen> {
   @override
   void initState() {
+    if (store.state.users != null && store.state.users.isNotEmpty) {
+      return;
+    }
     store.dispatch(GetUsersPending());
     super.initState();
   }
@@ -32,23 +36,29 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) =>
-            _ViewModel(users: store.state.users, user: store.state.user),
+        converter: (Store<AppState> store) => _ViewModel(
+            users: store.state.users,
+            user: store.state.user,
+            isLoading: store.state.isLoading),
         builder: (BuildContext context, _ViewModel state) {
-          return ListView(
-              children: state.users
-                  .where((UserModel user) => user.id != state.user.id)
-                  .map((UserModel user) {
-            return AppListTile(
-              leading: AvatarWidget(avatar: user.avatar, sizes: 50),
-              onTap: () => store.dispatch(PushAction(UserScreen(uid: user.id))),
-              textSpan: TextSpan(
-                  text: '${user.name} ${user.lastName}',
-                  style: const TextStyle(fontSize: 15)),
-              trailing:
-                  Text(AppConverting.getPositionFromString(user.position)),
-            );
-          }).toList());
+          return state.isLoading
+              ? Container()
+              : ListView(
+                  children: state.users
+                      .where((UserModel user) => user.id != state.user.id)
+                      .map((UserModel user) {
+                  return AppListTile(
+                    leading: AvatarWidget(avatar: user.avatar, sizes: 50),
+                    onTap: () => store.dispatch(PushAction(
+                        UserScreen(uid: user.id),
+                        '${user.name} ${user.lastName}')),
+                    textSpan: TextSpan(
+                        text: '${user.name} ${user.lastName}',
+                        style: const TextStyle(fontSize: 15)),
+                    trailing: Text(
+                        AppConverting.getPositionFromString(user.position)),
+                  );
+                }).toList());
         });
   }
 }

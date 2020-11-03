@@ -20,9 +20,10 @@ import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 
 class _ViewModel {
-  _ViewModel({this.project, this.user});
+  _ViewModel({this.project, this.user, this.isLoading});
   ProjectModel project;
   UserModel user;
+  bool isLoading;
 }
 
 class ProjectDetailsScreen extends StatefulWidget {
@@ -44,9 +45,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) =>
-            _ViewModel(project: store.state.project, user: store.state.user),
+        converter: (Store<AppState> store) => _ViewModel(
+            project: store.state.project,
+            user: store.state.user,
+            isLoading: store.state.isLoading),
         onInit: (Store<AppState> store) {
+          if (store.state.project != null &&
+              store.state.project.id == widget.projectId) {
+            return;
+          }
           store.dispatch(ClearDetailProject());
           store.dispatch(GetDetailProjectPending(widget.projectId));
         },

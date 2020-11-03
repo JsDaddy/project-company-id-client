@@ -13,6 +13,7 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -34,6 +35,9 @@ class _RequestsScreenState extends State<RequestsScreen> {
   final SlidableController _slidableController = SlidableController();
   @override
   void initState() {
+    if (store.state.requests != null && store.state.requests.isNotEmpty) {
+      return;
+    }
     store.dispatch(GetRequestsPending());
     super.initState();
   }
@@ -51,10 +55,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
             onRefresh: () => store.dispatch(GetRequestsPending()),
             enablePullDown: true,
             child: WillPopScope(
-              onWillPop: () async {
-                Navigator.pop(context);
-                return;
-              },
+              onWillPop: () => _onBackPressed(),
               child: state.requests.isEmpty
                   ? const Center(
                       child:
@@ -95,8 +96,9 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                 'rejected', 'Are you sure about rejecting?'))),
                   ],
                   child: AppListTile(
-                      onTap: () => store.dispatch(
-                          PushAction(UserScreen(uid: request.user.id))),
+                      onTap: () => store.dispatch(PushAction(
+                          UserScreen(uid: request.user.id),
+                          '${request.user.name} ${request.user.lastName}')),
                       leading:
                           AvatarWidget(avatar: request.user.avatar, sizes: 50),
                       textSpan: TextSpan(
@@ -127,4 +129,9 @@ class _RequestsScreenState extends State<RequestsScreen> {
     store.dispatch(ChangeStatusVacationPending(id, status));
     _slidableController.activeState?.close();
   }
+}
+
+Future<bool> _onBackPressed() async {
+  await SystemNavigator.pop();
+  return true;
 }

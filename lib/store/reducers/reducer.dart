@@ -26,7 +26,7 @@ class AppState {
       {this.isLoading,
       this.notify,
       this.users,
-      this.title,
+      this.titles,
       this.user,
       this.filter,
       this.holidays,
@@ -46,7 +46,7 @@ class AppState {
       this.requests});
   bool isLoading;
   String lastProject;
-  String title;
+  List<String> titles;
   List<ProjectModel> projects;
   List<ProjectModel> filterProjects;
   ProjectModel project;
@@ -74,7 +74,7 @@ AppState appStateReducer(AppState state, dynamic action) => AppState(
     vacationSickAvailable:
         vacacationSickReducers(state.vacationSickAvailable, action),
     filter: filterReducers(state.filter, action),
-    title: titleReducer(state.title, action),
+    titles: titleReducer(state.titles, action),
     filterLogsUsersProjects: filterLogsUserProjectsFilterReducers(
         state.filterLogsUsersProjects, action),
     holidays: holidaysReducers(state.holidays, action),
