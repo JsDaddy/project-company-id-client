@@ -1,6 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
-import 'package:company_id_new/common/widgets/loader-test/loader-test.widget.dart';
+import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/requests/requests.screen.dart';

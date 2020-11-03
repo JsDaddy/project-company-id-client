@@ -1,5 +1,4 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
-import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 

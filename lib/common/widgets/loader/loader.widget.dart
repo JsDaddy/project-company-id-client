@@ -1,45 +1,36 @@
-import 'package:company_id_new/main.dart';
+import 'package:company_id_new/common/services/loader.service.dart';
+import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
-_LoaderWidget loader = _LoaderWidget();
+class _ViewModel {
+  _ViewModel({this.isLoading});
+  final bool isLoading;
+}
 
-class _LoaderWidget {
-  BuildContext _dialogContext;
-  bool requestClose = false;
+class LoaderWrapper extends StatelessWidget {
+  const LoaderWrapper({@required this.child});
+  final Widget child;
 
-  void showLoading() {
-    hideLoading(isClean: true);
-    showDialog<dynamic>(
-      context: mainNavigatorKey.currentContext,
-      builder: (BuildContext dialogContext) {
-        _dialogContext = dialogContext;
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          if (requestClose) {
-            hideLoading();
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, _ViewModel>(
+        distinct: true,
+        converter: (Store<AppState> store) => _ViewModel(
+              isLoading: store.state.isLoading,
+            ),
+        builder: (BuildContext context, _ViewModel state) {
+          return child;
+        },
+        onWillChange: (_ViewModel prev, _ViewModel curr) {
+          if (prev.isLoading != curr.isLoading) {
+            if (curr.isLoading) {
+              loader.showLoading();
+            } else {
+              loader.hideLoading();
+            }
           }
         });
-        return Material(
-          type: MaterialType.transparency,
-          child: Center(
-            child: Container(
-              alignment: Alignment.center,
-              child: const SpinKitDoubleBounce(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void hideLoading({bool isClean = false}) {
-    if (_dialogContext != null) {
-      if (Navigator.canPop(_dialogContext)) {
-        Navigator.pop(_dialogContext);
-      }
-      _dialogContext = null;
-    }
-    requestClose = !isClean;
   }
 }

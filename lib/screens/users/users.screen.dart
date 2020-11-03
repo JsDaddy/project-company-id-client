@@ -1,8 +1,6 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
-import 'package:company_id_new/common/widgets/loader-test/loader-test.widget.dart';
-import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';

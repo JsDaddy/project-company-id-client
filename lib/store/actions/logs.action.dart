@@ -1,9 +1,6 @@
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import '../models/log.model.dart';
 
 class GetLogsPending {
   GetLogsPending(this.date);
