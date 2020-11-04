@@ -2,7 +2,6 @@ import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
-import 'package:company_id_new/main.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/requests/requests.screen.dart';
 import 'package:company_id_new/screens/rules/rules.screen.dart';
@@ -68,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: Notifier(
               child: LoaderWrapper(
                 child: Scaffold(
-                  appBar: AppBarWidget(avatar: state.user.avatar),
+                  appBar: AppBarWidget(avatar: state.user?.avatar ?? ''),
                   body: CustomNavigator(
                     navigatorKey: navigatorKey,
                     home: _children[_currentIndex],
