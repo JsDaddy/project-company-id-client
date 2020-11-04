@@ -143,11 +143,25 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           List<dynamic> events, List<dynamic> holidays) {
                         final List<Widget> children = <Widget>[];
                         if (events.isNotEmpty) {
+                          final List<BadgeModel> badges = <BadgeModel>[];
+                          final CalendarModel calendar =
+                              events[0] as CalendarModel;
+                          if (calendar.timelogs != null) {
+                            badges.add(BadgeModel(
+                                AppColors.red, calendar.timelogs, 1));
+                          }
+                          if (calendar.vacations != null) {
+                            badges.add(BadgeModel(
+                                AppColors.green, calendar.vacations, 2));
+                          }
+                          if (calendar.birthdays != null) {
+                            badges.add(BadgeModel(AppColors.orange, '', 3));
+                          }
                           children.add(
                             Positioned(
                               right: 1,
                               bottom: 1,
-                              child: EventMarkersWidget(date, events),
+                              child: EventMarkersWidget(badges),
                             ),
                           );
                         }
@@ -176,13 +190,14 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     store.dispatch(SetCurrentMonth(first));
-
     store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
-    store.dispatch(GetLogByDatePending('${DateTime.now()}'));
+    store
+        .dispatch(GetLogByDatePending('${store.state.currentDate.currentDay}'));
   }
 
   bool _isExisted(AppState state) {
     final String authId = state.user.id;
+    print(state.user.id);
     return state.logsByDate.any(
         (LogModel log) => log.user.id == authId && log.vacationType != null);
   }

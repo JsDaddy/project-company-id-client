@@ -46,8 +46,6 @@ Stream<void> getLogByDateEpic(
                   vacationAvailable: logResponse.vacationAvailable))
             ];
           }).handleError((dynamic e) {
-            print('dasdfqdhjascxzhkcdnadxasxa');
-            print(e.message as String ?? 'Something went wrong');
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogByDateError());
@@ -57,14 +55,14 @@ Stream<void> getLogByDateEpic(
 Stream<void> addLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions.where((dynamic action) => action is AddLogPending).switchMap(
       (dynamic action) =>
-          Stream<LogModel>.fromFuture(addLog(action.log as LogModel))
-              .expand<dynamic>((LogModel log) {
+          Stream<String>.fromFuture(addLog(action.log as LogModel))
+              .expand<dynamic>((String id) {
+            (action.log as LogModel).id = id;
             return <dynamic>[
-              AddLogSuccess(log),
+              AddLogSuccess(action.log as LogModel),
               GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
                   NotificationType.success, 'Timelog has been added')),
-              PopAction(key: mainNavigatorKey)
             ];
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
@@ -83,7 +81,6 @@ Stream<void> editLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
                   NotificationType.success, 'Timelog has been edited')),
-              PopAction(key: mainNavigatorKey)
             ];
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,

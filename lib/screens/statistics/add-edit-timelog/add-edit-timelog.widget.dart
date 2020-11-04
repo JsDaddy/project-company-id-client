@@ -164,6 +164,7 @@ class _AddEditTimelogDialogWidgetState
     if (!_formKey.currentState.validate()) {
       return;
     }
+    Navigator.pop(context);
     store.dispatch(SetProjectPrefPending(selectedProject.name));
 
     widget.timelogId == null
