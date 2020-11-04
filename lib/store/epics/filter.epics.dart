@@ -17,12 +17,12 @@ Stream<void> filteredUsersEpic(
           Stream<List<UserModel>>.fromFuture(
                   getFilteredUsers(action.projectId as String))
               .map<dynamic>(
-                  (List<UserModel> users) => GetLogsFilterUsersSuccess(users)))
-      .handleError((dynamic e) {
-    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
-        e.message as String ?? 'Something went wrong')));
-    s.store.dispatch(GetLogsFilterUsersError());
-  });
+                  (List<UserModel> users) => GetLogsFilterUsersSuccess(users))
+              .handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(GetLogsFilterUsersError());
+          }));
 }
 
 Stream<void> filteredProjectsEpic(
@@ -33,10 +33,10 @@ Stream<void> filteredProjectsEpic(
           Stream<List<ProjectModel>>.fromFuture(
                   getFilteredProjects(action.userId as String))
               .map<dynamic>((List<ProjectModel> projects) =>
-                  GetLogsFilterProjectsSucess(projects)))
-      .handleError((dynamic e) {
-    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
-        e.message as String ?? 'Something went wrong')));
-    s.store.dispatch(GetLogsFilterProjectsError());
-  });
+                  GetLogsFilterProjectsSucess(projects))
+              .handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(GetLogsFilterProjectsError());
+          }));
 }

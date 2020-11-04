@@ -21,7 +21,10 @@ class AppApi {
           },
           onError: (DioError e) {
             print('app-api dioerror: $e');
-            return e.response?.data['error'];
+            if (e.response?.data != null) {
+              return e.response?.data['error'];
+            }
+            return e.response;
           },
           onResponse: (Response<dynamic> res) => res.data['data']),
     ]);

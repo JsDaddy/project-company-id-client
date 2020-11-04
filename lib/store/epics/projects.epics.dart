@@ -31,12 +31,11 @@ Stream<void> getProjectsEpic(
               default:
                 return null;
             }
-          }))
-      .handleError((dynamic e) {
-    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
-        e.message as String ?? 'Something went wrong')));
-    s.store.dispatch(GetProjectsError());
-  });
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(GetProjectsError());
+          }));
 }
 
 Stream<void> getDetailProjectEpic(

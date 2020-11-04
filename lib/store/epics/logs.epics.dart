@@ -25,6 +25,7 @@ Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               GetStatisticSuccess(full['statistic'] as StatisticModel)
             ];
           }).handleError((dynamic e) {
+            // TODO: return aciton in error
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogsError());
@@ -45,6 +46,8 @@ Stream<void> getLogByDateEpic(
                   vacationAvailable: logResponse.vacationAvailable))
             ];
           }).handleError((dynamic e) {
+            print('dasdfqdhjascxzhkcdnadxasxa');
+            print(e.message as String ?? 'Something went wrong');
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogByDateError());
@@ -138,10 +141,9 @@ Stream<void> getRequestsEpic(
               .map<dynamic>((List<LogModel> requests) {
             refresh.refreshController.refreshCompleted();
             return GetRequestsSuccess(requests);
-          }))
-      .handleError((dynamic e) {
-    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
-        e.message as String ?? 'Something went wrong')));
-    s.store.dispatch(GetRequestsError());
-  });
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(GetRequestsError());
+          }));
 }

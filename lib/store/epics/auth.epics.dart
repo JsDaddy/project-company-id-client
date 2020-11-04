@@ -42,10 +42,9 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               LogoutSuccess(),
               PushReplacementAction(LoginScreen(), key: mainNavigatorKey)
             ];
-          }))
-      .handleError((dynamic e) {
-    print(e);
-  });
+          }).handleError((dynamic e) {
+            print(e);
+          }));
 }
 
 Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {

@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -27,7 +28,7 @@ class Notifier extends StatelessWidget {
           markAsHandled: () => store.dispatch(NotifyHandled())),
       builder: (BuildContext context, _ViewModel state) => child,
       onWillChange: (_ViewModel state, _ViewModel a) {
-        if (a.notify != null) {
+        if (a.notify != null && !state.isLoading) {
           a.markAsHandled();
           BotToast.showAttachedWidget(
               attachedBuilder: (_) => Container(
