@@ -9,3 +9,5 @@ class ChangeStatusVacationSuccess {
   String vacationId;
   String status;
 }
+
+class ChangeStatusVacationError {}

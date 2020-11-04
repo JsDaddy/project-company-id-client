@@ -12,6 +12,8 @@ class GetLogsSuccess {
   Map<DateTime, List<CalendarModel>> logs;
 }
 
+class GetLogsError {}
+
 class GetStatisticSuccess {
   GetStatisticSuccess(this.statistic);
   StatisticModel statistic;
@@ -37,6 +39,8 @@ class GetLogByDatePending {
   String date;
 }
 
+class GetLogByDateError {}
+
 class GetLogByDateSuccess {
   GetLogByDateSuccess(this.logs);
   List<LogModel> logs;
@@ -52,6 +56,8 @@ class AddLogSuccess {
   LogModel log;
 }
 
+class AddLogError {}
+
 class EditLogPending {
   EditLogPending(this.log);
   LogModel log;
@@ -61,6 +67,8 @@ class EditLogSuccess {
   EditLogSuccess(this.log);
   LogModel log;
 }
+
+class EditLogError {}
 
 class DeleteLogPending {
   DeleteLogPending(this.id);
@@ -72,6 +80,8 @@ class DeleteLogSuccess {
   String id;
 }
 
+class DeleteLogError {}
+
 class RequestVacationPending {
   RequestVacationPending(this.vacation);
   LogModel vacation;
@@ -81,6 +91,8 @@ class RequestVacationSuccess {
   RequestVacationSuccess(this.vacation);
   LogModel vacation;
 }
+
+class RequestVacationError {}
 
 class SetVacationSickAvail {
   SetVacationSickAvail(this.vacationSickAvailable);
@@ -93,3 +105,5 @@ class GetRequestsSuccess {
   GetRequestsSuccess(this.requests);
   List<LogModel> requests;
 }
+
+class GetRequestsError {}

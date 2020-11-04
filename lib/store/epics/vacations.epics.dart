@@ -3,7 +3,6 @@ import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
-
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -23,5 +22,6 @@ Stream<void> changeStatusVacationEpic(
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return ChangeStatusVacationError();
           }));
 }

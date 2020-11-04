@@ -28,7 +28,10 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
             ];
           }).onErrorReturnWith((dynamic e) {
             print('checktoken error: $e');
-            return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
+            return <dynamic>[
+              PushReplacementAction(LoginScreen(), key: mainNavigatorKey),
+              CheckTokenError()
+            ];
           }));
 }
 
@@ -41,7 +44,11 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               LogoutSuccess(),
               PushReplacementAction(LoginScreen(), key: mainNavigatorKey)
             ];
-          }));
+          }))
+      .handleError((dynamic e) {
+    print(e);
+    return LogoutError();
+  });
 }
 
 Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
@@ -57,8 +64,11 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            return Notify(NotifyModel(NotificationType.error,
-                e.message as String ?? 'Something went wrong'));
+            return <dynamic>[
+              Notify(NotifyModel(NotificationType.error,
+                  e.message as String ?? 'Something went wrong')),
+              SignInError()
+            ];
           }));
 }
 
@@ -79,5 +89,6 @@ Stream<void> setPasswordEpic(
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return SetPasswordError();
           }));
 }

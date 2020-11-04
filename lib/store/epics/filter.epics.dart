@@ -13,7 +13,10 @@ Stream<void> filteredUsersEpic(
       .switchMap((dynamic action) => Stream<List<UserModel>>.fromFuture(
               getFilteredUsers(action.projectId as String))
           .map((List<UserModel> users) => GetLogsFilterUsersSuccess(users)))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return GetLogsFilterUsersError();
+  });
 }
 
 Stream<void> filteredProjectsEpic(
@@ -24,5 +27,8 @@ Stream<void> filteredProjectsEpic(
               getFilteredProjects(action.userId as String))
           .map((List<ProjectModel> projects) =>
               GetLogsFilterProjectsSucess(projects)))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return GetLogsFilterProjectsError();
+  });
 }

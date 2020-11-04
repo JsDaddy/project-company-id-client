@@ -15,6 +15,8 @@ class GetLogsFilterUsersPending {
   String projectId;
 }
 
+class GetLogsFilterUsersError {}
+
 class GetLogsFilterProjectsPending {
   GetLogsFilterProjectsPending(this.userId);
   String userId;
@@ -30,5 +32,7 @@ class GetLogsFilterProjectsSucess {
   GetLogsFilterProjectsSucess(this.projects);
   List<ProjectModel> projects;
 }
+
+class GetLogsFilterProjectsError {}
 
 class ClearFilterLogsUsersProjects {}

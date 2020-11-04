@@ -12,5 +12,8 @@ Stream<void> getRulesEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               .map((List<RulesModel> rules) {
             return GetRulesSuccess(rules);
           }))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return GetRulesError();
+  });
 }

@@ -27,6 +27,7 @@ Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return GetLogsError();
           }));
 }
 
@@ -46,6 +47,7 @@ Stream<void> getLogByDateEpic(
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return GetLogByDateError();
           }));
 }
 
@@ -64,6 +66,7 @@ Stream<void> addLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return AddLogError();
           }));
 }
 
@@ -82,6 +85,7 @@ Stream<void> editLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return EditLogError();
           }));
 }
 
@@ -100,6 +104,7 @@ Stream<void> deleteLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           }).onErrorReturnWith((dynamic e) {
             print(e);
             print(e.message);
+            return DeleteLogError();
           }));
 }
 

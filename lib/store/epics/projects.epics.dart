@@ -31,7 +31,10 @@ Stream<void> getProjectsEpic(
                 return null;
             }
           }))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return GetProjectsError();
+  });
 }
 
 Stream<void> getDetailProjectEpic(
@@ -43,7 +46,10 @@ Stream<void> getDetailProjectEpic(
               .map((ProjectModel project) {
             return GetDetailProjectSuccess(project);
           }))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return GetDetailProjectError();
+  });
 }
 
 Stream<dynamic> getLastProjectEpic(
@@ -89,7 +95,10 @@ Stream<void> addUserToProjectEpic(
                 Notify(NotifyModel(NotificationType.success,
                     'User has been added to the project')),
               ]))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return AddUserToProjectError();
+  });
 }
 
 Stream<void> removeUserFromProjectEpic(
@@ -104,5 +113,8 @@ Stream<void> removeUserFromProjectEpic(
                 Notify(NotifyModel(NotificationType.success,
                     'User has been removed from the project')),
               ]))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    print(e);
+    return RemoveUserFromProjectError();
+  });
 }

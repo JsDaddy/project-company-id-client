@@ -17,6 +17,10 @@ class GetAbsentUsersSuccess {
   List<UserModel> absentUsers;
 }
 
+class GetUsersError {}
+
+class GetAbsentUsersError {}
+
 class GetUserPending {
   GetUserPending(this.id);
   String id;
@@ -27,9 +31,9 @@ class GetUserSuccess {
   UserModel user;
 }
 
-enum UsersType { Default, Filter, Absent }
+class GetUserError {}
 
-class AddProjectToUserError {}
+enum UsersType { Default, Filter, Absent }
 
 class RemoveProjectFromUserPending {
   RemoveProjectFromUserPending(this.userId, this.project);
