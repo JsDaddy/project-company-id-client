@@ -29,7 +29,7 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                 return null;
             }
           }))
-      .handleError((dynamic e) {
+      .onErrorReturnWith((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
     return GetUsersError();
@@ -39,10 +39,10 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
 Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {
   return actions
       .where((dynamic action) => action is GetUserPending)
-      .switchMap((dynamic action) =>
+      .switchMap<dynamic>((dynamic action) =>
           Stream<UserModel>.fromFuture(getUser(action.id as String))
-              .map((UserModel user) => GetUserSuccess(user)))
-      .handleError((dynamic e) {
+              .map<dynamic>((UserModel user) => GetUserSuccess(user)))
+      .onErrorReturnWith((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
     return GetUserError();
@@ -61,7 +61,7 @@ Stream<void> removeProjectFromUserEpic(
                 Notify(NotifyModel(NotificationType.success,
                     'Project has been removed from the active projects')),
               ]))
-      .handleError((dynamic e) {
+      .onErrorReturnWith((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
     return RemoveProjectFromUserError();

@@ -10,12 +10,12 @@ import 'package:company_id_new/store/store.dart' as s;
 Stream<void> getRulesEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is GetRulesPending)
-      .switchMap((dynamic action) =>
+      .switchMap<dynamic>((dynamic action) =>
           Stream<List<RulesModel>>.fromFuture(getRules())
-              .map((List<RulesModel> rules) {
+              .map<dynamic>((List<RulesModel> rules) {
             return GetRulesSuccess(rules);
           }))
-      .handleError((dynamic e) {
+      .onErrorReturnWith((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
     return GetRulesError();

@@ -133,13 +133,13 @@ Stream<void> getRequestsEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is GetRequestsPending)
-      .switchMap((dynamic action) =>
+      .switchMap<dynamic>((dynamic action) =>
           Stream<List<LogModel>>.fromFuture(getRequests())
-              .map((List<LogModel> requests) {
+              .map<dynamic>((List<LogModel> requests) {
             refresh.refreshController.refreshCompleted();
             return GetRequestsSuccess(requests);
           }))
-      .handleError((dynamic e) {
+      .onErrorReturnWith((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
     return GetRequestsError();
