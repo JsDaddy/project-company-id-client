@@ -14,7 +14,8 @@ class PushReplacementAction {
 }
 
 class PopAction {
-  PopAction({this.params, this.key});
+  PopAction({this.params, this.changeTitle = true, this.key});
   GlobalKey<NavigatorState> key;
+  bool changeTitle;
   dynamic params;
 }

@@ -1,3 +1,4 @@
+import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
@@ -54,9 +55,17 @@ class _UsersScreenState extends State<UsersScreen> {
                         '${user.name} ${user.lastName}')),
                     textSpan: TextSpan(
                         text: '${user.name} ${user.lastName}',
-                        style: const TextStyle(fontSize: 15)),
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: user.endDate == null
+                                ? Colors.white
+                                : AppColors.semiGrey)),
                     trailing: Text(
-                        AppConverting.getPositionFromString(user.position)),
+                        AppConverting.getPositionFromString(user.position),
+                        style: TextStyle(
+                            color: user.endDate == null
+                                ? Colors.white
+                                : AppColors.semiGrey)),
                   );
                 }).toList());
         });

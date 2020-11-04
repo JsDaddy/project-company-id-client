@@ -2,23 +2,25 @@ import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 
 class UserModel {
-  UserModel(
-      {this.avatar,
-      this.github,
-      this.date,
-      this.email,
-      this.lastName,
-      this.name,
-      this.phone,
-      this.activeProjects,
-      this.position,
-      this.skype,
-      this.projects,
-      this.id,
-      this.englishLevel,
-      this.initialLogin,
-      this.sickAvailable,
-      this.vacationAvailable});
+  UserModel({
+    this.avatar,
+    this.github,
+    this.date,
+    this.email,
+    this.lastName,
+    this.name,
+    this.phone,
+    this.activeProjects,
+    this.position,
+    this.skype,
+    this.projects,
+    this.id,
+    this.englishLevel,
+    this.initialLogin,
+    this.sickAvailable,
+    this.vacationAvailable,
+    this.endDate,
+  });
   final String avatar;
   final String github;
   final DateTime date;
@@ -35,6 +37,7 @@ class UserModel {
   final List<ProjectModel> projects;
   final int vacationAvailable;
   final int sickAvailable;
+  final DateTime endDate;
 
   static UserModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
@@ -67,6 +70,9 @@ class UserModel {
       position: AppConverting.getPositionFromEnum(json['position'] as String),
       skype: json['skype'] as String,
       initialLogin: json['initialLogin'] as bool,
+      endDate: json['endDate'] == null
+          ? null
+          : DateTime.parse(json['endDate'] as String),
     );
   }
 
@@ -88,6 +94,7 @@ class UserModel {
       String englishLevel,
       String documentId,
       bool initialLogin,
+      DateTime endDate,
       List<ProjectModel> projects) {
     return UserModel(
         avatar: avatar ?? this.avatar,
@@ -105,6 +112,7 @@ class UserModel {
         projects: projects ?? this.projects,
         position: position ?? this.position,
         skype: skype ?? this.skype,
+        endDate: endDate ?? this.endDate,
         initialLogin: initialLogin ?? this.initialLogin);
   }
 }
