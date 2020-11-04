@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/services/rules.service.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/rules.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
@@ -15,8 +16,8 @@ Stream<void> getRulesEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
             return GetRulesSuccess(rules);
           }))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return GetRulesError();
   });
 }

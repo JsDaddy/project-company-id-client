@@ -33,8 +33,8 @@ Stream<void> getProjectsEpic(
             }
           }))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return GetProjectsError();
   });
 }
@@ -49,8 +49,8 @@ Stream<void> getDetailProjectEpic(
             return GetDetailProjectSuccess(project);
           }))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return GetDetailProjectError();
   });
 }
@@ -99,8 +99,8 @@ Stream<void> addUserToProjectEpic(
                     'User has been added to the project')),
               ]))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return AddUserToProjectError();
   });
 }
@@ -118,8 +118,8 @@ Stream<void> removeUserFromProjectEpic(
                     'User has been removed from the project')),
               ]))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return RemoveUserFromProjectError();
   });
 }

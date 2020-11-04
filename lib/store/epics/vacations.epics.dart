@@ -21,8 +21,8 @@ Stream<void> changeStatusVacationEpic(
                   'Vacation has been ${vacation.status}')),
             ];
           }).onErrorReturnWith((dynamic e) {
-            s.store.dispatch(NotifyModel(NotificationType.error,
-                e.message as String ?? 'Something went wrong'));
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
             return ChangeStatusVacationError();
           }));
 }

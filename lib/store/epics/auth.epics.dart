@@ -61,8 +61,8 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            s.store.dispatch(NotifyModel(NotificationType.error,
-                e.message as String ?? 'Something went wrong'));
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
             return SignInError();
           }));
 }
@@ -82,8 +82,8 @@ Stream<void> setPasswordEpic(
               PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            s.store.dispatch(NotifyModel(NotificationType.error,
-                e.message as String ?? 'Something went wrong'));
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
             return SetPasswordError();
           }));
 }

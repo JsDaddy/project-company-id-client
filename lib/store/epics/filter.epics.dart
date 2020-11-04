@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/services/filter.service.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
+import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -16,8 +17,8 @@ Stream<void> filteredUsersEpic(
               getFilteredUsers(action.projectId as String))
           .map((List<UserModel> users) => GetLogsFilterUsersSuccess(users)))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return GetLogsFilterUsersError();
   });
 }
@@ -31,8 +32,8 @@ Stream<void> filteredProjectsEpic(
           .map((List<ProjectModel> projects) =>
               GetLogsFilterProjectsSucess(projects)))
       .handleError((dynamic e) {
-    s.store.dispatch(NotifyModel(
-        NotificationType.error, e.message as String ?? 'Something went wrong'));
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
     return GetLogsFilterProjectsError();
   });
 }
