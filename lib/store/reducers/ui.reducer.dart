@@ -20,7 +20,10 @@ List<String> _setClearTitle(List<String> titles, dynamic action) {
 }
 
 List<String> _removeLast(List<String> titles, PopAction action) {
+  if (!action.changeTitle) {
+    return titles;
+  }
   final List<String> newTitles = <String>[...titles];
   newTitles.removeLast();
-  return action.changeTitle ? newTitles : <String>[...titles];
+  return newTitles;
 }

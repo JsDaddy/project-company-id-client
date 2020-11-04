@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/services/validators.service.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(left: 50, right: 50, top: 100),
                 child: ListView(
                   children: <Widget>[
-                    Image.asset('assets/mac_boroda.png'),
+                    Image.asset(AppImages.boroda),
                     const SizedBox(
                       height: 64,
                     ),
