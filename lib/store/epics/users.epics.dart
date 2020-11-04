@@ -8,6 +8,7 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
@@ -29,7 +30,8 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
             }
           }))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return GetUsersError();
   });
 }
@@ -41,7 +43,8 @@ Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {
           Stream<UserModel>.fromFuture(getUser(action.id as String))
               .map((UserModel user) => GetUserSuccess(user)))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return GetUserError();
   });
 }
@@ -59,7 +62,8 @@ Stream<void> removeProjectFromUserEpic(
                     'Project has been removed from the active projects')),
               ]))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return RemoveProjectFromUserError();
   });
 }

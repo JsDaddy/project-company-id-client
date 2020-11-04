@@ -5,6 +5,7 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> changeStatusVacationEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
@@ -20,8 +21,8 @@ Stream<void> changeStatusVacationEpic(
                   'Vacation has been ${vacation.status}')),
             ];
           }).onErrorReturnWith((dynamic e) {
-            print(e);
-            print(e.message);
+            s.store.dispatch(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong'));
             return ChangeStatusVacationError();
           }));
 }

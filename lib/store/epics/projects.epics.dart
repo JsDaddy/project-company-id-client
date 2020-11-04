@@ -10,6 +10,7 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:company_id_new/common/services/local-storage.service.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> getProjectsEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
@@ -32,7 +33,8 @@ Stream<void> getProjectsEpic(
             }
           }))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return GetProjectsError();
   });
 }
@@ -47,7 +49,8 @@ Stream<void> getDetailProjectEpic(
             return GetDetailProjectSuccess(project);
           }))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return GetDetailProjectError();
   });
 }
@@ -96,7 +99,8 @@ Stream<void> addUserToProjectEpic(
                     'User has been added to the project')),
               ]))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return AddUserToProjectError();
   });
 }
@@ -114,7 +118,8 @@ Stream<void> removeUserFromProjectEpic(
                     'User has been removed from the project')),
               ]))
       .handleError((dynamic e) {
-    print(e);
+    s.store.dispatch(NotifyModel(
+        NotificationType.error, e.message as String ?? 'Something went wrong'));
     return RemoveUserFromProjectError();
   });
 }

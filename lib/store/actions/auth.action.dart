@@ -7,8 +7,6 @@ class CheckTokenSuccess {
   UserModel user;
 }
 
-class CheckTokenError {}
-
 class SignInPending {
   SignInPending(this.email, this.password);
   String email;
@@ -32,7 +30,5 @@ class SetPasswordSuccess {}
 class LogoutPending {}
 
 class LogoutSuccess {}
-
-class LogoutError {}
 
 class SetPasswordError {}

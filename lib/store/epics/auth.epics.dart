@@ -12,6 +12,7 @@ import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
@@ -27,11 +28,8 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            print('checktoken error: $e');
-            return <dynamic>[
-              PushReplacementAction(LoginScreen(), key: mainNavigatorKey),
-              CheckTokenError()
-            ];
+            print('checktoken error: ${e.message}');
+            return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
           }));
 }
 
@@ -47,7 +45,6 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           }))
       .handleError((dynamic e) {
     print(e);
-    return LogoutError();
   });
 }
 
@@ -64,11 +61,9 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            return <dynamic>[
-              Notify(NotifyModel(NotificationType.error,
-                  e.message as String ?? 'Something went wrong')),
-              SignInError()
-            ];
+            s.store.dispatch(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong'));
+            return SignInError();
           }));
 }
 
@@ -87,8 +82,8 @@ Stream<void> setPasswordEpic(
               PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            print(e);
-            print(e.message);
+            s.store.dispatch(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong'));
             return SetPasswordError();
           }));
 }
