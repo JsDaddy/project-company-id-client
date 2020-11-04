@@ -81,7 +81,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
             filterLogsUsersProjects: store.state.filterLogsUsersProjects,
             isLoading: store.state.isLoading,
             filter: store.state.filter),
-        onWillChange: (_, _ViewModel state) {
+        onWillChange: (_ViewModel prev, _ViewModel state) {
           if (selectedProject != null) {
             setState(() {
               selectedProject = state.filterLogsUsersProjects.projects
@@ -98,9 +98,9 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                   orElse: () => null);
             });
           }
-
           if (state.filterLogsUsersProjects.projects.isNotEmpty &&
-              state.filter?.project?.id != null) {
+              state.filter?.project?.id != null &&
+              selectedProject == null) {
             setState(() {
               selectedProject = state.filterLogsUsersProjects.projects
                   .firstWhere(
@@ -110,7 +110,8 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
             });
           }
           if (state.filterLogsUsersProjects.users.isNotEmpty &&
-              state.filter?.user?.id != null) {
+              state.filter?.user?.id != null &&
+              selectedUser == null) {
             setState(() {
               selectedUser = state.filterLogsUsersProjects.users.firstWhere(
                   (UserModel user) => user.id == state.filter.user.id,
@@ -182,7 +183,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                         if (type.title == sickness) {
                                           if (value == nonPaid) {
                                             type.vacationType =
-                                                VacationType.SICKPAID;
+                                                VacationType.SICKNONPAID;
                                           } else {
                                             type.vacationType =
                                                 VacationType.SICKPAID;
@@ -271,7 +272,9 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                 filter.project = selectedProject;
                               }
                               store.dispatch(PopAction(
-                                  key: mainNavigatorKey, params: filter));
+                                  key: mainNavigatorKey,
+                                  changeTitle: false,
+                                  params: filter));
                             })
                       ],
                     ),

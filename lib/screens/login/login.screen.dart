@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/services/validators.service.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
@@ -36,62 +37,60 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
         builder: (BuildContext context, _ViewModel state) {
           return Notifier(
-            child: LoaderWrapper(
-              child: Scaffold(
-                  body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 50, right: 50, top: 100),
-                  child: ListView(
-                    children: <Widget>[
-                      Image.asset('assets/mac_boroda.png'),
-                      const SizedBox(
-                        height: 64,
+            child: Scaffold(
+                body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, top: 100),
+                child: ListView(
+                  children: <Widget>[
+                    Image.asset(AppImages.boroda),
+                    const SizedBox(
+                      height: 64,
+                    ),
+                    const Text(
+                      'Login',
+                      style: TextStyle(
+                          color: AppColors.red,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    AppInput(
+                      validator: (String value) => validators.validateIsEmpty(
+                          value, 'Please enter email'),
+                      myController: _emailController,
+                      labelText: 'Email',
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    AppInput(
+                      obscureText: true,
+                      validator: (String value) => validators.validateIsEmpty(
+                        value,
+                        'Please enter password',
                       ),
-                      const Text(
-                        'Login',
-                        style: TextStyle(
-                            color: AppColors.red,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold),
+                      myController: _passwordController,
+                      labelText: 'Password',
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: AppButtonWidget(
+                        width: 140,
+                        title: 'Login',
+                        isLoading: state.isLoading,
+                        onClick: () => _onLogin(),
                       ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      AppInput(
-                        validator: (String value) => validators.validateIsEmpty(
-                            value, 'Please enter email'),
-                        myController: _emailController,
-                        labelText: 'Email',
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      AppInput(
-                        obscureText: true,
-                        validator: (String value) => validators.validateIsEmpty(
-                          value,
-                          'Please enter password',
-                        ),
-                        myController: _passwordController,
-                        labelText: 'Password',
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: AppButtonWidget(
-                          width: 140,
-                          title: 'Login',
-                          isLoading: state.isLoading,
-                          onClick: () => _onLogin(),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              )),
-            ),
+              ),
+            )),
           );
         });
   }

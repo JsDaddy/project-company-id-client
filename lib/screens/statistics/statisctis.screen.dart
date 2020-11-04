@@ -164,35 +164,21 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   void _onDaySelected(DateTime day, List<dynamic> events) {
     store.dispatch(SetCurrentDay(day));
-    if (store.state.user.position == Positions.DEVELOPER) {
-      store
-          .dispatch(GetLogByDatePending('$day/all?uid=${store.state.user.id}'));
-    } else {
-      store.dispatch(GetLogByDatePending('$day'));
-    }
+    store.dispatch(GetLogByDatePending('$day'));
   }
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     store.dispatch(SetCurrentMonth(first));
-    if (store.state.user.position == Positions.DEVELOPER) {
-      store.dispatch(GetLogsPending('$first/all?uid=${store.state.user.id}'));
-    } else {
-      store.dispatch(GetLogsPending('$first'));
-    }
+    store.dispatch(GetLogsPending('$first'));
   }
 
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     store.dispatch(SetCurrentMonth(first));
-    if (store.state.user.position == Positions.DEVELOPER) {
-      store.dispatch(GetLogsPending('$first/all?uid=${store.state.user.id}'));
-      store.dispatch(GetLogByDatePending(
-          '${store.state.currentDate.currentDay}/all?uid=${store.state.user.id}'));
-    } else {
-      store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
-      store.dispatch(GetLogByDatePending('${DateTime.now()}'));
-    }
+
+    store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
+    store.dispatch(GetLogByDatePending('${DateTime.now()}'));
   }
 
   bool _isExisted(AppState state) {

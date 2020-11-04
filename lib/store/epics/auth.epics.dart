@@ -37,7 +37,7 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is LogoutPending)
       .switchMap<dynamic>((dynamic action) =>
-          Stream<void>.fromFuture(logout()).map<dynamic>((_) {
+          Stream<void>.fromFuture(logout()).expand<dynamic>((_) {
             return <dynamic>[
               LogoutSuccess(),
               PushReplacementAction(LoginScreen(), key: mainNavigatorKey)

@@ -5,13 +5,17 @@ import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
+import 'package:company_id_new/store/store.dart';
 import 'package:dio/dio.dart';
 
 Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
   final List<String> queriesArr = <String>[];
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
-
+  if (store.state.user.position == Positions.DEVELOPER) {
+    queriesArr.add(AppQuery.userQuery(store.state.user.id));
+  }
   if (filter?.user?.id != null) {
     queriesArr.add(AppQuery.userQuery(filter.user.id));
   }
@@ -33,7 +37,6 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
       fullQuery += '&$query';
     }
   }
-
   final Response<dynamic> res =
       await api.dio.get<dynamic>('/logs/$date/$logType$fullQuery');
   final Map<String, dynamic> logs = res.data['logs'] as Map<String, dynamic>;
@@ -55,7 +58,9 @@ Future<LogResponse> getLogsByDate(String date, FilterModel filter) async {
   final List<String> queriesArr = <String>[];
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
-
+  if (store.state.user.position == Positions.DEVELOPER) {
+    queriesArr.add(AppQuery.userQuery(store.state.user.id));
+  }
   if (filter?.user?.id != null) {
     queriesArr.add(AppQuery.userQuery(filter.user.id));
   }
