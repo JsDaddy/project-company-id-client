@@ -29,10 +29,10 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                 return null;
             }
           }))
-      .onErrorReturnWith((dynamic e) {
+      .handleError((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
-    return GetUsersError();
+    s.store.dispatch(GetUsersError());
   });
 }
 
@@ -42,10 +42,10 @@ Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {
       .switchMap<dynamic>((dynamic action) =>
           Stream<UserModel>.fromFuture(getUser(action.id as String))
               .map<dynamic>((UserModel user) => GetUserSuccess(user)))
-      .onErrorReturnWith((dynamic e) {
+      .handleError((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
-    return GetUserError();
+    s.store.dispatch(GetUserError());
   });
 }
 
@@ -53,17 +53,17 @@ Stream<void> removeProjectFromUserEpic(
     Stream<dynamic> actions, EpicStore<AppState> store) {
   return actions
       .where((dynamic action) => action is RemoveProjectFromUserPending)
-      .switchMap<dynamic>((dynamic action) => Stream<void>.fromFuture(
-              removeActiveProjectFromUser(
-                  action.project as ProjectModel, action.userId as String))
-          .expand<dynamic>((_) => <dynamic>[
-                RemoveProjectFromUserSuccess(action.project as ProjectModel),
-                Notify(NotifyModel(NotificationType.success,
-                    'Project has been removed from the active projects')),
-              ]))
-      .onErrorReturnWith((dynamic e) {
+      .switchMap<dynamic>((dynamic action) {
+    return Stream<void>.fromFuture(removeActiveProjectFromUser(
+            action.project as ProjectModel, action.userId as String))
+        .expand<dynamic>((_) => <dynamic>[
+              RemoveProjectFromUserSuccess(action.project as ProjectModel),
+              Notify(NotifyModel(NotificationType.success,
+                  'Project has been removed from the active projects')),
+            ]);
+  }).handleError((dynamic e) {
     s.store.dispatch(Notify(NotifyModel(NotificationType.error,
         e.message as String ?? 'Something went wrong')));
-    return RemoveProjectFromUserError();
+    s.store.dispatch(RemoveProjectFromUserError());
   });
 }

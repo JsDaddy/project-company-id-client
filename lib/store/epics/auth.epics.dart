@@ -60,10 +60,10 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   user.initialLogin ? SetPasswordScreen() : HomeScreen(),
                   key: mainNavigatorKey)
             ];
-          }).onErrorReturnWith((dynamic e) {
+          }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));
-            return SignInError();
+            s.store.dispatch(SignInError());
           }));
 }
 
@@ -81,9 +81,9 @@ Stream<void> setPasswordEpic(
               SetTitle('Statistics'),
               PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
-          }).onErrorReturnWith((dynamic e) {
+          }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));
-            return SetPasswordError();
+            s.store.dispatch(SetPasswordError());
           }));
 }
