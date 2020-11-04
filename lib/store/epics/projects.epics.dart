@@ -10,6 +10,7 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:company_id_new/common/services/local-storage.service.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> getProjectsEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
@@ -30,20 +31,27 @@ Stream<void> getProjectsEpic(
               default:
                 return null;
             }
-          }))
-      .handleError((dynamic e) => print(e));
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(GetProjectsError());
+          }));
 }
 
 Stream<void> getDetailProjectEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is GetDetailProjectPending)
-      .switchMap((dynamic action) => Stream<ProjectModel>.fromFuture(
+      .switchMap<dynamic>((dynamic action) => Stream<ProjectModel>.fromFuture(
                   getDetailProject(action.projectId as String))
-              .map((ProjectModel project) {
+              .map<dynamic>((ProjectModel project) {
             return GetDetailProjectSuccess(project);
           }))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
+    s.store.dispatch(GetDetailProjectError());
+  });
 }
 
 Stream<dynamic> getLastProjectEpic(
@@ -89,7 +97,11 @@ Stream<void> addUserToProjectEpic(
                 Notify(NotifyModel(NotificationType.success,
                     'User has been added to the project')),
               ]))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
+    s.store.dispatch(AddUserToProjectError());
+  });
 }
 
 Stream<void> removeUserFromProjectEpic(
@@ -104,5 +116,9 @@ Stream<void> removeUserFromProjectEpic(
                 Notify(NotifyModel(NotificationType.success,
                     'User has been removed from the project')),
               ]))
-      .handleError((dynamic e) => print(e));
+      .handleError((dynamic e) {
+    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+        e.message as String ?? 'Something went wrong')));
+    s.store.dispatch(RemoveUserFromProjectError());
+  });
 }

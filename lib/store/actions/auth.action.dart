@@ -18,6 +18,8 @@ class SignInSuccess {
   UserModel user;
 }
 
+class SignInError {}
+
 class SetPasswordPending {
   SetPasswordPending(this.password);
   String password;
@@ -28,3 +30,5 @@ class SetPasswordSuccess {}
 class LogoutPending {}
 
 class LogoutSuccess {}
+
+class SetPasswordError {}

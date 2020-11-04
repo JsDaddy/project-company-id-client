@@ -12,6 +12,7 @@ import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:company_id_new/store/store.dart' as s;
 
 Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
@@ -27,7 +28,7 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            print('checktoken error: $e');
+            print('checktoken error: ${e.message}');
             return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
           }));
 }
@@ -41,6 +42,8 @@ Stream<void> logoutEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               LogoutSuccess(),
               PushReplacementAction(LoginScreen(), key: mainNavigatorKey)
             ];
+          }).handleError((dynamic e) {
+            print(e);
           }));
 }
 
@@ -56,9 +59,10 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   user.initialLogin ? SetPasswordScreen() : HomeScreen(),
                   key: mainNavigatorKey)
             ];
-          }).onErrorReturnWith((dynamic e) {
-            return Notify(NotifyModel(NotificationType.error,
-                e.message as String ?? 'Something went wrong'));
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(SignInError());
           }));
 }
 
@@ -76,8 +80,9 @@ Stream<void> setPasswordEpic(
               SetTitle('Statistics'),
               PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
-          }).onErrorReturnWith((dynamic e) {
-            print(e);
-            print(e.message);
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(SetPasswordError());
           }));
 }

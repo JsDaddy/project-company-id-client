@@ -12,6 +12,8 @@ class GetProjectsSuccess {
   List<ProjectModel> projects;
 }
 
+class GetProjectsError {}
+
 class GetDetailProjectPending {
   GetDetailProjectPending(this.projectId);
   String projectId;
@@ -23,6 +25,8 @@ class GetDetailProjectSuccess {
   GetDetailProjectSuccess(this.project);
   ProjectModel project;
 }
+
+class GetDetailProjectError {}
 
 class GetProjectPrefPending {}
 
@@ -83,3 +87,5 @@ class GetAbsentProjectsSuccess {
   List<ProjectModel> absentProjects;
   ProjectsType projectTypes;
 }
+
+class GetAbsentProjectsError {}

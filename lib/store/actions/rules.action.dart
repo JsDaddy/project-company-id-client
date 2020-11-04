@@ -6,3 +6,5 @@ class GetRulesSuccess {
   GetRulesSuccess(this.rules);
   List<RulesModel> rules;
 }
+
+class GetRulesError {}
