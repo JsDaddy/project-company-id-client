@@ -17,12 +17,4 @@ class AppQuery {
   static String projectQuery(String projectId) {
     return 'project=$projectId';
   }
-
-  static String logTypeQuery(LogType logType) {
-    if (logType == null) {
-      return '';
-    }
-    final String type = AppConverting.getTypeLogQuery(logType);
-    return 'logType=$type';
-  }
 }

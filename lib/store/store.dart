@@ -28,7 +28,8 @@ final AppState initalState = AppState(
     absentUsers: <UserModel>[],
     absentProjects: <ProjectModel>[],
     currentDate: CurrentDateModel(
-        currentDay: DateTime.now(),
+        currentDay: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 0, 0),
         currentMohth: DateTime(
             DateTime.now().year, DateTime.now().month, 1, DateTime.now().hour)),
     filterLogsUsersProjects: FilterLogsUsersProjects(

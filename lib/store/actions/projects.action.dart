@@ -87,5 +87,3 @@ class GetAbsentProjectsSuccess {
   List<ProjectModel> absentProjects;
   ProjectsType projectTypes;
 }
-
-class GetAbsentProjectsError {}

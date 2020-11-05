@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:flutter/material.dart';
 
 class AvatarWidget extends StatelessWidget {
@@ -19,6 +20,6 @@ class AvatarWidget extends StatelessWidget {
                     gaplessPlayback: true,
                     fit: BoxFit.cover,
                   )
-                : Image.asset('assets/no-avatar.png')));
+                : Image.asset(AppImages.noAvatar)));
   }
 }

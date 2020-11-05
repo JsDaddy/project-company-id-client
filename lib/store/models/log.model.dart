@@ -49,7 +49,9 @@ class LogModel {
             : json['name'] != null
                 ? LogType.holiday
                 : json['fullName'] != null ? LogType.birthday : LogType.timelog,
-        user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
+        user: json['user'] != null
+            ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
+            : null,
         project: json['project'] != null
             ? ProjectModel.fromJson(json['project'] as Map<String, dynamic>)
             : null);

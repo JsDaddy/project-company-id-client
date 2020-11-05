@@ -1,41 +1,59 @@
-import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/common/widgets/event-marker/event-marker.widget.dart';
 import 'package:flutter/material.dart';
 
+class BadgeModel {
+  BadgeModel(this.color, this.value, this.weight);
+  int weight;
+  dynamic value;
+  Color color;
+}
+
 class EventMarkersWidget extends StatelessWidget {
-  const EventMarkersWidget(this.date, this.events);
-  final DateTime date;
-  final List<dynamic> events;
+  const EventMarkersWidget(this.badges);
+  final List<BadgeModel> badges;
   @override
   Widget build(BuildContext context) {
-    return events[0].timelogs != null
-        ? EventMarkerWidget(
-            color:
-                events[0].birthdays != null ? AppColors.orange : AppColors.red,
-            size: 24,
-            child: Center(
-              child: Text(
-                events[0].timelogs.round() != events[0].timelogs
-                    ? events[0].timelogs.toString()
-                    : events[0].timelogs.toInt().toString(),
-                style: const TextStyle(
-                  fontSize: 12.0,
-                ),
-              ),
-            ))
-        : events[0].birthdays != null
-            ? const EventMarkerWidget(
-                color: AppColors.orange,
-                size: 18,
-              )
-            : events[0].vacations != null
-                ? Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: AppColors.green),
-                    child: Center(child: Text(events.length.toString())),
-                    width: 16.0,
-                    height: 16.0,
-                  )
-                : Container();
+    return badges != null && badges.isEmpty
+        ? Container()
+        : Stack(
+            children: badges.map((BadgeModel badge) {
+            final int index = badges.indexOf(badge);
+            switch (index) {
+              case 0:
+                return Container(
+                  decoration:
+                      BoxDecoration(shape: BoxShape.circle, color: badge.color),
+                  width: 24,
+                  height: 24,
+                  child: Center(
+                    child: Text(
+                      badge.value.toString(),
+                      style: const TextStyle(fontSize: 11),
+                    ),
+                  ),
+                );
+              case 1:
+                return Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: badge.color),
+                    width: 6,
+                    height: 6,
+                  ),
+                );
+              case 2:
+                return Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: badge.color),
+                    width: 6,
+                    height: 6,
+                  ),
+                );
+            }
+          }).toList());
   }
 }
