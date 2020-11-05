@@ -48,6 +48,25 @@ Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {
           }));
 }
 
+Stream<void> archiveUserEpic(
+    Stream<dynamic> actions, EpicStore<AppState> store) {
+  return actions
+      .where((dynamic action) => action is ArchiveUserPending)
+      .switchMap<dynamic>((dynamic action) =>
+          Stream<DateTime>.fromFuture(archiveUser(action.id as String))
+              .expand<dynamic>((DateTime dateTime) => <dynamic>[
+                    Notify(NotifyModel(
+                        NotificationType.success, 'User has been archived')),
+                    ArchiveUserSuccess(action.id as String, dateTime)
+                  ])
+              .handleError((dynamic e) {
+            print(e);
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(ArchiveUserError());
+          }));
+}
+
 Stream<void> removeProjectFromUserEpic(
     Stream<dynamic> actions, EpicStore<AppState> store) {
   return actions

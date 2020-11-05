@@ -8,6 +8,7 @@ import 'package:company_id_new/screens/statistics/filter/filter.widget.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/models/badge.model.dart';
 import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -147,15 +148,15 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           final CalendarModel calendar =
                               events[0] as CalendarModel;
                           if (calendar.timelogs != null) {
-                            badges.add(BadgeModel(
-                                AppColors.red, calendar.timelogs, 1));
+                            badges.add(
+                                BadgeModel(AppColors.red, calendar.timelogs));
                           }
                           if (calendar.vacations != null) {
                             badges.add(BadgeModel(
-                                AppColors.green, calendar.vacations, 2));
+                                AppColors.green, calendar.vacations));
                           }
                           if (calendar.birthdays != null) {
-                            badges.add(BadgeModel(AppColors.orange, '', 3));
+                            badges.add(BadgeModel(AppColors.orange, ''));
                           }
                           children.add(
                             Positioned(
@@ -197,7 +198,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   bool _isExisted(AppState state) {
     final String authId = state.user.id;
-    print(state.user.id);
     return state.logsByDate.any(
         (LogModel log) => log.user.id == authId && log.vacationType != null);
   }

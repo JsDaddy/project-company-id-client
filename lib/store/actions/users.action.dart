@@ -31,6 +31,19 @@ class GetUserSuccess {
 
 class GetUserError {}
 
+class ArchiveUserPending {
+  ArchiveUserPending(this.id);
+  String id;
+}
+
+class ArchiveUserSuccess {
+  ArchiveUserSuccess(this.id, this.date);
+  String id;
+  DateTime date;
+}
+
+class ArchiveUserError {}
+
 enum UsersType { Default, Filter, Absent }
 
 class RemoveProjectFromUserPending {
