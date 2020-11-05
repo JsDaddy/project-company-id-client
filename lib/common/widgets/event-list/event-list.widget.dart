@@ -12,7 +12,7 @@ import 'package:company_id_new/store/models/user.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:redux/redux.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
@@ -28,7 +28,7 @@ class _ViewModel {
       this.currentDate,
       this.authUser,
       this.vacationSickAvailable});
-  FilterModel filter;
+  LogFilterModel filter;
   CurrentDateModel currentDate;
   List<LogModel> logs;
   VacationSickAvailable vacationSickAvailable;
@@ -67,7 +67,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                       state.filter?.logType?.logType == LogType.timelog
                           ? InkWell(
                               onTap: () {
-                                store.dispatch(SaveFilter(store.state.filter
+                                store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(
                                         logType:
                                             FilterType('All', LogType.all))));
@@ -82,7 +82,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                       state.filter?.logType?.logType == LogType.vacation
                           ? InkWell(
                               onTap: () {
-                                store.dispatch(SaveFilter(store.state.filter
+                                store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(
                                         logType:
                                             FilterType('All', LogType.all))));
@@ -97,7 +97,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                       state.filter?.user?.id != null
                           ? InkWell(
                               onTap: () {
-                                store.dispatch(SaveFilter(store.state.filter
+                                store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(user: UserModel())));
                                 _updateLogs(state);
                               },
@@ -111,7 +111,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                       state.filter?.project?.id != null
                           ? InkWell(
                               onTap: () {
-                                store.dispatch(SaveFilter(store.state.filter
+                                store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(project: ProjectModel())));
                                 _updateLogs(state);
                               },

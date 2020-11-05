@@ -2,7 +2,7 @@ import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/helpers/app-query.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -15,7 +15,7 @@ class StatisticLog {
   String logType;
 }
 
-StatisticLog statisticLogs(FilterModel filter) {
+StatisticLog statisticLogs(LogFilterModel filter) {
   final List<String> queriesArr = <String>[];
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
@@ -46,7 +46,7 @@ StatisticLog statisticLogs(FilterModel filter) {
   return StatisticLog(fullQuery, logType);
 }
 
-Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
+Future<Map<String, dynamic>> getLogs(String date, LogFilterModel filter) async {
   final StatisticLog statLog = statisticLogs(filter);
 
   final Response<dynamic> res = await api.dio
@@ -66,7 +66,7 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
   return <String, dynamic>{'logs': mappedLogs, 'statistic': mappedStatistic};
 }
 
-Future<LogResponse> getLogsByDate(String date, FilterModel filter) async {
+Future<LogResponse> getLogsByDate(String date, LogFilterModel filter) async {
   final StatisticLog statLog = statisticLogs(filter);
   final Response<dynamic> res = await api.dio
       .get<dynamic>('/logs/solo/$date/${statLog.logType}${statLog.fullQuery}');

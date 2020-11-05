@@ -1,14 +1,21 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
+import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
 import 'package:company_id_new/screens/create-project/create-project.screen.dart';
 import 'package:company_id_new/screens/project-details/project-details.screen.dart';
+import 'package:company_id_new/screens/projects/filter/filter.widget.dart';
+import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/store/models/project-spec.model.dart';
+import 'package:company_id_new/store/models/project-status.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/projects-filter.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +25,10 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.projects, this.isLoading});
+  _ViewModel({this.projects, this.isLoading, this.filter});
   List<ProjectModel> projects;
   bool isLoading;
+  ProjectsFilterModel filter;
 }
 
 class ProjectsScreen extends StatefulWidget {
@@ -33,7 +41,13 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   @override
   void initState() {
     speedDials = <SpeedDialChild>[
-      speedDialChild(() {}, const Icon(Icons.search)),
+      speedDialChild(
+          () => showModalBottomSheet<dynamic>(
+              context: context,
+              useRootNavigator: true,
+              isScrollControlled: true,
+              builder: (BuildContext context) => FilterProjectsWidget()),
+          const Icon(Icons.search)),
       speedDialChild(
           () => store
               .dispatch(PushAction(CreateProjectScreen(), 'Create project')),
@@ -53,7 +67,14 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
-            projects: store.state.projects, isLoading: store.state.isLoading),
+            projects: store.state.projects,
+            isLoading: store.state.isLoading,
+            filter: store.state.projectsFilter),
+        onWillChange: (_ViewModel prev, _ViewModel curr) {
+          if (prev.filter != curr.filter) {
+            store.dispatch(GetProjectsPending());
+          }
+        },
         builder: (BuildContext context, _ViewModel state) {
           return Scaffold(
             floatingActionButton: SpeedDial(
@@ -68,7 +89,68 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
               children: speedDials,
             ),
             body: ListView(
-              children: <Widget>[_projects(state)],
+              children: <Widget>[
+                state.filter != null
+                    ? Wrap(children: <Widget>[
+                        state.filter?.user?.id != null
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveProjectsFilter(state.filter
+                                      .copyWith(user: UserModel())));
+                                },
+                                child: FilterItemWidget(
+                                  title:
+                                      '${state.filter.user.name} ${state.filter.user.lastName}',
+                                  icon: Icons.person,
+                                ),
+                              )
+                            : Container(),
+                        state.filter?.stack?.id != null
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveProjectsFilter(state.filter
+                                      .copyWith(stack: StackModel())));
+                                },
+                                child: FilterItemWidget(
+                                  title: state.filter.stack.name,
+                                  icon: Icons.menu,
+                                ),
+                              )
+                            : Container(),
+                        state.filter?.spec?.title != null &&
+                                state.filter.spec.spec != ProjectSpec.All
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveProjectsFilter(state.filter
+                                      .copyWith(
+                                          spec: ProjectSpecModel(
+                                              'All', ProjectSpec.All))));
+                                },
+                                child: FilterItemWidget(
+                                  title: state.filter.spec?.title,
+                                  icon: Icons.menu,
+                                ),
+                              )
+                            : Container(),
+                        state.filter?.status?.title != null &&
+                                state.filter.status.status != ProjectStatus.All
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveProjectsFilter(state.filter
+                                      .copyWith(
+                                          status: ProjectStatusModel(
+                                              'All', ProjectStatus.All))));
+                                },
+                                child: FilterItemWidget(
+                                  title: state.filter.status?.title,
+                                  icon: Icons.menu,
+                                ),
+                              )
+                            : Container(),
+                      ])
+                    : Container(),
+                _projects(state)
+              ],
             ),
           );
         });

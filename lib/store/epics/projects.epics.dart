@@ -18,7 +18,9 @@ Stream<void> getProjectsEpic(
       .where((dynamic action) => action is GetProjectsPending)
       .switchMap<dynamic>((dynamic action) =>
           Stream<List<ProjectModel>>.fromFuture(getProjects(
-                  action.projectTypes as ProjectsType, action.userId as String))
+                  action.projectTypes as ProjectsType,
+                  action.userId as String,
+                  s.store.state.projectsFilter))
               .map<dynamic>((List<ProjectModel> projects) {
             switch (action.projectTypes as ProjectsType) {
               case ProjectsType.Default:

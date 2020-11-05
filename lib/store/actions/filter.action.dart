@@ -1,14 +1,17 @@
+import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/projects-filter.model.dart';
+import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
-class SaveFilter {
-  SaveFilter(this.adminFilter);
-  FilterModel adminFilter;
+class SaveLogFilter {
+  SaveLogFilter(this.adminFilter);
+  LogFilterModel adminFilter;
 }
 
-class ClearFilter {}
+class ClearLogFilter {}
 
 class GetLogsFilterUsersPending {
   GetLogsFilterUsersPending(this.projectId);
@@ -35,4 +38,37 @@ class GetLogsFilterProjectsSucess {
 
 class GetLogsFilterProjectsError {}
 
-class ClearFilterLogsUsersProjects {}
+class ClearLogFilterLogsUsersProjects {}
+
+class SaveProjectsFilter {
+  SaveProjectsFilter(this.filter);
+  ProjectsFilterModel filter;
+}
+
+class ClearProjectsFilter {}
+
+class GetProjectsFilterUsersPending {
+  GetProjectsFilterUsersPending(this.stackId);
+  String stackId;
+}
+
+class GetProjectsFilterUsersSuccess {
+  GetProjectsFilterUsersSuccess(this.users);
+  List<UserModel> users;
+}
+
+class GetProjectsFilterUsersError {}
+
+class GetProjectsFilterStackPending {
+  GetProjectsFilterStackPending(this.userId);
+  String userId;
+}
+
+class GetProjectsFilterStackSuccess {
+  GetProjectsFilterStackSuccess(this.stack);
+  List<StackModel> stack;
+}
+
+class GetProjectsFilterStackError {}
+
+class ClearProjectsFilterLogsUsersStack {}

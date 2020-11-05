@@ -1,9 +1,11 @@
-import 'package:company_id_new/store/models/filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
+import 'package:company_id_new/store/models/filter-projects-users-stack.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/projects-filter.model.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
@@ -13,6 +15,7 @@ import 'package:company_id_new/store/reducers/filter.reducer.dart';
 import 'package:company_id_new/store/reducers/loading.reducer.dart';
 import 'package:company_id_new/store/reducers/logs.reducer.dart';
 import 'package:company_id_new/store/reducers/notify.reducer.dart';
+import 'package:company_id_new/store/reducers/projects-filter.reducer.dart';
 import 'package:company_id_new/store/reducers/projects.reducer.dart';
 import 'package:company_id_new/store/reducers/requests.reducer.dart';
 import 'package:company_id_new/store/reducers/rules.reducer.dart';
@@ -42,10 +45,12 @@ class AppState {
       this.currentDate,
       this.vacationSickAvailable,
       this.filterLogsUsersProjects,
+      this.filterProjectsUsersStack,
       this.statistic,
       this.rules,
       this.stack,
-      this.requests});
+      this.requests,
+      this.projectsFilter});
   bool isLoading;
   String lastProject;
   List<String> titles;
@@ -57,9 +62,11 @@ class AppState {
   List<LogModel> logsByDate;
   UserModel currentUser;
   StatisticModel statistic;
-  FilterModel filter;
+  LogFilterModel filter;
+  ProjectsFilterModel projectsFilter;
   List<UserModel> users;
   FilterLogsUsersProjects filterLogsUsersProjects;
+  FilterProjectsUsersStack filterProjectsUsersStack;
   CurrentDateModel currentDate;
   List<UserModel> absentUsers;
   List<ProjectModel> absentProjects;
@@ -77,9 +84,12 @@ AppState appStateReducer(AppState state, dynamic action) => AppState(
     vacationSickAvailable:
         vacacationSickReducers(state.vacationSickAvailable, action),
     filter: filterReducers(state.filter, action),
+    projectsFilter: projectFilterReducers(state.projectsFilter, action),
     titles: titleReducer(state.titles, action),
     filterLogsUsersProjects: filterLogsUserProjectsFilterReducers(
         state.filterLogsUsersProjects, action),
+    filterProjectsUsersStack: filterProjectsUsersStackReducers(
+        state.filterProjectsUsersStack, action),
     holidays: holidaysReducers(state.holidays, action),
     project: projectReducers(state.project, action),
     lastProject: lastProjectReducers(state.lastProject, action),

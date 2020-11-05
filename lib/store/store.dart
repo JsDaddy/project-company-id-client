@@ -8,9 +8,11 @@ import 'package:company_id_new/store/epics/stack.epics.dart';
 import 'package:company_id_new/store/epics/users.epics.dart';
 import 'package:company_id_new/store/epics/vacations.epics.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
+import 'package:company_id_new/store/models/filter-projects-users-stack.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux/redux.dart';
@@ -30,6 +32,8 @@ final AppState initalState = AppState(
             DateTime.now().day, 0, 0),
         currentMohth: DateTime(
             DateTime.now().year, DateTime.now().month, 1, DateTime.now().hour)),
+    filterProjectsUsersStack:
+        FilterProjectsUsersStack(stack: <StackModel>[], users: <UserModel>[]),
     filterLogsUsersProjects: FilterLogsUsersProjects(
         projects: <ProjectModel>[], users: <UserModel>[]),
     users: <UserModel>[]);
@@ -61,8 +65,10 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(getRequestsEpic), //h
       EpicMiddleware<AppState>(requestVacationEpic), //h
       EpicMiddleware<AppState>(changeStatusVacationEpic), //h
-      EpicMiddleware<AppState>(filteredUsersEpic), //h
-      EpicMiddleware<AppState>(filteredProjectsEpic), //h
+      EpicMiddleware<AppState>(filteredLogUsersEpic), //h
+      EpicMiddleware<AppState>(filteredLogProjectsEpic), //h
+      EpicMiddleware<AppState>(filteredProjectsUsersEpic), //h
+      EpicMiddleware<AppState>(filteredProjectsStackEpic), //h
       EpicMiddleware<AppState>(getRulesEpic), //h
       EpicMiddleware<AppState>(removeUserFromProjectEpic),
       EpicMiddleware<AppState>(removeProjectFromUserEpic),

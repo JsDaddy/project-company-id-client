@@ -17,4 +17,8 @@ class AppQuery {
   static String projectQuery(String projectId) {
     return 'project=$projectId';
   }
+
+  static String stackQuery(String stackId) {
+    return 'stack=$stackId';
+  }
 }

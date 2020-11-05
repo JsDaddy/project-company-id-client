@@ -1,21 +1,21 @@
 import 'package:company_id_new/store/actions/filter.action.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:redux/redux.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
-final Reducer<FilterModel> filterReducers =
-    combineReducers<FilterModel>(<FilterModel Function(FilterModel, dynamic)>[
-  TypedReducer<FilterModel, SaveFilter>(_saveFilter),
-  TypedReducer<FilterModel, ClearFilter>(_clearFilter),
+final Reducer<LogFilterModel> filterReducers = combineReducers<
+    LogFilterModel>(<LogFilterModel Function(LogFilterModel, dynamic)>[
+  TypedReducer<LogFilterModel, SaveLogFilter>(_saveLogFilter),
+  TypedReducer<LogFilterModel, ClearLogFilter>(_clearLogFilter),
 ]);
 
-FilterModel _saveFilter(FilterModel title, SaveFilter action) {
+LogFilterModel _saveLogFilter(LogFilterModel title, SaveLogFilter action) {
   return action.adminFilter;
 }
 
-FilterModel _clearFilter(FilterModel state, ClearFilter action) {
+LogFilterModel _clearLogFilter(LogFilterModel state, ClearLogFilter action) {
   return null;
 }
 
@@ -26,7 +26,7 @@ final Reducer<FilterLogsUsersProjects> filterLogsUserProjectsFilterReducers =
       _saveLogsProjectsFilter),
   TypedReducer<FilterLogsUsersProjects, GetLogsFilterUsersSuccess>(
       _saveLogsUserFilter),
-  TypedReducer<FilterLogsUsersProjects, ClearFilterLogsUsersProjects>(
+  TypedReducer<FilterLogsUsersProjects, ClearLogFilterLogsUsersProjects>(
       _clearLogsProjectsFilter),
 ]);
 
@@ -36,7 +36,7 @@ FilterLogsUsersProjects _saveLogsProjectsFilter(
 }
 
 FilterLogsUsersProjects _clearLogsProjectsFilter(
-    FilterLogsUsersProjects state, ClearFilterLogsUsersProjects action) {
+    FilterLogsUsersProjects state, ClearLogFilterLogsUsersProjects action) {
   return FilterLogsUsersProjects(
       projects: <ProjectModel>[], users: <UserModel>[]);
 }

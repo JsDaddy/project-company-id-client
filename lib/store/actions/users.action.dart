@@ -44,7 +44,7 @@ class ArchiveUserSuccess {
 
 class ArchiveUserError {}
 
-enum UsersType { Default, Filter, Absent }
+enum UsersType { Default, Filter, Absent, ProjectFilter }
 
 class RemoveProjectFromUserPending {
   RemoveProjectFromUserPending(this.userId, this.project);

@@ -2,8 +2,8 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
-class FilterModel {
-  FilterModel({
+class LogFilterModel {
+  LogFilterModel({
     this.logType,
     this.user,
     this.project,
@@ -12,13 +12,13 @@ class FilterModel {
   UserModel user;
   ProjectModel project;
 
-  FilterModel copyWith({
+  LogFilterModel copyWith({
     FilterType logType,
     String vacation,
     UserModel user,
     ProjectModel project,
   }) =>
-      FilterModel(
+      LogFilterModel(
         logType: logType ?? this.logType,
         user: user ?? this.user,
         project: project ?? this.project,

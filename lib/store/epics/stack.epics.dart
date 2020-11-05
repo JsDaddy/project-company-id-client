@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/services/stack.service.dart';
+import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
@@ -13,7 +14,14 @@ Stream<void> getStackEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
       .switchMap<dynamic>((dynamic action) =>
           Stream<List<StackModel>>.fromFuture(getStack())
               .map<dynamic>((List<StackModel> stack) {
-            return GetStackSuccess(stack);
+            switch (action.stackTypes as StackTypes) {
+              case StackTypes.Default:
+                return GetStackSuccess(stack);
+              case StackTypes.ProjectFilter:
+                return GetProjectsFilterStackSuccess(stack);
+              default:
+                return null;
+            }
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));

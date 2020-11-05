@@ -92,7 +92,7 @@ class RemoveUserFromProjectSuccess {
 
 class RemoveUserFromProjectError {}
 
-enum ProjectsType { Default, Filter, Absent }
+enum ProjectsType { Default, Filter, Absent, ProjectFilter }
 
 class GetAbsentProjectsSuccess {
   GetAbsentProjectsSuccess(this.absentProjects, this.projectTypes);

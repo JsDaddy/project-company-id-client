@@ -9,7 +9,7 @@ import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/badge.model.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
@@ -38,7 +38,7 @@ class _ViewModel {
   Map<DateTime, List<CalendarModel>> logs;
   Map<DateTime, List<CalendarModel>> holidays;
   CurrentDateModel currentDate;
-  FilterModel filter;
+  LogFilterModel filter;
   StatisticModel statistic;
   List<LogModel> logsByDate;
 }
@@ -78,11 +78,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     ];
     if (store.state.user.position == Positions.OWNER) {
       speedDials.add(speedDialChild(() async {
-        final FilterModel filter = await showModalBottomSheet<FilterModel>(
-            context: context,
-            useRootNavigator: true,
-            builder: (BuildContext context) => AdminLogFilterWidget());
-        store.dispatch(SaveFilter(filter));
+        final LogFilterModel filter =
+            await showModalBottomSheet<LogFilterModel>(
+                context: context,
+                useRootNavigator: true,
+                builder: (BuildContext context) => AdminLogFilterWidget());
+        store.dispatch(SaveLogFilter(filter));
         store.dispatch(
             GetLogsPending('${store.state.currentDate.currentMohth}'));
         store.dispatch(

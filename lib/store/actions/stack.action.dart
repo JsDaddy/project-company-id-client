@@ -1,6 +1,9 @@
 import 'package:company_id_new/store/models/stack.model.dart';
 
-class GetStackPending {}
+class GetStackPending {
+  GetStackPending({this.stackTypes = StackTypes.Default});
+  StackTypes stackTypes;
+}
 
 class GetStackSuccess {
   GetStackSuccess(this.stack);
@@ -8,3 +11,5 @@ class GetStackSuccess {
 }
 
 class GetStackError {}
+
+enum StackTypes { Default, ProjectFilter }

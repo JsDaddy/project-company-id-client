@@ -1,16 +1,41 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
+import 'package:company_id_new/common/helpers/app-query.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/models/project.model.dart';
+import 'package:company_id_new/store/models/projects-filter.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 
 Future<List<ProjectModel>> getProjects(
-    ProjectsType projectTypes, String uid) async {
+    ProjectsType projectTypes, String uid, ProjectsFilterModel filter) async {
   Response<dynamic> res;
   if (projectTypes == ProjectsType.Absent) {
     res = await api.dio.get<dynamic>('/projects/absent/users/$uid');
   } else {
-    res = await api.dio.get<dynamic>('/projects');
+    final List<String> queriesArr = <String>[];
+    String fullQuery = '';
+    if (filter?.user?.id != null) {
+      queriesArr.add(AppQuery.userQuery(filter.user.id));
+    }
+    if (filter?.stack?.id != null) {
+      queriesArr.add(AppQuery.stackQuery(filter.stack.id));
+    }
+    if (filter?.spec?.title != null && filter.spec.getSpecQuery().isNotEmpty) {
+      queriesArr.add(filter.spec.getSpecQuery());
+    }
+    if (filter?.status?.title != null &&
+        filter.status.getStatusQuery().isNotEmpty) {
+      queriesArr.add(filter.status.getStatusQuery());
+    }
+    for (final String query in queriesArr) {
+      if (fullQuery.isEmpty) {
+        fullQuery = '?$query';
+      } else {
+        fullQuery += '&$query';
+      }
+    }
+    print('/projects$fullQuery');
+    res = await api.dio.get<dynamic>('/projects$fullQuery');
   }
   final List<dynamic> projects = res.data as List<dynamic>;
   return projects.isEmpty

@@ -4,7 +4,7 @@ import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart'
 import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-wrapper.widget.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
-import 'package:company_id_new/store/models/filter.model.dart';
+import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
@@ -22,7 +22,7 @@ class _ViewModel {
   _ViewModel({this.filterLogsUsersProjects, this.filter, this.isLoading});
   FilterLogsUsersProjects filterLogsUsersProjects;
   bool isLoading;
-  FilterModel filter;
+  LogFilterModel filter;
 }
 
 class AdminLogFilterWidget extends StatefulWidget {
@@ -70,7 +70,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
 
   @override
   void dispose() {
-    store.dispatch(ClearFilterLogsUsersProjects());
+    store.dispatch(ClearLogFilterLogsUsersProjects());
     super.dispose();
   }
 
@@ -266,7 +266,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                     .dispatch(PopAction(key: mainNavigatorKey));
                                 return;
                               }
-                              final FilterModel filter = FilterModel(
+                              final LogFilterModel filter = LogFilterModel(
                                   logType: selectedType, user: selectedUser);
                               if (selectedType.logType != LogType.vacation) {
                                 filter.project = selectedProject;
