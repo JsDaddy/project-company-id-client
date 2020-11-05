@@ -28,6 +28,8 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, GetLogByDateError>(_setFalse),
   TypedReducer<bool, CreateProjectPending>(_setTrue),
   TypedReducer<bool, CreateProjectError>(_setFalse),
+  TypedReducer<bool, ArchiveProjectPending>(_setTrue),
+  TypedReducer<bool, ArchiveProjectError>(_setFalse),
   TypedReducer<bool, GetProjectsPending>(_setTrue),
   TypedReducer<bool, GetProjectsSuccess>(_setFalse),
   TypedReducer<bool, GetProjectsError>(_setFalse),

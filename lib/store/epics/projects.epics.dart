@@ -143,3 +143,26 @@ Stream<void> removeUserFromProjectEpic(
             s.store.dispatch(RemoveUserFromProjectError());
           }));
 }
+
+Stream<void> archiveProjectEpic(
+    Stream<dynamic> actions, EpicStore<AppState> store) {
+  return actions
+      .where((dynamic action) => action is ArchiveProjectPending)
+      .switchMap<dynamic>((dynamic action) => Stream<DateTime>.fromFuture(
+                  archiveProject(action.id as String, action.status as String))
+              .expand<dynamic>((DateTime dateTime) => <dynamic>[
+                    Notify(NotifyModel(
+                        NotificationType.success,
+                        action.status == 'finished'
+                            ? 'Project has been finished'
+                            : 'Project has been rejected')),
+                    ArchiveProjectSuccess(),
+                    GetProjectsPending()
+                  ])
+              .handleError((dynamic e) {
+            print(e);
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(ArchiveProjectError());
+          }));
+}

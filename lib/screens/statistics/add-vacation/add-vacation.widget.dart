@@ -70,13 +70,6 @@ class _AddVacationDialogWidgetState extends State<AddVacationDialogWidget> {
                                   style: AppDropDownStyles.style,
                                   icon: AppDropDownStyles.icon,
                                   autovalidate: true,
-                                  // validator: (String value) {
-                                  //   if (value == null) {
-                                  //     return 'Select reason';
-                                  //   } else {
-                                  //     return null;
-                                  //   }
-                                  // },
                                   isExpanded: AppDropDownStyles.isExpanded,
                                   hint: const Text('Select reason',
                                       style: AppDropDownStyles.hintStyle),
