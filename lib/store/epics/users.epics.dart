@@ -17,7 +17,6 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           Stream<List<UserModel>>.fromFuture(getUsers(
                   action.usersType as UsersType, action.projectId as String))
               .map<dynamic>((List<UserModel> users) {
-            print(users);
             switch (action.usersType as UsersType) {
               case UsersType.Default:
                 return GetUsersSuccess(users);

@@ -1,4 +1,3 @@
-import 'package:company_id_new/screens/projects/filter/filter.widget.dart';
 import 'package:company_id_new/store/models/project-spec.model.dart';
 import 'package:company_id_new/store/models/project-status.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';

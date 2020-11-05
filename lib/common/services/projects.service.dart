@@ -34,7 +34,6 @@ Future<List<ProjectModel>> getProjects(
         fullQuery += '&$query';
       }
     }
-    print('/projects$fullQuery');
     res = await api.dio.get<dynamic>('/projects$fullQuery');
   }
   final List<dynamic> projects = res.data as List<dynamic>;

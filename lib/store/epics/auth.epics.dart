@@ -28,7 +28,6 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {
-            print('checktoken error: ${e.message}');
             return PushReplacementAction(LoginScreen(), key: mainNavigatorKey);
           }));
 }
