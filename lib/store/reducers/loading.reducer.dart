@@ -1,6 +1,7 @@
 import 'package:company_id_new/store/actions/auth.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/rules.action.dart';
+import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
 import 'package:redux/redux.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
@@ -25,6 +26,9 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, GetLogByDatePending>(_setTrue),
   TypedReducer<bool, GetLogByDateSuccess>(_setFalse),
   TypedReducer<bool, GetLogByDateError>(_setFalse),
+  TypedReducer<bool, CreateProjectPending>(_setTrue),
+  TypedReducer<bool, CreateProjectSuccess>(_setFalse),
+  TypedReducer<bool, CreateProjectError>(_setFalse),
   TypedReducer<bool, GetProjectsPending>(_setTrue),
   TypedReducer<bool, GetProjectsSuccess>(_setFalse),
   TypedReducer<bool, GetProjectsError>(_setFalse),
@@ -35,6 +39,9 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, GetRulesPending>(_setTrue),
   TypedReducer<bool, GetRulesSuccess>(_setFalse),
   TypedReducer<bool, GetRulesError>(_setFalse),
+  TypedReducer<bool, GetStackPending>(_setTrue),
+  TypedReducer<bool, GetStackSuccess>(_setFalse),
+  TypedReducer<bool, GetStackError>(_setFalse),
   TypedReducer<bool, SignInPending>(_setTrue),
   TypedReducer<bool, SignInSuccess>(_setFalse),
   TypedReducer<bool, SignInError>(_setFalse),

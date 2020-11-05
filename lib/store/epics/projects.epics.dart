@@ -53,6 +53,21 @@ Stream<void> getDetailProjectEpic(
           }));
 }
 
+Stream<void> createProjectEpic(
+    Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions
+      .where((dynamic action) => action is CreateProjectPending)
+      .switchMap<dynamic>((dynamic action) => Stream<ProjectModel>.fromFuture(
+                  createProject(action.project as ProjectModel))
+              .map<dynamic>((ProjectModel project) {
+            return CreateProjectSuccess(project);
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(CreateProjectError());
+          }));
+}
+
 Stream<dynamic> getLastProjectEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
