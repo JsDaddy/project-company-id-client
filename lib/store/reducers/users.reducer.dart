@@ -7,7 +7,17 @@ import 'package:redux/redux.dart';
 final Reducer<List<UserModel>> usersReducers = combineReducers<
     List<UserModel>>(<List<UserModel> Function(List<UserModel>, dynamic)>[
   TypedReducer<List<UserModel>, GetUsersSuccess>(_setUsers),
+  TypedReducer<List<UserModel>, ArchiveUserSuccess>(_archiveUser),
 ]);
+List<UserModel> _archiveUser(List<UserModel> users, ArchiveUserSuccess action) {
+  return users.map((UserModel user) {
+    if (action.id == user.id) {
+      user.endDate = action.date;
+      return user;
+    }
+    return user;
+  }).toList();
+}
 
 List<UserModel> _setUsers(List<UserModel> title, GetUsersSuccess action) {
   return action.users;

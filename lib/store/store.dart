@@ -67,4 +67,5 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(getRulesEpic), //h
       EpicMiddleware<AppState>(removeUserFromProjectEpic),
       EpicMiddleware<AppState>(removeProjectFromUserEpic),
+      EpicMiddleware<AppState>(archiveUserEpic),
     ]);

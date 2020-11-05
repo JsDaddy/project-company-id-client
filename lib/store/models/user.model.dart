@@ -21,29 +21,35 @@ class UserModel {
     this.vacationAvailable,
     this.endDate,
   });
-  final String avatar;
-  final String github;
-  final DateTime date;
-  final String email;
-  final String id;
-  final List<ProjectModel> activeProjects;
-  final String lastName;
-  final String name;
-  final String phone;
-  final Positions position;
-  final String skype;
-  final String englishLevel;
-  final bool initialLogin;
-  final List<ProjectModel> projects;
-  final int vacationAvailable;
-  final int sickAvailable;
-  final DateTime endDate;
+  String avatar;
+  String github;
+  DateTime date;
+  String email;
+  String id;
+  List<ProjectModel> activeProjects;
+  String lastName;
+  String name;
+  String phone;
+  Positions position;
+  String skype;
+  String englishLevel;
+  bool initialLogin;
+  List<ProjectModel> projects;
+  int vacationAvailable;
+  int sickAvailable;
+  DateTime endDate;
 
   static UserModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;
     }
+    print(json['endDate']);
+    print(json);
+
     return UserModel(
+      endDate: json['endDate'] == null
+          ? null
+          : DateTime.parse(json['endDate'] as String),
       avatar: json['avatar'] as String,
       vacationAvailable: json['vacationAvailable'] as int,
       sickAvailable: json['sickAvailable'] as int,
@@ -70,14 +76,11 @@ class UserModel {
       position: AppConverting.getPositionFromEnum(json['position'] as String),
       skype: json['skype'] as String,
       initialLogin: json['initialLogin'] as bool,
-      endDate: json['endDate'] == null
-          ? null
-          : DateTime.parse(json['endDate'] as String),
     );
   }
 
   UserModel copyWith(
-      String avatar,
+      {String avatar,
       String github,
       DateTime date,
       String email,
@@ -95,7 +98,7 @@ class UserModel {
       String documentId,
       bool initialLogin,
       DateTime endDate,
-      List<ProjectModel> projects) {
+      List<ProjectModel> projects}) {
     return UserModel(
         avatar: avatar ?? this.avatar,
         englishLevel: englishLevel ?? this.englishLevel,

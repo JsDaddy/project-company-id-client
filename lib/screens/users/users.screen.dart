@@ -10,6 +10,7 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
@@ -25,8 +26,10 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
+  SlidableController _slidableController;
   @override
   void initState() {
+    _slidableController = SlidableController();
     if (store.state.users != null && store.state.users.isNotEmpty) {
       return;
     }
@@ -48,25 +51,39 @@ class _UsersScreenState extends State<UsersScreen> {
                   children: state.users
                       .where((UserModel user) => user.id != state.user.id)
                       .map((UserModel user) {
-                  return AppListTile(
-                    leading: AvatarWidget(avatar: user.avatar, sizes: 50),
-                    onTap: () => store.dispatch(PushAction(
-                        UserScreen(uid: user.id),
-                        '${user.name} ${user.lastName}')),
-                    textSpan: TextSpan(
-                        text: '${user.name} ${user.lastName}',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: user.endDate == null
-                                ? Colors.white
-                                : AppColors.semiGrey)),
-                    trailing: Text(
-                        AppConverting.getPositionFromString(user.position),
-                        style: TextStyle(
-                            color: user.endDate == null
-                                ? Colors.white
-                                : AppColors.semiGrey)),
-                  );
+                  return Slidable(
+                      controller: _slidableController,
+                      enabled: state.user.position == Positions.OWNER &&
+                          user.endDate == null,
+                      actionExtentRatio: 0.1,
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                            color: AppColors.bg,
+                            icon: Icons.archive,
+                            onTap: () {
+                              store.dispatch(ArchiveUserPending(user.id));
+                            })
+                      ],
+                      actionPane: const SlidableDrawerActionPane(),
+                      child: AppListTile(
+                        leading: AvatarWidget(avatar: user.avatar, sizes: 50),
+                        onTap: () => store.dispatch(PushAction(
+                            UserScreen(uid: user.id),
+                            '${user.name} ${user.lastName}')),
+                        textSpan: TextSpan(
+                            text: '${user.name} ${user.lastName}',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: user.endDate == null
+                                    ? Colors.white
+                                    : AppColors.semiGrey)),
+                        trailing: Text(
+                            AppConverting.getPositionFromString(user.position),
+                            style: TextStyle(
+                                color: user.endDate == null
+                                    ? Colors.white
+                                    : AppColors.semiGrey)),
+                      ));
                 }).toList());
         });
   }

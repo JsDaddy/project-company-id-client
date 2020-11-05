@@ -26,6 +26,13 @@ Future<UserModel> getUser(String id) async {
   return UserModel.fromJson(user);
 }
 
+Future<DateTime> archiveUser(String id) async {
+  final Response<dynamic> res = await api.dio.put<dynamic>('/user/$id');
+  final Map<String, dynamic> user = res.data as Map<String, dynamic>;
+  final DateTime endDate = DateTime.parse(user['endDate'] as String);
+  return endDate;
+}
+
 Future<void> removeActiveProjectFromUser(
     ProjectModel project, String userId) async {
   await api.dio.delete<dynamic>('/user/$userId/active-project/${project.id}');
