@@ -1,8 +1,11 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
+import 'package:company_id_new/screens/create-project/create-project.screen.dart';
 import 'package:company_id_new/screens/project-details/project-details.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
@@ -11,6 +14,7 @@ import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
@@ -25,12 +29,21 @@ class ProjectsScreen extends StatefulWidget {
 }
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
+  List<SpeedDialChild> speedDials = <SpeedDialChild>[];
   @override
   void initState() {
+    speedDials = <SpeedDialChild>[
+      speedDialChild(() {}, const Icon(Icons.search)),
+      speedDialChild(
+          () => store
+              .dispatch(PushAction(CreateProjectScreen(), 'Create project')),
+          const Icon(Icons.add))
+    ];
     if (store.state.projects != null && store.state.projects.isNotEmpty) {
       return;
     }
     store.dispatch(GetProjectsPending());
+    store.dispatch(GetStackPending());
     super.initState();
   }
 
@@ -43,6 +56,17 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             projects: store.state.projects, isLoading: store.state.isLoading),
         builder: (BuildContext context, _ViewModel state) {
           return Scaffold(
+            floatingActionButton: SpeedDial(
+              child: const Icon(Icons.menu),
+              elevation: 8.0,
+              shape: const CircleBorder(),
+              curve: Curves.bounceIn,
+              animatedIcon: AnimatedIcons.menu_close,
+              animatedIconTheme: const IconThemeData(size: 22.0),
+              overlayColor: Colors.black,
+              overlayOpacity: 0.5,
+              children: speedDials,
+            ),
             body: ListView(
               children: <Widget>[_projects(state)],
             ),
@@ -122,5 +146,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 ),
               );
             });
+  }
+
+  SpeedDialChild speedDialChild(Function func, Widget icon) {
+    return SpeedDialChild(
+        child: icon, backgroundColor: AppColors.red, onTap: () => func());
   }
 }

@@ -8,6 +8,7 @@ class ProjectModel {
       this.endDate,
       this.industry,
       this.isInternal,
+      this.isActivity,
       this.name,
       this.stack,
       this.startDate,
@@ -25,6 +26,16 @@ class ProjectModel {
   List<UserModel> history;
   DateTime startDate;
   DateTime endDate;
+  bool isActivity;
+
+//  Map<String, dynamic> toJson() {
+//     return <String, dynamic>{
+//       'name': name,
+//       'isInternal': isInternal,
+//       'date': date.toIso8601String(),
+//     };
+//   }
+
   static ProjectModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;
@@ -34,6 +45,8 @@ class ProjectModel {
       name: json['name'] as String,
       isInternal:
           json['isInternal'] == null ? null : json['isInternal'] as bool,
+      isActivity:
+          json['isActivity'] == null ? null : json['isActivity'] as bool,
       customer: json['customer'] as String,
       industry: json['industry'] as String,
       status: json['status'] == null ? null : json['status'] as String,

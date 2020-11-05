@@ -5,6 +5,7 @@ import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
+import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/auth.reducer.dart';
@@ -15,6 +16,7 @@ import 'package:company_id_new/store/reducers/notify.reducer.dart';
 import 'package:company_id_new/store/reducers/projects.reducer.dart';
 import 'package:company_id_new/store/reducers/requests.reducer.dart';
 import 'package:company_id_new/store/reducers/rules.reducer.dart';
+import 'package:company_id_new/store/reducers/stack.reducer.dart';
 import 'package:company_id_new/store/reducers/ui.reducer.dart';
 import 'package:company_id_new/store/reducers/users.reducer.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
@@ -42,6 +44,7 @@ class AppState {
       this.filterLogsUsersProjects,
       this.statistic,
       this.rules,
+      this.stack,
       this.requests});
   bool isLoading;
   String lastProject;
@@ -65,6 +68,7 @@ class AppState {
   VacationSickAvailable vacationSickAvailable;
   Map<DateTime, List<CalendarModel>> logs;
   List<RulesModel> rules;
+  List<StackModel> stack;
   List<LogModel> requests;
 }
 
@@ -89,6 +93,7 @@ AppState appStateReducer(AppState state, dynamic action) => AppState(
     statistic: statisticReducers(state.statistic, action),
     logs: logsReducer(state.logs, action),
     user: authReducers(state.user, action),
+    stack: stackReducers(state.stack, action),
     rules: rulesReducers(state.rules, action),
     requests: requestsReducer(state.requests, action),
     notify: notifyReducers(state.notify, action));

@@ -4,6 +4,7 @@ import 'package:company_id_new/store/epics/logs.epics.dart';
 import 'package:company_id_new/store/epics/projects.epics.dart';
 import 'package:company_id_new/store/epics/route.epics.dart';
 import 'package:company_id_new/store/epics/rules.epics.dart';
+import 'package:company_id_new/store/epics/stack.epics.dart';
 import 'package:company_id_new/store/epics/users.epics.dart';
 import 'package:company_id_new/store/epics/vacations.epics.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
@@ -15,9 +16,6 @@ import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:redux_logging/redux_logging.dart';
-import 'epics/filter.epics.dart';
-import 'epics/rules.epics.dart';
-import 'models/current-day.model.dart';
 
 final AppState initalState = AppState(
     isLoading: false,
@@ -69,4 +67,6 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(removeUserFromProjectEpic),
       EpicMiddleware<AppState>(removeProjectFromUserEpic),
       EpicMiddleware<AppState>(archiveUserEpic),
+      EpicMiddleware<AppState>(getStackEpic),
+      EpicMiddleware<AppState>(createProjectEpic),
     ]);

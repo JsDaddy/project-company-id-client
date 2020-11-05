@@ -28,6 +28,18 @@ Future<ProjectModel> getDetailProject(String projectId) async {
   return ProjectModel.fromJson(project);
 }
 
+Future<ProjectModel> createProject(ProjectModel project) async {
+  print('gdgdgetettr');
+  print(project);
+  final Response<dynamic> res = await api.dio.post<dynamic>('/projects'
+      // , data: project.toJson()
+      );
+  final Map<String, dynamic> project1 = res.data as Map<String, dynamic>;
+  print('gfgfg');
+  print(res);
+  return ProjectModel.fromJson(project1);
+}
+
 Future<UserModel> addUserToProject(
     UserModel user, ProjectModel project, bool isActive) async {
   final Response<dynamic> res = await api.dio

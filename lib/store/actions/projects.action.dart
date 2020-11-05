@@ -14,6 +14,18 @@ class GetProjectsSuccess {
 
 class GetProjectsError {}
 
+class CreateProjectPending {
+  CreateProjectPending(this.project);
+  ProjectModel project;
+}
+
+class CreateProjectSuccess {
+  CreateProjectSuccess(this.project);
+  ProjectModel project;
+}
+
+class CreateProjectError {}
+
 class GetDetailProjectPending {
   GetDetailProjectPending(this.projectId);
   String projectId;
