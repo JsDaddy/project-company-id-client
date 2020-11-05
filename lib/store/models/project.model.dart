@@ -28,13 +28,18 @@ class ProjectModel {
   DateTime endDate;
   bool isActivity;
 
-//  Map<String, dynamic> toJson() {
-//     return <String, dynamic>{
-//       'name': name,
-//       'isInternal': isInternal,
-//       'date': date.toIso8601String(),
-//     };
-//   }
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'name': name,
+      'isInternal': isInternal,
+      'startDate': startDate.toString(),
+      'customer': customer,
+      'industry': industry,
+      'isActivity': isActivity,
+      'stack': stack.map<dynamic>((StackModel item) => item.id).toList(),
+      'users': onboard.map<dynamic>((UserModel item) => item.id).toList(),
+    };
+  }
 
   static ProjectModel fromJson(Map<String, dynamic> json) {
     if (json == null) {

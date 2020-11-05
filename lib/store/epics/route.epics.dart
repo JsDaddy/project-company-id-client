@@ -37,6 +37,15 @@ Stream<void> routePopEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
   });
 }
 
+Stream<void> routePopUntilEpic(
+    Stream<dynamic> actions, EpicStore<dynamic> store) {
+  return actions.where((dynamic action) {
+    return action is PopUntilFirst;
+  }).map((dynamic action) {
+    navigatorKey.currentState.popUntil((Route<dynamic> route) => route.isFirst);
+  });
+}
+
 Stream<void> routePushReplacmentEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions.where((dynamic action) {

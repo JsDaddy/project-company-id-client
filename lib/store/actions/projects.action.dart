@@ -19,12 +19,19 @@ class CreateProjectPending {
   ProjectModel project;
 }
 
-class CreateProjectSuccess {
-  CreateProjectSuccess(this.project);
-  ProjectModel project;
-}
+class CreateProjectSuccess {}
 
 class CreateProjectError {}
+
+class ArchiveProjectPending {
+  ArchiveProjectPending(this.id, this.status);
+  String id;
+  String status;
+}
+
+class ArchiveProjectSuccess {}
+
+class ArchiveProjectError {}
 
 class GetDetailProjectPending {
   GetDetailProjectPending(this.projectId);

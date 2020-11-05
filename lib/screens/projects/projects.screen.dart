@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
+import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
 import 'package:company_id_new/screens/create-project/create-project.screen.dart';
 import 'package:company_id_new/screens/project-details/project-details.screen.dart';
@@ -27,6 +28,7 @@ import 'package:redux/redux.dart';
 class _ViewModel {
   _ViewModel({this.projects, this.isLoading, this.filter});
   List<ProjectModel> projects;
+  UserModel user;
   bool isLoading;
   ProjectsFilterModel filter;
 }
@@ -169,8 +171,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 opacity:
                     project.isInternal || project.endDate != null ? 0.6 : 1,
                 child: Slidable(
-                  // enabled: state.user.role == 'admin' && project.endDate == null,
-                  enabled: false,
+                  enabled: state.user.position == Positions.OWNER &&
+                      project.endDate == null,
                   controller: _slidableController,
                   actionPane: const SlidableDrawerActionPane(),
                   actionExtentRatio: 0.1,
@@ -178,9 +180,48 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     IconSlideAction(
                       color: AppColors.bg,
                       iconWidget: IconButton(
-                          icon: const Icon(Icons.delete_outline),
+                          icon: const Icon(Icons.archive),
                           color: Colors.white,
-                          onPressed: () {}),
+                          onPressed: () async {
+                            final bool isConfirm = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const ConfirmDialogWidget(
+                                      title: 'Project',
+                                      text:
+                                          'Are you sure to finish the project?');
+                                });
+                            store.dispatch(SetTitle('Projects'));
+                            if (!isConfirm) {
+                              return;
+                            }
+                            store.dispatch(
+                                ArchiveProjectPending(project.id, 'finished'));
+                          }),
+                    ),
+                    IconSlideAction(
+                      color: AppColors.bg,
+                      iconWidget: IconButton(
+                          icon: const Icon(Icons.cancel),
+                          color: Colors.white,
+                          onPressed: () async {
+                            final bool isConfirm = await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const ConfirmDialogWidget(
+                                      title: 'Project',
+                                      text:
+                                          'Are you sure to reject the project?');
+                                });
+                            store.dispatch(SetTitle('Projects'));
+                            if (!isConfirm) {
+                              return;
+                            }
+                            store.dispatch(
+                                ArchiveProjectPending(project.id, 'rejected'));
+                          }),
                     ),
                   ],
                   child: AppListTile(
