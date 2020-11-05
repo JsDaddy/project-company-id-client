@@ -45,6 +45,7 @@ final Store<AppState> store =
       EpicMiddleware<dynamic>(routeEpic), //h
       EpicMiddleware<dynamic>(routePopEpic), //h
       EpicMiddleware<dynamic>(routePushReplacmentEpic), //h
+      EpicMiddleware<dynamic>(routePopUntilEpic),
       EpicMiddleware<dynamic>(getLogByDateEpic), //h
       EpicMiddleware<dynamic>(setPasswordEpic),
       EpicMiddleware<dynamic>(getLogsEpic), //h

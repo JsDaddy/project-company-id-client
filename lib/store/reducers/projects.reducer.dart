@@ -7,18 +7,11 @@ final Reducer<List<ProjectModel>> projectsReducers =
     combineReducers<List<ProjectModel>>(<
         List<ProjectModel> Function(List<ProjectModel>, dynamic)>[
   TypedReducer<List<ProjectModel>, GetProjectsSuccess>(_setProjects),
-  TypedReducer<List<ProjectModel>, CreateProjectSuccess>(_createProject),
 ]);
 
 List<ProjectModel> _setProjects(
     List<ProjectModel> title, GetProjectsSuccess action) {
   return action.projects;
-}
-
-List<ProjectModel> _createProject(
-    List<ProjectModel> projects, CreateProjectSuccess action) {
-  projects.add(action.project);
-  return projects;
 }
 
 final Reducer<ProjectModel> projectReducers = combineReducers<

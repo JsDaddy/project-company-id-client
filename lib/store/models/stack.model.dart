@@ -2,6 +2,7 @@ class StackModel {
   StackModel({this.id, this.name});
   String id;
   String name;
+
   static StackModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;

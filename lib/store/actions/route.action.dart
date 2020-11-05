@@ -19,3 +19,5 @@ class PopAction {
   bool changeTitle;
   dynamic params;
 }
+
+class PopUntilFirst {}
