@@ -1,11 +1,5 @@
+import 'package:company_id_new/store/models/badge.model.dart';
 import 'package:flutter/material.dart';
-
-class BadgeModel {
-  BadgeModel(this.color, this.value, this.weight);
-  int weight;
-  dynamic value;
-  Color color;
-}
 
 class EventMarkersWidget extends StatelessWidget {
   const EventMarkersWidget(this.badges);

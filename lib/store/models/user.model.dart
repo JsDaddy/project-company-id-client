@@ -43,9 +43,6 @@ class UserModel {
     if (json == null) {
       return null;
     }
-    print(json['endDate']);
-    print(json);
-
     return UserModel(
       endDate: json['endDate'] == null
           ? null
