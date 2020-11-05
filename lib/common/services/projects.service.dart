@@ -32,6 +32,14 @@ Future<void> createProject(ProjectModel project) async {
   await api.dio.post<dynamic>('/projects', data: project.toJson());
 }
 
+Future<DateTime> archiveProject(String id, String status) async {
+  final Response<dynamic> res =
+      await api.dio.put<dynamic>('/projects/$id/$status');
+  final Map<String, dynamic> project = res.data as Map<String, dynamic>;
+  final DateTime endDate = DateTime.parse(project['endDate'] as String);
+  return endDate;
+}
+
 Future<UserModel> addUserToProject(
     UserModel user, ProjectModel project, bool isActive) async {
   final Response<dynamic> res = await api.dio

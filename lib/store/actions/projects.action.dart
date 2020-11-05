@@ -23,6 +23,20 @@ class CreateProjectSuccess {}
 
 class CreateProjectError {}
 
+class ArchiveProjectPending {
+  ArchiveProjectPending(this.id, this.status);
+  String id;
+  String status;
+}
+
+class ArchiveProjectSuccess {
+  ArchiveProjectSuccess(this.id, this.date);
+  String id;
+  DateTime date;
+}
+
+class ArchiveProjectError {}
+
 class GetDetailProjectPending {
   GetDetailProjectPending(this.projectId);
   String projectId;

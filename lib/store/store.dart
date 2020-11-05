@@ -70,4 +70,5 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(archiveUserEpic),
       EpicMiddleware<AppState>(getStackEpic),
       EpicMiddleware<AppState>(createProjectEpic),
+      EpicMiddleware<AppState>(archiveProjectEpic),
     ]);
