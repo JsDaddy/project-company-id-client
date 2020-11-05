@@ -1,3 +1,4 @@
+import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:flutter/material.dart';
 
 class SocialRowWidget extends StatelessWidget {
@@ -12,7 +13,7 @@ class SocialRowWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         Image.asset(
-          'assets/$iconName',
+          AppImages.getIconByName(iconName),
           color: Colors.grey,
           width: 16,
           height: 16,

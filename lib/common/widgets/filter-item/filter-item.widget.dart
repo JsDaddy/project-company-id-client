@@ -1,6 +1,5 @@
+import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:flutter/material.dart';
-
-import '../../helpers/app-colors.dart';
 
 class FilterItemWidget extends StatelessWidget {
   const FilterItemWidget({Key key, this.title, this.icon}) : super(key: key);

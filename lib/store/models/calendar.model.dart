@@ -4,6 +4,15 @@ class CalendarModel {
   double timelogs;
   String holiday;
   int birthdays;
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'timelogs': timelogs,
+      'holiday': holiday,
+      'vacations': vacations,
+      'birthdays': birthdays
+    };
+  }
+
   static CalendarModel fromJson(Map<String, dynamic> json) {
     if (json == null) {
       return null;

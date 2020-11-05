@@ -14,10 +14,9 @@ Stream<void> getRulesEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
           Stream<List<RulesModel>>.fromFuture(getRules())
               .map<dynamic>((List<RulesModel> rules) {
             return GetRulesSuccess(rules);
-          }))
-      .handleError((dynamic e) {
-    s.store.dispatch(Notify(NotifyModel(NotificationType.error,
-        e.message as String ?? 'Something went wrong')));
-    s.store.dispatch(GetRulesError());
-  });
+          }).handleError((dynamic e) {
+            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+                e.message as String ?? 'Something went wrong')));
+            s.store.dispatch(GetRulesError());
+          }));
 }
