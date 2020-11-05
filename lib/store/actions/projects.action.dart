@@ -19,10 +19,7 @@ class CreateProjectPending {
   ProjectModel project;
 }
 
-class CreateProjectSuccess {
-  CreateProjectSuccess(this.project);
-  ProjectModel project;
-}
+class CreateProjectSuccess {}
 
 class CreateProjectError {}
 

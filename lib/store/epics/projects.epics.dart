@@ -3,6 +3,8 @@ import 'package:company_id_new/common/services/projects.service.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -57,10 +59,15 @@ Stream<void> createProjectEpic(
     Stream<dynamic> actions, EpicStore<dynamic> store) {
   return actions
       .where((dynamic action) => action is CreateProjectPending)
-      .switchMap<dynamic>((dynamic action) => Stream<ProjectModel>.fromFuture(
-                  createProject(action.project as ProjectModel))
-              .map<dynamic>((ProjectModel project) {
-            return CreateProjectSuccess(project);
+      .switchMap<dynamic>((dynamic action) =>
+          Stream<void>.fromFuture(createProject(action.project as ProjectModel))
+              .expand<dynamic>((_) {
+            return <dynamic>[
+              CreateProjectSuccess(),
+              GetProjectsPending(),
+              SetClearTitle('Projects'),
+              PopUntilFirst()
+            ];
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));

@@ -203,14 +203,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         error = '';
       });
     }
-    print(_industryController.text);
-    print(_nameController.text);
-    print(_customerController.text);
-    print(savedStack.length);
-    print(_isInternal);
-    print(_isActivity);
-    print(_selectedDate);
-    print(savedUsers.length);
     store.dispatch(CreateProjectPending(ProjectModel(
         industry: _industryController.text,
         name: _nameController.text,
