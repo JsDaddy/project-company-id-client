@@ -17,7 +17,7 @@ class _ViewModel {
 }
 
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
-  AppBarWidget({this.avatar, Key key}) : super(key: key);
+  AppBarWidget({this.avatar});
   final String avatar;
 
   @override

@@ -19,8 +19,6 @@ class GetAbsentUsersSuccess {
 
 class GetUsersError {}
 
-class GetAbsentUsersError {}
-
 class GetUserPending {
   GetUserPending(this.id);
   String id;

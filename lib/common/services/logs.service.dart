@@ -9,7 +9,13 @@ import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:dio/dio.dart';
 
-Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
+class StatisticLog {
+  StatisticLog(this.fullQuery, this.logType);
+  String fullQuery;
+  String logType;
+}
+
+StatisticLog statisticLogs(FilterModel filter) {
   final List<String> queriesArr = <String>[];
   String fullQuery = '';
   String logType = AppConverting.getTypeLogQuery(LogType.all);
@@ -37,9 +43,14 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
       fullQuery += '&$query';
     }
   }
-  print('/logs/$date/$logType$fullQuery');
-  final Response<dynamic> res =
-      await api.dio.get<dynamic>('/logs/$date/$logType$fullQuery');
+  return StatisticLog(fullQuery, logType);
+}
+
+Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
+  final StatisticLog statLog = statisticLogs(filter);
+
+  final Response<dynamic> res = await api.dio
+      .get<dynamic>('/logs/$date/${statLog.logType}${statLog.fullQuery}');
   final Map<String, dynamic> logs = res.data['logs'] as Map<String, dynamic>;
   final Map<String, dynamic> statistics =
       res.data['statistic'] as Map<String, dynamic>;
@@ -56,35 +67,9 @@ Future<Map<String, dynamic>> getLogs(String date, FilterModel filter) async {
 }
 
 Future<LogResponse> getLogsByDate(String date, FilterModel filter) async {
-  final List<String> queriesArr = <String>[];
-  String fullQuery = '';
-  String logType = AppConverting.getTypeLogQuery(LogType.all);
-  if (store.state.user.position == Positions.DEVELOPER) {
-    queriesArr.add(AppQuery.userQuery(store.state.user.id));
-  }
-  if (filter?.user?.id != null) {
-    queriesArr.add(AppQuery.userQuery(filter.user.id));
-  }
-  if (filter?.project?.id != null) {
-    queriesArr.add(AppQuery.projectQuery(filter.project.id));
-  }
-  if (filter?.logType?.logType != LogType.all &&
-      filter?.logType?.logType != null) {
-    logType = AppConverting.getTypeLogQuery(filter.logType?.logType);
-    if (filter?.logType?.logType == LogType.vacation) {
-      queriesArr.add(AppQuery.vacationTypeQuery(filter.logType?.vacationType));
-    }
-  }
-  for (final String query in queriesArr) {
-    if (fullQuery.isEmpty) {
-      fullQuery = '?$query';
-    } else {
-      fullQuery += '&$query';
-    }
-  }
-
-  final Response<dynamic> res =
-      await api.dio.get<dynamic>('/logs/solo/$date/$logType$fullQuery');
+  final StatisticLog statLog = statisticLogs(filter);
+  final Response<dynamic> res = await api.dio
+      .get<dynamic>('/logs/solo/$date/${statLog.logType}${statLog.fullQuery}');
   final Map<String, dynamic> logResponse = res.data as Map<String, dynamic>;
   return LogResponse.fromJson(logResponse);
 }

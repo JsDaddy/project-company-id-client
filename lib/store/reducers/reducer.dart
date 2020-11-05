@@ -18,7 +18,6 @@ import 'package:company_id_new/store/reducers/rules.reducer.dart';
 import 'package:company_id_new/store/reducers/ui.reducer.dart';
 import 'package:company_id_new/store/reducers/users.reducer.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
-
 import 'projects.reducer.dart';
 
 class AppState {
