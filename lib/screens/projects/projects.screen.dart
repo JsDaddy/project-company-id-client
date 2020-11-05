@@ -26,7 +26,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
-  _ViewModel({this.projects, this.isLoading, this.filter});
+  _ViewModel({this.projects, this.isLoading, this.filter, this.user});
   List<ProjectModel> projects;
   UserModel user;
   bool isLoading;
@@ -71,6 +71,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         converter: (Store<AppState> store) => _ViewModel(
             projects: store.state.projects,
             isLoading: store.state.isLoading,
+            user: store.state.user,
             filter: store.state.projectsFilter),
         onWillChange: (_ViewModel prev, _ViewModel curr) {
           if (prev.filter != curr.filter) {
