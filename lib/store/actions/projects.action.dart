@@ -29,11 +29,7 @@ class ArchiveProjectPending {
   String status;
 }
 
-class ArchiveProjectSuccess {
-  ArchiveProjectSuccess(this.id, this.date);
-  String id;
-  DateTime date;
-}
+class ArchiveProjectSuccess {}
 
 class ArchiveProjectError {}
 

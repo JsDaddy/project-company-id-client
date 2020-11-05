@@ -156,7 +156,8 @@ Stream<void> archiveProjectEpic(
                         action.status == 'finished'
                             ? 'Project has been finished'
                             : 'Project has been rejected')),
-                    ArchiveProjectSuccess(action.id as String, dateTime)
+                    ArchiveProjectSuccess(),
+                    GetProjectsPending()
                   ])
               .handleError((dynamic e) {
             print(e);
