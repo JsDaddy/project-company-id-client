@@ -155,12 +155,15 @@ Stream<void> archiveProjectEpic(
                   archiveProject(
                       action.id as String, action.status as ProjectStatus))
               .expand<dynamic>((_) {
-            s.store.dispatch(Notify(NotifyModel(
-                NotificationType.success,
-                action.status == ProjectStatus.Finished
-                    ? 'Project has been finished'
-                    : 'Project has been rejected')));
-            return <dynamic>[ArchiveProjectSuccess(), GetProjectsPending()];
+            return <dynamic>[
+              GetProjectsPending(),
+              Notify(NotifyModel(
+                  NotificationType.success,
+                  action.status == ProjectStatus.Finished
+                      ? 'Project has been finished'
+                      : 'Project has been rejected')),
+              ArchiveProjectSuccess(),
+            ];
           }).handleError((dynamic e) {
             print(e);
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,

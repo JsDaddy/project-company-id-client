@@ -94,6 +94,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             ),
             body: ListView(
               children: <Widget>[
+                const SizedBox(height: 0.1),
                 state.filter != null
                     ? Wrap(children: <Widget>[
                         state.filter?.user?.id != null
