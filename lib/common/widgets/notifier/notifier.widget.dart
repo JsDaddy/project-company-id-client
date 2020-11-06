@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:flutter/material.dart';
@@ -70,19 +71,19 @@ class Notifier extends StatelessWidget {
 
   Icon _getIcon(NotificationType type) {
     switch (type) {
-      case NotificationType.error:
+      case NotificationType.Error:
         return const Icon(
           Icons.warning,
           color: Colors.white,
           size: 24,
         );
-      case NotificationType.success:
+      case NotificationType.Success:
         return const Icon(
           Icons.check,
           color: Colors.white,
           size: 24,
         );
-      case NotificationType.warning:
+      case NotificationType.Warning:
         return const Icon(
           Icons.warning,
           color: Colors.white,
@@ -99,11 +100,11 @@ class Notifier extends StatelessWidget {
 
   Color _getColor(NotificationType type) {
     switch (type) {
-      case NotificationType.error:
+      case NotificationType.Error:
         return AppColors.darkRed;
-      case NotificationType.success:
+      case NotificationType.Success:
         return AppColors.green;
-      case NotificationType.warning:
+      case NotificationType.Warning:
         return AppColors.yellow;
       default:
         return AppColors.yellow;

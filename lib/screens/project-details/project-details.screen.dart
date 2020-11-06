@@ -7,6 +7,7 @@ import 'package:company_id_new/screens/project-details/add-user/add-user.widget.
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -59,7 +60,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         },
         builder: (BuildContext context, _ViewModel state) {
           return Scaffold(
-            floatingActionButton: state.user.position == Positions.OWNER &&
+            floatingActionButton: state.user.position == Positions.Owner &&
                     state.project?.endDate == null
                 ? FloatingActionButton(
                     child: const Icon(Icons.add),
@@ -162,9 +163,9 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             .map(
               (UserModel user) => Slidable(
                 controller:
-                    position == Positions.OWNER ? _slidableController : null,
+                    position == Positions.Owner ? _slidableController : null,
                 actionPane: const SlidableDrawerActionPane(),
-                enabled: position == Positions.OWNER,
+                enabled: position == Positions.Owner,
                 actionExtentRatio: 0.1,
                 secondaryActions: <Widget>[
                   IconSlideAction(
@@ -186,7 +187,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                 user, store.state.project, true));
                           } else {
                             store.dispatch(Notify(NotifyModel(
-                                NotificationType.error,
+                                NotificationType.Error,
                                 'This user is already on the project')));
                           }
                         } else {

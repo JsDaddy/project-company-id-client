@@ -1,5 +1,5 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
-import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';

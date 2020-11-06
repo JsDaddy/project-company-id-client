@@ -9,6 +9,7 @@ import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/badge.model.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -25,7 +26,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/store/models/user.model.dart';
 
 class _ViewModel {
   _ViewModel(
@@ -64,7 +64,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         choosedDate: store.state.currentDate.currentDay,
                       ))
               : store.dispatch(Notify(NotifyModel(
-                  NotificationType.error, 'Only one vacation per day'))),
+                  NotificationType.Error, 'Only one vacation per day'))),
           const Icon(Icons.snooze)),
       speedDialChild(
           () => showModalBottomSheet<dynamic>(
@@ -76,7 +76,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   )),
           const Icon(Icons.alarm_add))
     ];
-    if (store.state.user.position == Positions.OWNER) {
+    if (store.state.user.position == Positions.Owner) {
       speedDials.add(speedDialChild(() async {
         final LogFilterModel filter =
             await showModalBottomSheet<LogFilterModel>(
@@ -131,7 +131,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   body: CalendarWidget(
                     headerSubTitle: state.filter?.user?.id != null &&
                             state.filter.project == null &&
-                            state.filter.logType.logType != LogType.vacation
+                            state.filter.logType.logType != LogType.Vacation
                         ? '\n ${state.statistic.workedOut} / ${state.statistic.toBeWorkedOut} / ${state.statistic.overtime} '
                         : '',
                     title: 'Timelog',

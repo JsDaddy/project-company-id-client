@@ -1,4 +1,4 @@
-import 'package:company_id_new/screens/projects/filter/filter.widget.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 
 class ProjectSpecModel {
   ProjectSpecModel(this.title, this.spec);

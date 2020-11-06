@@ -5,6 +5,7 @@ import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project-spec.model.dart';
 import 'package:company_id_new/store/models/project-status.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
@@ -242,6 +243,3 @@ class _FilterProjectsWidgetState extends State<FilterProjectsWidget> {
         status: selectedProjectStatus)));
   }
 }
-
-enum ProjectStatus { Finished, Rejected, Ongoing, All }
-enum ProjectSpec { Internal, Commercial, All }

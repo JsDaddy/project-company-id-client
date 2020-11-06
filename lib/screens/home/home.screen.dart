@@ -9,6 +9,7 @@ import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -34,7 +35,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
 
-  final List<Widget> _children = store.state.user.position == Positions.OWNER
+  final List<Widget> _children = store.state.user.position == Positions.Owner
       ? <Widget>[
           StatisticsScreen(),
           UsersScreen(),
@@ -88,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         unselectedItemColor: Colors.white,
         onTap: (int index) => _onTabTapped(index),
         currentIndex: _currentIndex,
-        items: state.user.position == Positions.OWNER
+        items: state.user.position == Positions.Owner
             ? _adminBottomNav(state)
             : _userBottomNav());
   }
@@ -199,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _onTabTapped(int index) {
     navigatorKey.currentState.popUntil((Route<dynamic> route) => route.isFirst);
-    store.dispatch(SetClearTitle(store.state.user.position == Positions.OWNER
+    store.dispatch(SetClearTitle(store.state.user.position == Positions.Owner
         ? _getAdminTitleAppBar(index)
         : _getTitleAppBar(index)));
 

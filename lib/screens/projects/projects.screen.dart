@@ -11,6 +11,7 @@ import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project-spec.model.dart';
 import 'package:company_id_new/store/models/project-status.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
@@ -93,6 +94,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             ),
             body: ListView(
               children: <Widget>[
+                const SizedBox(height: 0.1),
                 state.filter != null
                     ? Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -188,7 +190,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     opacity:
                         project.isInternal || project.endDate != null ? 0.6 : 1,
                     child: Slidable(
-                      enabled: state.user.position == Positions.OWNER &&
+                      enabled: state.user.position == Positions.Owner &&
                           project.endDate == null,
                       controller: _slidableController,
                       actionPane: const SlidableDrawerActionPane(),
@@ -214,7 +216,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                                   return;
                                 }
                                 store.dispatch(ArchiveProjectPending(
-                                    project.id, 'finished'));
+                                    project.id, ProjectStatus.Finished));
                               }),
                         ),
                         IconSlideAction(
@@ -237,7 +239,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                                   return;
                                 }
                                 store.dispatch(ArchiveProjectPending(
-                                    project.id, 'rejected'));
+                                    project.id, ProjectStatus.Rejected));
                               }),
                         ),
                       ],

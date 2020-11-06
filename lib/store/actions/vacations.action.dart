@@ -1,13 +1,15 @@
+import 'package:company_id_new/common/helpers/app-enums.dart';
+
 class ChangeStatusVacationPending {
   ChangeStatusVacationPending(this.vacationId, this.status);
   String vacationId;
-  String status;
+  RequestStatus status;
 }
 
 class ChangeStatusVacationSuccess {
   ChangeStatusVacationSuccess(this.vacationId, this.status);
   String vacationId;
-  String status;
+  RequestStatus status;
 }
 
 class ChangeStatusVacationError {}
