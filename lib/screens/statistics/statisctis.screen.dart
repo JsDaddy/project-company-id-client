@@ -115,6 +115,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   filter: store.state.filter,
                   logs: store.state.logs,
                   logsByDate: store.state.logsByDate),
+              onWillChange: (_ViewModel prev, _ViewModel curr) {
+                if (prev.filter != curr.filter) {
+                  _updateLogs(curr);
+                }
+              },
               builder: (BuildContext context, _ViewModel state) {
                 return Scaffold(
                   floatingActionButton: SpeedDial(
@@ -211,5 +216,10 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   SpeedDialChild speedDialChild(Function func, Widget icon) {
     return SpeedDialChild(
         child: icon, backgroundColor: AppColors.red, onTap: () => func());
+  }
+
+  void _updateLogs(_ViewModel state) {
+    store.dispatch(GetLogsPending('${state.currentDate.currentMohth}'));
+    store.dispatch(GetLogByDatePending('${state.currentDate.currentDay}'));
   }
 }

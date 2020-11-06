@@ -71,7 +71,6 @@ class _EventListWidgetState extends State<EventListWidget> {
                                     .copyWith(
                                         logType:
                                             FilterType('All', LogType.all))));
-                                _updateLogs(state);
                               },
                               child: FilterItemWidget(
                                 title: state.filter.logType?.title,
@@ -86,7 +85,6 @@ class _EventListWidgetState extends State<EventListWidget> {
                                     .copyWith(
                                         logType:
                                             FilterType('All', LogType.all))));
-                                _updateLogs(state);
                               },
                               child: FilterItemWidget(
                                 title: AppConverting.getVacationTypeString(
@@ -99,7 +97,6 @@ class _EventListWidgetState extends State<EventListWidget> {
                               onTap: () {
                                 store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(user: UserModel())));
-                                _updateLogs(state);
                               },
                               child: FilterItemWidget(
                                 title:
@@ -113,7 +110,6 @@ class _EventListWidgetState extends State<EventListWidget> {
                               onTap: () {
                                 store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(project: ProjectModel())));
-                                _updateLogs(state);
                               },
                               child: FilterItemWidget(
                                 title: state.filter.project.name,
@@ -143,19 +139,16 @@ class _EventListWidgetState extends State<EventListWidget> {
                       ),
                     )
                   : Container(),
-              ...state.logs
-                  .where((LogModel log) => log.type == LogType.birthday)
-                  .toList()
-                  .map((LogModel log) => Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Center(
-                          child: Text(
-                            'Birthday: ' + log.fullName,
-                            style: const TextStyle(
-                                fontSize: 18, color: AppColors.orange),
-                          ),
-                        ),
-                      )),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Center(
+                  child: Text(
+                    getBirthdays(state.logs),
+                    style:
+                        const TextStyle(fontSize: 18, color: AppColors.orange),
+                  ),
+                ),
+              ),
               state.filter?.user?.id != null
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -250,8 +243,14 @@ class _EventListWidgetState extends State<EventListWidget> {
         });
   }
 
-  void _updateLogs(_ViewModel state) {
-    store.dispatch(GetLogsPending('${state.currentDate.currentMohth}'));
-    store.dispatch(GetLogByDatePending('${state.currentDate.currentDay}'));
+  String getBirthdays(List<LogModel> logs) {
+    String result = 'Birthdays: ';
+    final List<LogModel> birthdays =
+        logs.where((LogModel log) => log.type == LogType.birthday).toList();
+    birthdays.forEach((LogModel log) {
+      result += '${log.fullName}, ';
+    });
+    result = result.substring(0, result.length - 2);
+    return birthdays.isEmpty ? '' : result;
   }
 }

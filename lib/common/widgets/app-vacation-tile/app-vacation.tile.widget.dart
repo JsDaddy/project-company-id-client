@@ -88,7 +88,6 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                 textSpan2: TextSpan(
                   text: ' - ${widget.log.desc}',
                 ),
-                trailing: Text(widget.log.status.toString()),
               ),
             ),
           );

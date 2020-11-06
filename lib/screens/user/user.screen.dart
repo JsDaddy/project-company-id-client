@@ -77,6 +77,25 @@ class _UserScreenState extends State<UserScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: ListView(
                         children: <Widget>[
+                          state.authUser.position == Positions.OWNER &&
+                                  state.authUser.id != state.user.id
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        SocialRowIconWidget(
+                                            icon: Icons.pool,
+                                            title:
+                                                '${state.user.vacationAvailable}/18'),
+                                        const SizedBox(height: 8),
+                                        SocialRowIconWidget(
+                                            icon: Icons.local_hospital,
+                                            title:
+                                                '${state.user.sickAvailable}/5'),
+                                      ]))
+                              : Container(),
                           const SizedBox(height: 16),
                           const Text(
                             'Personal details',
@@ -196,35 +215,9 @@ class _UserScreenState extends State<UserScreen> {
                               ),
                             ],
                           ),
-                          state.authUser.position == Positions.OWNER
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 16),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                            'Vacations available: ${state.user.vacationAvailable} of 18'),
-                                        Text(
-                                            'Sick available: ${state.user.sickAvailable} of 5'),
-                                      ]))
-                              : Container(),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Active Projects ',
-                            style: TextStyle(
-                                color: AppColors.lightGrey, fontSize: 18),
-                          ),
-                          const SizedBox(height: 8),
-                          _projects(state.user, state.user.activeProjects,
+                          ..._projects(state.user, state.user.activeProjects,
                               state.authUser.position, true),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Projects ',
-                            style: TextStyle(
-                                color: AppColors.lightGrey, fontSize: 18),
-                          ),
-                          _projects(state.user, state.user.projects,
+                          ..._projects(state.user, state.user.projects,
                               state.authUser.position, false),
                         ],
                       ),
@@ -232,80 +225,91 @@ class _UserScreenState extends State<UserScreen> {
         });
   }
 
-  Widget _projects(UserModel user, List<ProjectModel> projects,
+  List<Widget> _projects(UserModel user, List<ProjectModel> projects,
       Positions position, bool isActive) {
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: projects.length,
-        itemBuilder: (BuildContext context, int index) {
-          final ProjectModel project = projects[index];
-          return Opacity(
-            opacity: project.isInternal ? 0.6 : 1,
-            child: Slidable(
-              controller: _slidableController,
-              actionPane: const SlidableDrawerActionPane(),
-              enabled: position == Positions.OWNER && project.endDate == null,
-              actionExtentRatio: 0.1,
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                    color: AppColors.bg,
-                    icon: isActive ? Icons.history : Icons.person_add,
-                    onTap: () {
-                      if (isActive) {
-                        store.dispatch(
-                            RemoveProjectFromUserPending(widget.uid, project));
-                      } else {
-                        final bool isUserOnBoard = user.activeProjects.any(
-                            (ProjectModel selectedProject) =>
-                                selectedProject.id == project.id);
-                        if (isUserOnBoard) {
-                          store.dispatch(Notify(NotifyModel(
-                              NotificationType.error,
-                              'This project is already in the active projects')));
-                        } else {
-                          store.dispatch(AddUserToProjectPending(
-                              user, project, true,
-                              isAddedUserToProject: false));
-                        }
-                      }
-                    })
-              ],
-              child: AppListTile(
-                onTap: () {},
-                leading: Container(
-                  width: MediaQuery.of(context).size.width / 5,
-                  child: Text(project.name,
-                      style:
-                          const TextStyle(fontSize: 16, color: Colors.white)),
-                ),
-                title: Wrap(
-                    children: project.stack
-                        .map(
-                          (StackModel stack) => Container(
-                            padding: const EdgeInsets.all(4),
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 4),
-                            decoration: BoxDecoration(
-                                color: AppColors.red,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(stack.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                )),
-                          ),
-                        )
-                        .toList()),
-                trailing: Container(
-                  width: MediaQuery.of(context).size.width / 5.2,
-                  child: Text(
-                    '${converter.dateFromString((project.startDate).toString())} - ${project.endDate != null ? converter.dateFromString((project.endDate).toString()) : 'now'}',
-                  ),
-                ),
-              ),
+    return projects[0].id == null
+        ? <Widget>[]
+        : <Widget>[
+            const SizedBox(height: 16),
+            Text(
+              isActive ? 'Active projects' : 'Projects',
+              style: const TextStyle(color: AppColors.lightGrey, fontSize: 18),
             ),
-          );
-        });
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: projects.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final ProjectModel project = projects[index];
+                  return Opacity(
+                    opacity: project.isInternal ? 0.6 : 1,
+                    child: Slidable(
+                      controller: _slidableController,
+                      actionPane: const SlidableDrawerActionPane(),
+                      enabled: position == Positions.OWNER &&
+                          project.endDate == null,
+                      actionExtentRatio: 0.1,
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                            color: AppColors.bg,
+                            icon: isActive ? Icons.history : Icons.person_add,
+                            onTap: () {
+                              if (isActive) {
+                                store.dispatch(RemoveProjectFromUserPending(
+                                    widget.uid, project));
+                              } else {
+                                final bool isUserOnBoard = user.activeProjects
+                                    .any((ProjectModel selectedProject) =>
+                                        selectedProject.id == project.id);
+                                if (isUserOnBoard) {
+                                  store.dispatch(Notify(NotifyModel(
+                                      NotificationType.error,
+                                      'This project is already in the active projects')));
+                                } else {
+                                  store.dispatch(AddUserToProjectPending(
+                                      user, project, true,
+                                      isAddedUserToProject: false));
+                                }
+                              }
+                            })
+                      ],
+                      child: AppListTile(
+                        onTap: () {},
+                        leading: Container(
+                          width: MediaQuery.of(context).size.width / 5,
+                          child: Text(project.name,
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.white)),
+                        ),
+                        title: Wrap(
+                            children: project.stack
+                                .map(
+                                  (StackModel stack) => Container(
+                                    padding: const EdgeInsets.all(4),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 4),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.red,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Text(stack.name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                )
+                                .toList()),
+                        trailing: Container(
+                          width: MediaQuery.of(context).size.width / 5.2,
+                          child: Text(
+                            '${converter.dateFromString((project.startDate).toString())} - ${project.endDate != null ? converter.dateFromString((project.endDate).toString()) : 'now'}',
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                })
+          ];
   }
 
   Future<dynamic> _openUrl(String url) async {

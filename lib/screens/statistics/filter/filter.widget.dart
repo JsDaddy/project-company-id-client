@@ -5,7 +5,6 @@ import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
-import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';

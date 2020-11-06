@@ -47,7 +47,7 @@ class _AddrojectWidgetWidgetState extends State<AddProjectWidget> {
         onWillChange: (_, _ViewModel state) {},
         builder: (BuildContext context, _ViewModel state) {
           return Container(
-            height: 200,
+            height: 204,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: Column(
