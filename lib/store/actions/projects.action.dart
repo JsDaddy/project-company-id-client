@@ -1,3 +1,4 @@
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -98,8 +99,6 @@ class RemoveUserFromProjectSuccess {
 }
 
 class RemoveUserFromProjectError {}
-
-enum ProjectsType { Default, Filter, Absent, ProjectFilter }
 
 class GetAbsentProjectsSuccess {
   GetAbsentProjectsSuccess(this.absentProjects, this.projectTypes);

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:flutter/material.dart';

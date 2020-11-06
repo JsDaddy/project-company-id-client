@@ -1,3 +1,4 @@
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';

@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -96,10 +97,6 @@ class LogModel {
     );
   }
 }
-
-enum LogType { vacation, timelog, holiday, birthday, all }
-
-enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 
 class LogResponse {
   LogResponse({this.logs, this.vacationAvailable, this.sickAvailable});

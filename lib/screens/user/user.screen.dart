@@ -9,6 +9,7 @@ import 'package:company_id_new/screens/user/add-project/add-project.widget.dart'
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';

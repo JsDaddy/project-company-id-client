@@ -1,4 +1,4 @@
-import 'package:company_id_new/store/models/log.model.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 

@@ -11,6 +11,7 @@ import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project-spec.model.dart';
 import 'package:company_id_new/store/models/project-status.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';

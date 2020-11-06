@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/services/rules.service.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/rules.action.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/rules.model.dart';
 import 'package:redux_epics/redux_epics.dart';

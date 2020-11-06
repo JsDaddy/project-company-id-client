@@ -9,6 +9,7 @@ import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/badge.model.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -25,7 +26,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/store/models/current-day.model.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
-import 'package:company_id_new/store/models/user.model.dart';
 
 class _ViewModel {
   _ViewModel(

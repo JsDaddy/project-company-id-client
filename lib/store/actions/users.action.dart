@@ -1,3 +1,4 @@
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -43,8 +44,6 @@ class ArchiveUserSuccess {
 }
 
 class ArchiveUserError {}
-
-enum UsersType { Default, Filter, Absent, ProjectFilter }
 
 class RemoveProjectFromUserPending {
   RemoveProjectFromUserPending(this.userId, this.project);

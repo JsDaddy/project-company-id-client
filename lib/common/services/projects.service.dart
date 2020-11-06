@@ -1,6 +1,6 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/common/helpers/app-query.dart';
-import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/projects-filter.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';

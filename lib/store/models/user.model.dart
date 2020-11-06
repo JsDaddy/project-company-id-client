@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 
 class UserModel {
@@ -116,5 +117,3 @@ class UserModel {
         initialLogin: initialLogin ?? this.initialLogin);
   }
 }
-
-enum Positions { OWNER, DEVELOPER }

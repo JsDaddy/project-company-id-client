@@ -1,5 +1,4 @@
-import 'package:company_id_new/store/models/log.model.dart';
-import 'package:company_id_new/store/models/user.model.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 
 class AppConverting {
   static VacationType getVacationType(int type) {

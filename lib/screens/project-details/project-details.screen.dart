@@ -7,6 +7,7 @@ import 'package:company_id_new/screens/project-details/add-user/add-user.widget.
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/store/models/enums.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
