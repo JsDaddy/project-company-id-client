@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/services/filter.service.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
@@ -20,7 +21,7 @@ Stream<void> filteredLogUsersEpic(
               .map<dynamic>(
                   (List<UserModel> users) => GetLogsFilterUsersSuccess(users))
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogsFilterUsersError());
           }));
@@ -36,7 +37,7 @@ Stream<void> filteredLogProjectsEpic(
               .map<dynamic>((List<ProjectModel> projects) =>
                   GetLogsFilterProjectsSucess(projects))
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogsFilterProjectsError());
           }));
@@ -52,7 +53,7 @@ Stream<void> filteredProjectsUsersEpic(
               .map<dynamic>((List<UserModel> users) =>
                   GetProjectsFilterUsersSuccess(users))
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetProjectsFilterUsersError());
           }));
@@ -68,7 +69,7 @@ Stream<void> filteredProjectsStackEpic(
               .map<dynamic>((List<StackModel> stack) =>
                   GetProjectsFilterStackSuccess(stack))
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetProjectsFilterStackError());
           }));

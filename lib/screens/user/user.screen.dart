@@ -9,6 +9,7 @@ import 'package:company_id_new/screens/user/add-project/add-project.widget.dart'
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
@@ -58,7 +59,7 @@ class _UserScreenState extends State<UserScreen> {
         },
         builder: (BuildContext context, _ViewModel state) {
           return Scaffold(
-              floatingActionButton: state.authUser.position == Positions.OWNER
+              floatingActionButton: state.authUser.position == Positions.Owner
                   ? FloatingActionButton(
                       child: const Icon(Icons.add),
                       onPressed: () {
@@ -77,7 +78,7 @@ class _UserScreenState extends State<UserScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: ListView(
                         children: <Widget>[
-                          state.authUser.position == Positions.OWNER &&
+                          state.authUser.position == Positions.Owner &&
                                   state.authUser.id != state.user.id
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 16),
@@ -246,7 +247,7 @@ class _UserScreenState extends State<UserScreen> {
                     child: Slidable(
                       controller: _slidableController,
                       actionPane: const SlidableDrawerActionPane(),
-                      enabled: position == Positions.OWNER &&
+                      enabled: position == Positions.Owner &&
                           project.endDate == null,
                       actionExtentRatio: 0.1,
                       secondaryActions: <Widget>[
@@ -263,7 +264,7 @@ class _UserScreenState extends State<UserScreen> {
                                         selectedProject.id == project.id);
                                 if (isUserOnBoard) {
                                   store.dispatch(Notify(NotifyModel(
-                                      NotificationType.error,
+                                      NotificationType.Error,
                                       'This project is already in the active projects')));
                                 } else {
                                   store.dispatch(AddUserToProjectPending(
@@ -317,7 +318,7 @@ class _UserScreenState extends State<UserScreen> {
       await launch(url);
     } else {
       store.dispatch(
-          Notify(NotifyModel(NotificationType.error, 'Could not launch $url')));
+          Notify(NotifyModel(NotificationType.Error, 'Could not launch $url')));
     }
   }
 }

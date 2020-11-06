@@ -1,4 +1,4 @@
-import 'package:company_id_new/screens/projects/filter/filter.widget.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 
 class ProjectStatusModel {
   ProjectStatusModel(this.title, this.status);

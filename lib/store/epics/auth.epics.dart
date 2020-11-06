@@ -8,6 +8,7 @@ import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -22,7 +23,7 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
             return <dynamic>[
               SetTitle('Statistics'),
               SignInSuccess(user),
-              user.position == Positions.OWNER ? GetRequestsPending() : null,
+              user.position == Positions.Owner ? GetRequestsPending() : null,
               PushReplacementAction(
                   user.initialLogin ? SetPasswordScreen() : HomeScreen(),
                   key: mainNavigatorKey)
@@ -59,7 +60,7 @@ Stream<void> signInEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   key: mainNavigatorKey)
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(SignInError());
           }));
@@ -75,12 +76,12 @@ Stream<void> setPasswordEpic(
             return <dynamic>[
               SetPasswordSuccess,
               Notify(NotifyModel(
-                  NotificationType.success, 'Your password has been changed')),
+                  NotificationType.Success, 'Your password has been changed')),
               SetTitle('Statistics'),
               PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(SetPasswordError());
           }));

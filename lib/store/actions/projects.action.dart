@@ -1,3 +1,4 @@
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -26,7 +27,7 @@ class CreateProjectError {}
 class ArchiveProjectPending {
   ArchiveProjectPending(this.id, this.status);
   String id;
-  String status;
+  ProjectStatus status;
 }
 
 class ArchiveProjectSuccess {}
@@ -98,8 +99,6 @@ class RemoveUserFromProjectSuccess {
 }
 
 class RemoveUserFromProjectError {}
-
-enum ProjectsType { Default, Filter, Absent, ProjectFilter }
 
 class GetAbsentProjectsSuccess {
   GetAbsentProjectsSuccess(this.absentProjects, this.projectTypes);

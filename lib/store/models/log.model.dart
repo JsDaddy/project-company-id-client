@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -20,7 +21,7 @@ class LogModel {
   String time;
   DateTime date;
   VacationType vacationType;
-  String status;
+  RequestStatus status;
   String name;
   LogType type;
   ProjectModel project;
@@ -40,15 +41,15 @@ class LogModel {
             : null,
         name: json['name'] as String,
         fullName: json['fullName'] as String,
-        status: json['status'] as String,
+        status: AppConverting.requestStatusFromString(json['status'] as String),
         vacationType: json['type'] != null
             ? AppConverting.getVacationType(json['type'] as int)
             : null,
         type: json['type'] != null
-            ? LogType.vacation
+            ? LogType.Vacation
             : json['name'] != null
-                ? LogType.holiday
-                : json['fullName'] != null ? LogType.birthday : LogType.timelog,
+                ? LogType.Holiday
+                : json['fullName'] != null ? LogType.Birthday : LogType.Timelog,
         user: json['user'] != null
             ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
             : null,
@@ -79,7 +80,7 @@ class LogModel {
       String time,
       DateTime date,
       VacationType vacationType,
-      String status,
+      RequestStatus status,
       LogType type,
       ProjectModel project,
       UserModel user) {
@@ -96,10 +97,6 @@ class LogModel {
     );
   }
 }
-
-enum LogType { vacation, timelog, holiday, birthday, all }
-
-enum VacationType { VACPAID, VACNONPAID, SICKPAID, SICKNONPAID }
 
 class LogResponse {
   LogResponse({this.logs, this.vacationAvailable, this.sickAvailable});

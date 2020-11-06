@@ -6,6 +6,7 @@ import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dar
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -62,15 +63,16 @@ class _EventListWidgetState extends State<EventListWidget> {
           return ListView(
             shrinkWrap: true,
             children: <Widget>[
+              const SizedBox(height: 0.1),
               state.filter != null
                   ? Wrap(children: <Widget>[
-                      state.filter?.logType?.logType == LogType.timelog
+                      state.filter?.logType?.logType == LogType.Timelog
                           ? InkWell(
                               onTap: () {
                                 store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(
                                         logType:
-                                            FilterType('All', LogType.all))));
+                                            FilterType('All', LogType.All))));
                               },
                               child: FilterItemWidget(
                                 title: state.filter.logType?.title,
@@ -78,13 +80,13 @@ class _EventListWidgetState extends State<EventListWidget> {
                               ),
                             )
                           : Container(),
-                      state.filter?.logType?.logType == LogType.vacation
+                      state.filter?.logType?.logType == LogType.Vacation
                           ? InkWell(
                               onTap: () {
                                 store.dispatch(SaveLogFilter(store.state.filter
                                     .copyWith(
                                         logType:
-                                            FilterType('All', LogType.all))));
+                                            FilterType('All', LogType.All))));
                               },
                               child: FilterItemWidget(
                                 title: AppConverting.getVacationTypeString(
@@ -121,7 +123,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                   : Container(),
               const SizedBox(height: 16),
               state.logs
-                      .where((LogModel log) => log.type == LogType.holiday)
+                      .where((LogModel log) => log.type == LogType.Holiday)
                       .toList()
                       .isNotEmpty
                   ? Padding(
@@ -130,7 +132,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                         child: Text(
                           state.logs
                               .where(
-                                  (LogModel log) => log.type == LogType.holiday)
+                                  (LogModel log) => log.type == LogType.Holiday)
                               .toList()[0]
                               .name,
                           style: const TextStyle(
@@ -174,12 +176,12 @@ class _EventListWidgetState extends State<EventListWidget> {
                     )
                   : Container(),
               ...state.logs
-                  .where((LogModel log) => log.type == LogType.vacation)
+                  .where((LogModel log) => log.type == LogType.Vacation)
                   .map((LogModel log) =>
                       AppVacationTileWidget(log, _slidableController))
                   .toList(),
               ...state.logs
-                  .where((LogModel log) => log.type == LogType.timelog)
+                  .where((LogModel log) => log.type == LogType.Timelog)
                   .map((LogModel log) => Slidable(
                         controller: _slidableController,
                         enabled: state.authUser.id == log.user.id,
@@ -221,7 +223,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                         ],
                         child: AppListTile(
                           leading: state.authUser.id != log.user.id ||
-                                  state.authUser.position == Positions.OWNER
+                                  state.authUser.position == Positions.Owner
                               ? AvatarWidget(avatar: log.user.avatar, sizes: 50)
                               : null,
                           textSpan: TextSpan(
@@ -246,7 +248,7 @@ class _EventListWidgetState extends State<EventListWidget> {
   String getBirthdays(List<LogModel> logs) {
     String result = 'Birthdays: ';
     final List<LogModel> birthdays =
-        logs.where((LogModel log) => log.type == LogType.birthday).toList();
+        logs.where((LogModel log) => log.type == LogType.Birthday).toList();
     birthdays.forEach((LogModel log) {
       result += '${log.fullName}, ';
     });

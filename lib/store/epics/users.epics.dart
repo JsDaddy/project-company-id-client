@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/services/users.service.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -31,7 +32,7 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                 return null;
             }
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetUsersError());
           }));
@@ -44,7 +45,7 @@ Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {
           Stream<UserModel>.fromFuture(getUser(action.id as String))
               .map<dynamic>((UserModel user) => GetUserSuccess(user))
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetUserError());
           }));
@@ -58,12 +59,12 @@ Stream<void> archiveUserEpic(
           Stream<DateTime>.fromFuture(archiveUser(action.id as String))
               .expand<dynamic>((DateTime dateTime) => <dynamic>[
                     Notify(NotifyModel(
-                        NotificationType.success, 'User has been archived')),
+                        NotificationType.Success, 'User has been archived')),
                     ArchiveUserSuccess(action.id as String, dateTime)
                   ])
               .handleError((dynamic e) {
             print(e);
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(ArchiveUserError());
           }));
@@ -78,11 +79,11 @@ Stream<void> removeProjectFromUserEpic(
             action.project as ProjectModel, action.userId as String))
         .expand<dynamic>((_) => <dynamic>[
               RemoveProjectFromUserSuccess(action.project as ProjectModel),
-              Notify(NotifyModel(NotificationType.success,
+              Notify(NotifyModel(NotificationType.Success,
                   'Project has been removed from the active projects')),
             ])
         .handleError((dynamic e) {
-      s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+      s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
           e.message as String ?? 'Something went wrong')));
       s.store.dispatch(RemoveProjectFromUserError());
     });

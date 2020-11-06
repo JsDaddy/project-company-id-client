@@ -1,3 +1,5 @@
+import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -17,7 +19,7 @@ class ProjectModel {
       this.onboard});
   String id;
   String name;
-  String status;
+  ProjectStatus status;
   bool isInternal;
   String customer;
   String industry;
@@ -54,7 +56,9 @@ class ProjectModel {
           json['isActivity'] == null ? null : json['isActivity'] as bool,
       customer: json['customer'] as String,
       industry: json['industry'] as String,
-      status: json['status'] == null ? null : json['status'] as String,
+      status: json['status'] == null
+          ? null
+          : AppConverting.projectStatusFromString(json['status'] as String),
       stack: json['stack'] != null
           ? json['stack']
               .map<StackModel>((dynamic stack) =>

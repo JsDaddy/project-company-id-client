@@ -5,6 +5,7 @@ import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -45,8 +46,8 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
               controller: widget.slidableController,
               actionPane: const SlidableDrawerActionPane(),
               actionExtentRatio: 0.1,
-              enabled: state.authUser.position == Positions.OWNER &&
-                  widget.log.status == 'pending',
+              enabled: state.authUser.position == Positions.Owner &&
+                  widget.log.status == RequestStatus.Pending,
               secondaryActions: <Widget>[
                 IconSlideAction(
                   color: AppColors.bg,
@@ -55,7 +56,7 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                       color: Colors.green,
                       onPressed: () {
                         store.dispatch(ChangeStatusVacationPending(
-                            widget.log.id, 'approved'));
+                            widget.log.id, RequestStatus.Approved));
                         widget.slidableController.activeState?.close();
                       }),
                 ),
@@ -66,29 +67,31 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                       color: AppColors.red,
                       onPressed: () {
                         store.dispatch(ChangeStatusVacationPending(
-                            widget.log.id, 'rejected'));
+                            widget.log.id, RequestStatus.Rejected));
                         widget.slidableController.activeState?.close();
                       }),
                 ),
               ],
               child: AppListTile(
-                onTap: () => store.dispatch(PushAction(
-                    UserScreen(uid: widget.log.user.id),
-                    '${widget.log.user.name} ${widget.log.user.lastName}')),
-                leading:
-                    AvatarWidget(avatar: widget.log.user.avatar, sizes: 50),
-                textSpan: TextSpan(
-                    text: AppConverting.getVacationTypeString(
-                        widget.log.vacationType),
-                    style: TextStyle(
-                        color:
-                            AppColors.getColorTextVacation(widget.log.status),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)),
-                textSpan2: TextSpan(
-                  text: ' - ${widget.log.desc}',
-                ),
-              ),
+                  onTap: () => store.dispatch(PushAction(
+                      UserScreen(uid: widget.log.user.id),
+                      '${widget.log.user.name} ${widget.log.user.lastName}')),
+                  leading:
+                      AvatarWidget(avatar: widget.log.user.avatar, sizes: 50),
+                  textSpan: TextSpan(
+                      text: AppConverting.getVacationTypeString(
+                          widget.log.vacationType),
+                      style: TextStyle(
+                          color: AppColors.getColorTextVacation(
+                              AppConverting.getStringFromRequestStatus(
+                                  widget.log.status)),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15)),
+                  textSpan2: TextSpan(
+                    text: ' - ${widget.log.desc}',
+                  ),
+                  trailing: Text(AppConverting.getStringFromRequestStatus(
+                      widget.log.status))),
             ),
           );
         });
