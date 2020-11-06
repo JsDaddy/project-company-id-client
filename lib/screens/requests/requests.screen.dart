@@ -8,7 +8,9 @@ import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widg
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
+import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -85,15 +87,21 @@ class _RequestsScreenState extends State<RequestsScreen> {
                         iconWidget: IconButton(
                             icon: const Icon(Icons.check),
                             color: Colors.green,
-                            onPressed: () => _changeStatus(request.id, context,
-                                'approved', 'Are you sure about approving?'))),
+                            onPressed: () => _changeStatus(
+                                request.id,
+                                context,
+                                RequestStatus.Approved,
+                                'Are you sure about approving?'))),
                     IconSlideAction(
                         color: AppColors.bg,
                         iconWidget: IconButton(
                             icon: const Icon(Icons.close),
                             color: AppColors.red,
-                            onPressed: () => _changeStatus(request.id, context,
-                                'rejected', 'Are you sure about rejecting?'))),
+                            onPressed: () => _changeStatus(
+                                request.id,
+                                context,
+                                RequestStatus.Rejected,
+                                'Are you sure about rejecting?'))),
                   ],
                   child: AppListTile(
                       onTap: () => store.dispatch(PushAction(
@@ -114,14 +122,15 @@ class _RequestsScreenState extends State<RequestsScreen> {
         });
   }
 
-  Future<void> _changeStatus(
-      String id, BuildContext context, String status, String titleText) async {
+  Future<void> _changeStatus(String id, BuildContext context,
+      RequestStatus status, String titleText) async {
     final bool isConfirm = await showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return ConfirmDialogWidget(title: 'Request', text: titleText);
         });
+    store.dispatch(SetTitle('Requests'));
     if (!isConfirm) {
       _slidableController.activeState?.close();
       return;

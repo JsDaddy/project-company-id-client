@@ -11,7 +11,7 @@ import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/project-spec.model.dart';
 import 'package:company_id_new/store/models/project-status.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
@@ -198,8 +198,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             if (!isConfirm) {
                               return;
                             }
-                            store.dispatch(
-                                ArchiveProjectPending(project.id, 'finished'));
+                            store.dispatch(ArchiveProjectPending(
+                                project.id, ProjectStatus.Finished));
                           }),
                     ),
                     IconSlideAction(
@@ -221,8 +221,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             if (!isConfirm) {
                               return;
                             }
-                            store.dispatch(
-                                ArchiveProjectPending(project.id, 'rejected'));
+                            store.dispatch(ArchiveProjectPending(
+                                project.id, ProjectStatus.Rejected));
                           }),
                     ),
                   ],

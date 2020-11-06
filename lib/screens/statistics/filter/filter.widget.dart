@@ -4,7 +4,7 @@ import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart'
 import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-wrapper.widget.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';

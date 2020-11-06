@@ -9,7 +9,7 @@ import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/badge.model.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';

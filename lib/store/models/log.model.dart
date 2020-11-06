@@ -1,5 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -21,7 +21,7 @@ class LogModel {
   String time;
   DateTime date;
   VacationType vacationType;
-  String status;
+  RequestStatus status;
   String name;
   LogType type;
   ProjectModel project;
@@ -41,7 +41,7 @@ class LogModel {
             : null,
         name: json['name'] as String,
         fullName: json['fullName'] as String,
-        status: json['status'] as String,
+        status: requestStatusFromString(json['status'] as String),
         vacationType: json['type'] != null
             ? AppConverting.getVacationType(json['type'] as int)
             : null,
@@ -80,7 +80,7 @@ class LogModel {
       String time,
       DateTime date,
       VacationType vacationType,
-      String status,
+      RequestStatus status,
       LogType type,
       ProjectModel project,
       UserModel user) {
@@ -95,6 +95,19 @@ class LogModel {
       project: project ?? this.project,
       user: user ?? this.user,
     );
+  }
+
+  static RequestStatus requestStatusFromString(String status) {
+    switch (status) {
+      case 'approved':
+        return RequestStatus.Approved;
+      case 'rejected':
+        return RequestStatus.Rejected;
+      case 'pending':
+        return RequestStatus.Pending;
+      default:
+        return null;
+    }
   }
 }
 

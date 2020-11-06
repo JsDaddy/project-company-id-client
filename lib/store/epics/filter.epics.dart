@@ -1,7 +1,7 @@
 import 'package:company_id_new/common/services/filter.service.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';

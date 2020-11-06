@@ -5,7 +5,7 @@ import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -152,17 +152,16 @@ Stream<void> archiveProjectEpic(
   return actions
       .where((dynamic action) => action is ArchiveProjectPending)
       .switchMap<dynamic>((dynamic action) => Stream<void>.fromFuture(
-                  archiveProject(action.id as String, action.status as String))
-              .expand<dynamic>((_) => <dynamic>[
-                    Notify(NotifyModel(
-                        NotificationType.success,
-                        action.status == 'finished'
-                            ? 'Project has been finished'
-                            : 'Project has been rejected')),
-                    ArchiveProjectSuccess(),
-                    GetProjectsPending()
-                  ])
-              .handleError((dynamic e) {
+                  archiveProject(
+                      action.id as String, action.status as ProjectStatus))
+              .expand<dynamic>((_) {
+            s.store.dispatch(Notify(NotifyModel(
+                NotificationType.success,
+                action.status == ProjectStatus.Finished
+                    ? 'Project has been finished'
+                    : 'Project has been rejected')));
+            return <dynamic>[ArchiveProjectSuccess(), GetProjectsPending()];
+          }).handleError((dynamic e) {
             print(e);
             s.store.dispatch(Notify(NotifyModel(NotificationType.error,
                 e.message as String ?? 'Something went wrong')));

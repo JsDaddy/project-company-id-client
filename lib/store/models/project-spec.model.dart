@@ -1,4 +1,4 @@
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 
 class ProjectSpecModel {
   ProjectSpecModel(this.title, this.spec);

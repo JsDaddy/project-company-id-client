@@ -1,4 +1,4 @@
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -27,7 +27,7 @@ class CreateProjectError {}
 class ArchiveProjectPending {
   ArchiveProjectPending(this.id, this.status);
   String id;
-  String status;
+  ProjectStatus status;
 }
 
 class ArchiveProjectSuccess {}

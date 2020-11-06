@@ -1,6 +1,6 @@
 import 'package:company_id_new/common/helpers/app-api.dart';
 import 'package:company_id_new/common/helpers/app-query.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/projects-filter.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -56,8 +56,9 @@ Future<void> createProject(ProjectModel project) async {
   await api.dio.post<dynamic>('/projects', data: project.toJson());
 }
 
-Future<void> archiveProject(String id, String status) async {
-  await api.dio.put<dynamic>('/projects/$id/$status');
+Future<void> archiveProject(String id, ProjectStatus status) async {
+  final String statusValue = getStringFromProjectStatus(status);
+  await api.dio.put<dynamic>('/projects/$id/$statusValue');
 }
 
 Future<UserModel> addUserToProject(

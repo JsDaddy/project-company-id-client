@@ -6,7 +6,7 @@ import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dar
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
-import 'package:company_id_new/store/models/enums.model.dart';
+import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
