@@ -66,6 +66,40 @@ class _FilterProjectsWidgetState extends State<FilterProjectsWidget> {
             filter: store.state.projectsFilter,
             users: store.state.filterProjectsUsersStack.users,
             stack: store.state.filterProjectsUsersStack.stack),
+        onWillChange: (_, _ViewModel state) {
+          if (selectedStack != null) {
+            setState(() {
+              selectedStack = state.stack.firstWhere(
+                  (StackModel stack) => stack.id == selectedStack.id,
+                  orElse: () => null);
+            });
+          }
+          if (selectedUser != null) {
+            setState(() {
+              selectedUser = state.users.firstWhere(
+                  (UserModel user) => user.id == selectedUser.id,
+                  orElse: () => null);
+            });
+          }
+          if (state.stack.isNotEmpty &&
+              state.filter?.stack?.id != null &&
+              selectedStack == null) {
+            setState(() {
+              selectedStack = state.stack.firstWhere(
+                  (StackModel stack) => stack.id == state.filter.stack.id,
+                  orElse: () => null);
+            });
+          }
+          if (state.users.isNotEmpty &&
+              state.filter?.user?.id != null &&
+              selectedUser == null) {
+            setState(() {
+              selectedUser = state.users.firstWhere(
+                  (UserModel user) => user.id == state.filter.user.id,
+                  orElse: () => null);
+            });
+          }
+        },
         onInit: (Store<AppState> store) {
           store.dispatch(GetUsersPending(usersType: UsersType.ProjectFilter));
           store.dispatch(GetStackPending(stackTypes: StackTypes.ProjectFilter));
@@ -108,6 +142,7 @@ class _FilterProjectsWidgetState extends State<FilterProjectsWidget> {
                     style: AppDropDownStyles.hintStyle),
                 value: selectedUser,
                 onChanged: (UserModel value) {
+                  store.dispatch(GetProjectsFilterStackPending(value.id));
                   setState(() {
                     selectedUser = value;
                   });
@@ -132,6 +167,7 @@ class _FilterProjectsWidgetState extends State<FilterProjectsWidget> {
                     style: AppDropDownStyles.hintStyle),
                 value: selectedStack,
                 onChanged: (StackModel value) {
+                  store.dispatch(GetProjectsFilterUsersPending(value.id));
                   setState(() {
                     selectedStack = value;
                   });
