@@ -63,6 +63,7 @@ class _EventListWidgetState extends State<EventListWidget> {
           return ListView(
             shrinkWrap: true,
             children: <Widget>[
+              const SizedBox(height: 0.1),
               state.filter != null
                   ? Wrap(children: <Widget>[
                       state.filter?.logType?.logType == LogType.timelog
