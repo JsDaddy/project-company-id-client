@@ -7,7 +7,7 @@ import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -34,10 +34,10 @@ class AddVacationDialogWidget extends StatefulWidget {
 class _AddVacationDialogWidgetState extends State<AddVacationDialogWidget> {
   VacationType selectedReason;
   List<VacationType> reasons = <VacationType>[
-    VacationType.VACNONPAID,
-    VacationType.VACPAID,
-    VacationType.SICKNONPAID,
-    VacationType.SICKPAID
+    VacationType.VacNonPaid,
+    VacationType.VacPaid,
+    VacationType.SickNonPaid,
+    VacationType.SickPaid
   ];
   final TextEditingController _descController = TextEditingController(text: '');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -131,7 +131,7 @@ class _AddVacationDialogWidgetState extends State<AddVacationDialogWidget> {
     store.dispatch(RequestVacationPending(LogModel(
         desc: _descController.text,
         date: widget.choosedDate,
-        type: LogType.vacation,
+        type: LogType.Vacation,
         user: state.user,
         status: RequestStatus.Approved,
         vacationType: selectedReason)));

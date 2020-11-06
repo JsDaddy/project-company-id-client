@@ -4,7 +4,7 @@ import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart'
 import 'package:company_id_new/common/widgets/app-dropdown-wrapper/app-dropdown-wrapper.widget.dart';
 import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -45,12 +45,12 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
   @override
   void initState() {
     types = <FilterType>[
-      FilterType('All', LogType.all),
-      FilterType('Log', LogType.timelog),
-      FilterType(vacation, LogType.vacation,
-          vacationType: VacationType.VACPAID),
-      FilterType(sickness, LogType.vacation,
-          vacationType: VacationType.SICKPAID)
+      FilterType('All', LogType.All),
+      FilterType('Log', LogType.Timelog),
+      FilterType(vacation, LogType.Vacation,
+          vacationType: VacationType.VacPaid),
+      FilterType(sickness, LogType.Vacation,
+          vacationType: VacationType.SickPaid)
     ];
     vacationTypes = <String>[paid, nonPaid];
     selectedVacationType = paid;
@@ -153,7 +153,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                             }).toList(),
                           ),
                         ),
-                        selectedType.logType == LogType.vacation
+                        selectedType.logType == LogType.Vacation
                             ? Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),
@@ -172,19 +172,19 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                         if (type.title == vacation) {
                                           if (value == nonPaid) {
                                             type.vacationType =
-                                                VacationType.VACNONPAID;
+                                                VacationType.VacNonPaid;
                                           } else {
                                             type.vacationType =
-                                                VacationType.VACPAID;
+                                                VacationType.VacPaid;
                                           }
                                         }
                                         if (type.title == sickness) {
                                           if (value == nonPaid) {
                                             type.vacationType =
-                                                VacationType.SICKNONPAID;
+                                                VacationType.SickNonPaid;
                                           } else {
                                             type.vacationType =
-                                                VacationType.SICKPAID;
+                                                VacationType.SickPaid;
                                           }
                                         }
                                       });
@@ -219,7 +219,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                       child: Text(
                                           '${user.name} ${user.lastName}'));
                                 }).toList())),
-                        selectedType.logType != LogType.vacation
+                        selectedType.logType != LogType.Vacation
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 16),
                                 child: AppDropDownWrapperWidget(
@@ -255,7 +255,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                             color: AppColors.green,
                             title: 'Apply',
                             onClick: () {
-                              if (selectedType.logType == LogType.all &&
+                              if (selectedType.logType == LogType.All &&
                                   selectedUser == null &&
                                   selectedProject == null) {
                                 store
@@ -264,7 +264,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                               }
                               final LogFilterModel filter = LogFilterModel(
                                   logType: selectedType, user: selectedUser);
-                              if (selectedType.logType != LogType.vacation) {
+                              if (selectedType.logType != LogType.Vacation) {
                                 filter.project = selectedProject;
                               }
                               store.dispatch(PopAction(
@@ -280,8 +280,8 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
   }
 
   String getSelectedVacationType(VacationType vacationType) {
-    if (vacationType == VacationType.VACPAID ||
-        vacationType == VacationType.SICKPAID) {
+    if (vacationType == VacationType.VacPaid ||
+        vacationType == VacationType.SickPaid) {
       return paid;
     } else {
       return nonPaid;

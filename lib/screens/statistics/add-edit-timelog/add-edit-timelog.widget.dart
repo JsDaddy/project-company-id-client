@@ -1,4 +1,4 @@
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -173,7 +173,7 @@ class _AddEditTimelogDialogWidgetState
             project: selectedProject,
             date: widget.choosedDate,
             time: _hhController.text,
-            type: LogType.timelog,
+            type: LogType.Timelog,
             user: user,
             desc: _descController.text)))
         : store.dispatch(EditLogPending(LogModel(
@@ -181,7 +181,7 @@ class _AddEditTimelogDialogWidgetState
             project: selectedProject,
             date: widget.choosedDate,
             time: _hhController.text,
-            type: LogType.timelog,
+            type: LogType.Timelog,
             user: user,
             desc: _descController.text)));
   }

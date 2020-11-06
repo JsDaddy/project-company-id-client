@@ -1,4 +1,5 @@
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-converting.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -57,7 +58,7 @@ class ProjectModel {
       industry: json['industry'] as String,
       status: json['status'] == null
           ? null
-          : projectStatusFromString(json['status'] as String),
+          : AppConverting.projectStatusFromString(json['status'] as String),
       stack: json['stack'] != null
           ? json['stack']
               .map<StackModel>((dynamic stack) =>
@@ -83,20 +84,5 @@ class ProjectModel {
           ? null
           : DateTime.parse(json['endDate'] as String),
     );
-  }
-
-  static ProjectStatus projectStatusFromString(String status) {
-    switch (status) {
-      case 'finished':
-        return ProjectStatus.Finished;
-      case 'rejected':
-        return ProjectStatus.Rejected;
-      case 'ongoing':
-        return ProjectStatus.Ongoing;
-      case 'all':
-        return ProjectStatus.All;
-      default:
-        return null;
-    }
   }
 }

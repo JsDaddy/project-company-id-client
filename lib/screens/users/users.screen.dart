@@ -5,7 +5,7 @@ import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
@@ -54,7 +54,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       .map((UserModel user) {
                   return Slidable(
                       controller: _slidableController,
-                      enabled: state.user.position == Positions.OWNER &&
+                      enabled: state.user.position == Positions.Owner &&
                           user.endDate == null,
                       actionExtentRatio: 0.1,
                       secondaryActions: <Widget>[

@@ -1,5 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
@@ -41,15 +41,15 @@ class LogModel {
             : null,
         name: json['name'] as String,
         fullName: json['fullName'] as String,
-        status: requestStatusFromString(json['status'] as String),
+        status: AppConverting.requestStatusFromString(json['status'] as String),
         vacationType: json['type'] != null
             ? AppConverting.getVacationType(json['type'] as int)
             : null,
         type: json['type'] != null
-            ? LogType.vacation
+            ? LogType.Vacation
             : json['name'] != null
-                ? LogType.holiday
-                : json['fullName'] != null ? LogType.birthday : LogType.timelog,
+                ? LogType.Holiday
+                : json['fullName'] != null ? LogType.Birthday : LogType.Timelog,
         user: json['user'] != null
             ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
             : null,
@@ -95,19 +95,6 @@ class LogModel {
       project: project ?? this.project,
       user: user ?? this.user,
     );
-  }
-
-  static RequestStatus requestStatusFromString(String status) {
-    switch (status) {
-      case 'approved':
-        return RequestStatus.Approved;
-      case 'rejected':
-        return RequestStatus.Rejected;
-      case 'pending':
-        return RequestStatus.Pending;
-      default:
-        return null;
-    }
   }
 }
 

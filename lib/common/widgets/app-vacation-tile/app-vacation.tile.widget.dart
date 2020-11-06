@@ -5,7 +5,7 @@ import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/vacations.action.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -46,7 +46,7 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
               controller: widget.slidableController,
               actionPane: const SlidableDrawerActionPane(),
               actionExtentRatio: 0.1,
-              enabled: state.authUser.position == Positions.OWNER &&
+              enabled: state.authUser.position == Positions.Owner &&
                   widget.log.status == RequestStatus.Pending,
               secondaryActions: <Widget>[
                 IconSlideAction(
@@ -83,14 +83,15 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                           widget.log.vacationType),
                       style: TextStyle(
                           color: AppColors.getColorTextVacation(
-                              getStringFromRequestStatus(widget.log.status)),
+                              AppConverting.getStringFromRequestStatus(
+                                  widget.log.status)),
                           fontWeight: FontWeight.bold,
                           fontSize: 15)),
                   textSpan2: TextSpan(
                     text: ' - ${widget.log.desc}',
                   ),
-                  trailing:
-                      Text(getStringFromRequestStatus(widget.log.status))),
+                  trailing: Text(AppConverting.getStringFromRequestStatus(
+                      widget.log.status))),
             ),
           );
         });

@@ -1,5 +1,5 @@
 import 'package:company_id_new/common/helpers/app-converting.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 
 class AppQuery {
   static String vacationTypeQuery(VacationType vacationType) {

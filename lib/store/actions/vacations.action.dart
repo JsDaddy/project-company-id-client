@@ -1,4 +1,4 @@
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 
 class ChangeStatusVacationPending {
   ChangeStatusVacationPending(this.vacationId, this.status);

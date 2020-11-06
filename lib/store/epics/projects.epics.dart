@@ -5,7 +5,7 @@ import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
@@ -37,7 +37,7 @@ Stream<void> getProjectsEpic(
                 return null;
             }
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetProjectsError());
           }));
@@ -52,7 +52,7 @@ Stream<void> getDetailProjectEpic(
               .map<dynamic>((ProjectModel project) {
             return GetDetailProjectSuccess(project);
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetDetailProjectError());
           }));
@@ -72,7 +72,7 @@ Stream<void> createProjectEpic(
               PopUntilFirst()
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(CreateProjectError());
           }));
@@ -118,11 +118,11 @@ Stream<void> addUserToProjectEpic(
                         : AddProjectToUserSuccess(
                             action.project as ProjectModel,
                           ),
-                    Notify(NotifyModel(NotificationType.success,
+                    Notify(NotifyModel(NotificationType.Success,
                         'User has been added to the project')),
                   ])
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(AddUserToProjectError());
           }));
@@ -137,11 +137,11 @@ Stream<void> removeUserFromProjectEpic(
                       action.user as UserModel, action.projectId as String))
               .expand<dynamic>((_) => <dynamic>[
                     RemoveUserFromProjectSuccess(action.user as UserModel),
-                    Notify(NotifyModel(NotificationType.success,
+                    Notify(NotifyModel(NotificationType.Success,
                         'User has been removed from the project')),
                   ])
               .handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(RemoveUserFromProjectError());
           }));
@@ -158,7 +158,7 @@ Stream<void> archiveProjectEpic(
             return <dynamic>[
               GetProjectsPending(),
               Notify(NotifyModel(
-                  NotificationType.success,
+                  NotificationType.Success,
                   action.status == ProjectStatus.Finished
                       ? 'Project has been finished'
                       : 'Project has been rejected')),
@@ -166,7 +166,7 @@ Stream<void> archiveProjectEpic(
             ];
           }).handleError((dynamic e) {
             print(e);
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(ArchiveProjectError());
           }));

@@ -5,7 +5,7 @@ import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/models/calendar.model.dart';
-import 'package:company_id_new/common/helpers/enums.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
@@ -27,7 +27,7 @@ Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
             ];
           }).handleError((dynamic e) {
             // TODO: return aciton in error
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogsError());
           }));
@@ -47,7 +47,7 @@ Stream<void> getLogByDateEpic(
                   vacationAvailable: logResponse.vacationAvailable))
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogByDateError());
           }));
@@ -63,10 +63,10 @@ Stream<void> addLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               AddLogSuccess(action.log as LogModel),
               GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
-                  NotificationType.success, 'Timelog has been added')),
+                  NotificationType.Success, 'Timelog has been added')),
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(AddLogError());
           }));
@@ -81,10 +81,10 @@ Stream<void> editLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               EditLogSuccess(log),
               GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
-                  NotificationType.success, 'Timelog has been edited')),
+                  NotificationType.Success, 'Timelog has been edited')),
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(EditLogError());
           }));
@@ -100,10 +100,10 @@ Stream<void> deleteLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               DeleteLogSuccess(action.id as String),
               GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
-                  NotificationType.success, 'Timelog has been deleted')),
+                  NotificationType.Success, 'Timelog has been deleted')),
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(DeleteLogError());
           }));
@@ -120,11 +120,11 @@ Stream<void> requestVacationEpic(
               RequestVacationSuccess(action.vacation as LogModel),
               GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
-                  NotificationType.success, 'Request has been added')),
+                  NotificationType.Success, 'Request has been added')),
               PopAction(key: mainNavigatorKey)
             ];
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(RequestVacationError());
           }));
@@ -140,7 +140,7 @@ Stream<void> getRequestsEpic(
             refresh.refreshController.refreshCompleted();
             return GetRequestsSuccess(requests);
           }).handleError((dynamic e) {
-            s.store.dispatch(Notify(NotifyModel(NotificationType.error,
+            s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetRequestsError());
           }));
