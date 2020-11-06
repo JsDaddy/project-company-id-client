@@ -3,13 +3,20 @@ import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 
 class GetUsersPending {
-  GetUsersPending({this.usersType = UsersType.Default, this.projectId});
+  GetUsersPending(this.isFired,
+      {this.usersType = UsersType.Default, this.projectId});
   UsersType usersType;
+  bool isFired;
   String projectId;
 }
 
 class GetUsersSuccess {
   GetUsersSuccess(this.users);
+  List<UserModel> users;
+}
+
+class GetUsersForCreatingProjectSuccess {
+  GetUsersForCreatingProjectSuccess(this.users);
   List<UserModel> users;
 }
 

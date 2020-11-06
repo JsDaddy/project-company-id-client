@@ -105,3 +105,15 @@ class GetAbsentProjectsSuccess {
   List<ProjectModel> absentProjects;
   ProjectsType projectTypes;
 }
+
+class GetActiveProjectsByUserPending {
+  GetActiveProjectsByUserPending(this.userId);
+  String userId;
+}
+
+class GetActiveProjectsByUserSuccess {
+  GetActiveProjectsByUserSuccess(this.projects);
+  List<ProjectModel> projects;
+}
+
+class GetActiveProjectsByUserError {}

@@ -63,7 +63,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
       selectedVacationType =
           getSelectedVacationType(store.state.filter.logType.vacationType);
     }
-    store.dispatch(GetUsersPending(usersType: UsersType.Filter));
+    store.dispatch(GetUsersPending(true, usersType: UsersType.Filter));
     store.dispatch(GetProjectsPending(projectTypes: ProjectsType.Filter));
     super.initState();
   }

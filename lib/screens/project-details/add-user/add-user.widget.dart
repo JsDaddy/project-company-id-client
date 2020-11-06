@@ -30,7 +30,7 @@ class _AddUserWidgetWidgetState extends State<AddUserWidget> {
 
   @override
   void initState() {
-    store.dispatch(GetUsersPending(
+    store.dispatch(GetUsersPending(false,
         usersType: UsersType.Absent, projectId: store.state.project.id));
     super.initState();
   }

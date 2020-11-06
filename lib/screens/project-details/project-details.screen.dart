@@ -6,6 +6,7 @@ import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/project-details/add-user/add-user.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
@@ -159,56 +160,53 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   Widget _projectsList(ProjectModel project, List<UserModel> users,
       Positions position, bool isOnboard) {
     return Column(
-        children: users
-            .map(
-              (UserModel user) => Slidable(
-                controller:
-                    position == Positions.Owner ? _slidableController : null,
-                actionPane: const SlidableDrawerActionPane(),
-                enabled: position == Positions.Owner,
-                actionExtentRatio: 0.1,
-                secondaryActions: <Widget>[
-                  IconSlideAction(
-                      color: AppColors.bg,
-                      icon: isOnboard ? Icons.history : Icons.person_add,
-                      onTap: () {
-                        if (!isOnboard) {
-                          final bool isUserOnboard = project.onboard.any(
-                              (UserModel userOnBoard) =>
-                                  userOnBoard.id ==
-                                  project.history
-                                      .firstWhere(
-                                          (UserModel userHis) =>
-                                              userHis.id == user.id,
-                                          orElse: () => null)
-                                      ?.id);
-                          if (!isUserOnboard) {
-                            store.dispatch(AddUserToProjectPending(
-                                user, store.state.project, true));
-                          } else {
-                            store.dispatch(Notify(NotifyModel(
-                                NotificationType.Error,
-                                'This user is already on the project')));
-                          }
-                        } else {
-                          store.dispatch(RemoveUserFromProjectPending(
-                              user, store.state.project.id));
-                        }
-                      })
-                ],
-                child: AppListTile(
-                  onTap: () => _pushToUser(user),
-                  leading: AvatarWidget(avatar: user.avatar, sizes: 50),
-                  trailing:
-                      Text(AppConverting.getPositionFromString(user.position)),
-                  textSpan: TextSpan(
-                    text: '${user.name} ${user.lastName}',
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-              ),
-            )
-            .toList());
+        children: users.map(
+      (UserModel user) {
+        return Slidable(
+          controller: _slidableController,
+          actionPane: const SlidableDrawerActionPane(),
+          enabled: position == Positions.Owner && user.endDate == null,
+          actionExtentRatio: 0.1,
+          secondaryActions: <Widget>[
+            IconSlideAction(
+                color: AppColors.bg,
+                icon: isOnboard ? Icons.history : Icons.person_add,
+                onTap: () {
+                  if (!isOnboard) {
+                    final bool isUserOnboard = project.onboard.any(
+                        (UserModel userOnBoard) =>
+                            userOnBoard.id ==
+                            project.history
+                                .firstWhere(
+                                    (UserModel userHis) =>
+                                        userHis.id == user.id,
+                                    orElse: () => null)
+                                ?.id);
+                    if (!isUserOnboard) {
+                      store.dispatch(AddUserToProjectPending(
+                          user, store.state.project, true));
+                    } else {
+                      store.dispatch(Notify(NotifyModel(NotificationType.Error,
+                          'This user is already on the project')));
+                    }
+                  } else {
+                    store.dispatch(RemoveUserFromProjectPending(
+                        user, store.state.project.id));
+                  }
+                })
+          ],
+          child: AppListTile(
+            onTap: () => _pushToUser(user),
+            leading: AvatarWidget(avatar: user.avatar, sizes: 50),
+            trailing: Text(AppConverting.getPositionFromString(user.position)),
+            textSpan: TextSpan(
+              text: '${user.name} ${user.lastName}',
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        );
+      },
+    ).toList());
   }
 
   void _pushToUser(UserModel user) {

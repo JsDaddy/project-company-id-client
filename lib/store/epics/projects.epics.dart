@@ -30,6 +30,8 @@ Stream<void> getProjectsEpic(
                 return GetProjectsSuccess(projects);
               case ProjectsType.Filter:
                 return GetLogsFilterProjectsSucess(projects);
+              case ProjectsType.AddTimelog:
+                return GetActiveProjectsByUserSuccess(projects);
               case ProjectsType.Absent:
                 return GetAbsentProjectsSuccess(
                     projects, action.projectTypes as ProjectsType);

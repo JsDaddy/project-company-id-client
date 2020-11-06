@@ -102,7 +102,8 @@ class _FilterProjectsWidgetState extends State<FilterProjectsWidget> {
           }
         },
         onInit: (Store<AppState> store) {
-          store.dispatch(GetUsersPending(usersType: UsersType.ProjectFilter));
+          store.dispatch(
+              GetUsersPending(false, usersType: UsersType.ProjectFilter));
           store.dispatch(GetStackPending(stackTypes: StackTypes.ProjectFilter));
           if (store.state.projectsFilter?.spec != null) {
             selectedProjectSpec = specs.firstWhere(

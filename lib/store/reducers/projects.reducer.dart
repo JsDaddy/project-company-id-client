@@ -9,9 +9,8 @@ final Reducer<List<ProjectModel>> projectsReducers =
   TypedReducer<List<ProjectModel>, GetProjectsSuccess>(_setProjects),
 ]);
 
-List<ProjectModel> _setProjects(
-    List<ProjectModel> title, GetProjectsSuccess action) {
-  return action.projects;
+List<ProjectModel> _setProjects(List<ProjectModel> title, dynamic action) {
+  return action.projects as List<ProjectModel>;
 }
 
 final Reducer<ProjectModel> projectReducers = combineReducers<
@@ -71,3 +70,10 @@ List<ProjectModel> _setAbsentProjects(
     List<ProjectModel> title, GetAbsentProjectsSuccess action) {
   return action.absentProjects;
 }
+
+final Reducer<List<ProjectModel>> timelogProjectsReducers =
+    combineReducers<List<ProjectModel>>(<
+        List<ProjectModel> Function(List<ProjectModel>, dynamic)>[
+  TypedReducer<List<ProjectModel>, GetActiveProjectsByUserSuccess>(
+      _setProjects),
+]);

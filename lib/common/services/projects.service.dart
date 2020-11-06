@@ -10,32 +10,38 @@ import 'package:dio/dio.dart';
 Future<List<ProjectModel>> getProjects(
     ProjectsType projectTypes, String uid, ProjectsFilterModel filter) async {
   Response<dynamic> res;
-  if (projectTypes == ProjectsType.Absent) {
-    res = await api.dio.get<dynamic>('/projects/absent/users/$uid');
-  } else {
-    final List<String> queriesArr = <String>[];
-    String fullQuery = '';
-    if (filter?.user?.id != null) {
-      queriesArr.add(AppQuery.userQuery(filter.user.id));
-    }
-    if (filter?.stack?.id != null) {
-      queriesArr.add(AppQuery.stackQuery(filter.stack.id));
-    }
-    if (filter?.spec?.title != null && filter.spec.getSpecQuery().isNotEmpty) {
-      queriesArr.add(filter.spec.getSpecQuery());
-    }
-    if (filter?.status?.title != null &&
-        filter.status.getStatusQuery().isNotEmpty) {
-      queriesArr.add(filter.status.getStatusQuery());
-    }
-    for (final String query in queriesArr) {
-      if (fullQuery.isEmpty) {
-        fullQuery = '?$query';
-      } else {
-        fullQuery += '&$query';
+  switch (projectTypes) {
+    case ProjectsType.Absent:
+      res = await api.dio.get<dynamic>('/projects/absent/users/$uid');
+      break;
+    case ProjectsType.AddTimelog:
+      res = await api.dio.get<dynamic>('/projects/active/users/$uid');
+      break;
+    default:
+      final List<String> queriesArr = <String>[];
+      String fullQuery = '';
+      if (filter?.user?.id != null) {
+        queriesArr.add(AppQuery.userQuery(filter.user.id));
       }
-    }
-    res = await api.dio.get<dynamic>('/projects$fullQuery');
+      if (filter?.stack?.id != null) {
+        queriesArr.add(AppQuery.stackQuery(filter.stack.id));
+      }
+      if (filter?.spec?.title != null &&
+          filter.spec.getSpecQuery().isNotEmpty) {
+        queriesArr.add(filter.spec.getSpecQuery());
+      }
+      if (filter?.status?.title != null &&
+          filter.status.getStatusQuery().isNotEmpty) {
+        queriesArr.add(filter.status.getStatusQuery());
+      }
+      for (final String query in queriesArr) {
+        if (fullQuery.isEmpty) {
+          fullQuery = '?$query';
+        } else {
+          fullQuery += '&$query';
+        }
+      }
+      res = await api.dio.get<dynamic>('/projects$fullQuery');
   }
   final List<dynamic> projects = res.data as List<dynamic>;
   return projects.isEmpty

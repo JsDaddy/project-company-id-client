@@ -12,6 +12,7 @@ final Reducer<bool> loadingReducers =
     combineReducers<bool>(<bool Function(bool, dynamic)>[
   TypedReducer<bool, GetUsersPending>(_setTrue),
   TypedReducer<bool, GetUsersSuccess>(_setFalse),
+  TypedReducer<bool, GetUsersForCreatingProjectSuccess>(_setFalse),
   TypedReducer<bool, GetUsersError>(_setFalse),
   TypedReducer<bool, GetAbsentUsersSuccess>(_setFalse),
   TypedReducer<bool, GetUserPending>(_setTrue),
@@ -80,6 +81,9 @@ final Reducer<bool> loadingReducers =
   TypedReducer<bool, GetProjectsFilterStackPending>(_setTrue),
   TypedReducer<bool, GetProjectsFilterStackSuccess>(_setFalse),
   TypedReducer<bool, GetProjectsFilterStackError>(_setFalse),
+  TypedReducer<bool, GetActiveProjectsByUserPending>(_setTrue),
+  TypedReducer<bool, GetActiveProjectsByUserSuccess>(_setFalse),
+  TypedReducer<bool, GetActiveProjectsByUserError>(_setFalse),
   TypedReducer<bool, RemoveUserFromProjectPending>(_setTrue),
   TypedReducer<bool, RemoveUserFromProjectSuccess>(_setFalse),
   TypedReducer<bool, RemoveUserFromProjectError>(_setFalse),

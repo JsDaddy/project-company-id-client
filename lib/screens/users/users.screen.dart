@@ -34,7 +34,7 @@ class _UsersScreenState extends State<UsersScreen> {
     if (store.state.users != null && store.state.users.isNotEmpty) {
       return;
     }
-    store.dispatch(GetUsersPending());
+    store.dispatch(GetUsersPending(true));
     super.initState();
   }
 
@@ -46,46 +46,44 @@ class _UsersScreenState extends State<UsersScreen> {
             user: store.state.user,
             isLoading: store.state.isLoading),
         builder: (BuildContext context, _ViewModel state) {
-          return state.isLoading
-              ? Container()
-              : ListView(
-                  children: state.users
-                      .where((UserModel user) => user.id != state.user.id)
-                      .map((UserModel user) {
-                  return Slidable(
-                      controller: _slidableController,
-                      enabled: state.user.position == Positions.Owner &&
-                          user.endDate == null,
-                      actionExtentRatio: 0.1,
-                      secondaryActions: <Widget>[
-                        IconSlideAction(
-                            color: AppColors.bg,
-                            icon: Icons.archive,
-                            onTap: () {
-                              store.dispatch(ArchiveUserPending(user.id));
-                            })
-                      ],
-                      actionPane: const SlidableDrawerActionPane(),
-                      child: AppListTile(
-                        leading: AvatarWidget(avatar: user.avatar, sizes: 50),
-                        onTap: () => store.dispatch(PushAction(
-                            UserScreen(uid: user.id),
-                            '${user.name} ${user.lastName}')),
-                        textSpan: TextSpan(
-                            text: '${user.name} ${user.lastName}',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: user.endDate == null
-                                    ? Colors.white
-                                    : AppColors.semiGrey)),
-                        trailing: Text(
-                            AppConverting.getPositionFromString(user.position),
-                            style: TextStyle(
-                                color: user.endDate == null
-                                    ? Colors.white
-                                    : AppColors.semiGrey)),
-                      ));
-                }).toList());
+          return ListView(
+              children: state.users
+                  .where((UserModel user) => user.id != state.user.id)
+                  .map((UserModel user) {
+            return Slidable(
+                controller: _slidableController,
+                enabled: state.user.position == Positions.Owner &&
+                    user.endDate == null,
+                actionExtentRatio: 0.1,
+                secondaryActions: <Widget>[
+                  IconSlideAction(
+                      color: AppColors.bg,
+                      icon: Icons.archive,
+                      onTap: () {
+                        store.dispatch(ArchiveUserPending(user.id));
+                      })
+                ],
+                actionPane: const SlidableDrawerActionPane(),
+                child: AppListTile(
+                  leading: AvatarWidget(avatar: user.avatar, sizes: 50),
+                  onTap: () => store.dispatch(PushAction(
+                      UserScreen(uid: user.id),
+                      '${user.name} ${user.lastName}')),
+                  textSpan: TextSpan(
+                      text: '${user.name} ${user.lastName}',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: user.endDate == null
+                              ? Colors.white
+                              : AppColors.semiGrey)),
+                  trailing: Text(
+                      AppConverting.getPositionFromString(user.position),
+                      style: TextStyle(
+                          color: user.endDate == null
+                              ? Colors.white
+                              : AppColors.semiGrey)),
+                ));
+          }).toList());
         });
   }
 }

@@ -60,10 +60,10 @@ Stream<void> addLogEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               .expand<dynamic>((String id) {
             (action.log as LogModel).id = id;
             return <dynamic>[
-              AddLogSuccess(action.log as LogModel),
-              GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
               Notify(NotifyModel(
                   NotificationType.Success, 'Timelog has been added')),
+              AddLogSuccess(action.log as LogModel),
+              GetLogsPending(s.store.state.currentDate.currentMohth.toString()),
             ];
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.Error,

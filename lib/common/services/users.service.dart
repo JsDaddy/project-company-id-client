@@ -4,13 +4,17 @@ import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:dio/dio.dart';
 
-Future<List<UserModel>> getUsers(UsersType usersType, String projectId) async {
+Future<List<UserModel>> getUsers(
+    UsersType usersType, String projectId, bool isFired) async {
   Response<dynamic> res;
-  if (usersType == UsersType.Absent) {
-    res = await api.dio.get<dynamic>('/user/absent/projects/$projectId');
-  } else {
-    res = await api.dio.get<dynamic>('/user');
+  switch (usersType) {
+    case UsersType.Absent:
+      res = await api.dio.get<dynamic>('/user/absent/projects/$projectId');
+      break;
+    default:
+      res = await api.dio.get<dynamic>('/user/all/${!isFired}');
   }
+
   final List<dynamic> users = res.data as List<dynamic>;
   return users.isEmpty
       ? <UserModel>[]

@@ -73,25 +73,24 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                 ),
               ],
               child: AppListTile(
-                  onTap: () => store.dispatch(PushAction(
-                      UserScreen(uid: widget.log.user.id),
-                      '${widget.log.user.name} ${widget.log.user.lastName}')),
-                  leading:
-                      AvatarWidget(avatar: widget.log.user.avatar, sizes: 50),
-                  textSpan: TextSpan(
-                      text: AppConverting.getVacationTypeString(
-                          widget.log.vacationType),
-                      style: TextStyle(
-                          color: AppColors.getColorTextVacation(
-                              AppConverting.getStringFromRequestStatus(
-                                  widget.log.status)),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15)),
-                  textSpan2: TextSpan(
-                    text: ' - ${widget.log.desc}',
-                  ),
-                  trailing: Text(AppConverting.getStringFromRequestStatus(
-                      widget.log.status))),
+                onTap: () => store.dispatch(PushAction(
+                    UserScreen(uid: widget.log.user.id),
+                    '${widget.log.user.name} ${widget.log.user.lastName}')),
+                leading:
+                    AvatarWidget(avatar: widget.log.user.avatar, sizes: 50),
+                textSpan: TextSpan(
+                    text: AppConverting.getVacationTypeString(
+                        widget.log.vacationType),
+                    style: TextStyle(
+                        color: AppColors.getColorTextVacation(
+                            AppConverting.getStringFromRequestStatus(
+                                widget.log.status)),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15)),
+                textSpan2: TextSpan(
+                  text: ' - ${widget.log.desc}',
+                ),
+              ),
             ),
           );
         });

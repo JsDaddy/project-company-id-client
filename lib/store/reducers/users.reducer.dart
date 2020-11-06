@@ -19,8 +19,8 @@ List<UserModel> _archiveUser(List<UserModel> users, ArchiveUserSuccess action) {
   }).toList();
 }
 
-List<UserModel> _setUsers(List<UserModel> title, GetUsersSuccess action) {
-  return action.users;
+List<UserModel> _setUsers(List<UserModel> title, dynamic action) {
+  return action.users as List<UserModel>;
 }
 
 final Reducer<UserModel> userReducers =
@@ -56,3 +56,9 @@ List<UserModel> _setAbsentUsers(
     List<UserModel> title, GetAbsentUsersSuccess action) {
   return action.absentUsers;
 }
+
+final Reducer<List<UserModel>> usersForCreatingProjectReducers =
+    combineReducers<
+        List<UserModel>>(<List<UserModel> Function(List<UserModel>, dynamic)>[
+  TypedReducer<List<UserModel>, GetUsersForCreatingProjectSuccess>(_setUsers),
+]);

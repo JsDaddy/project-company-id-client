@@ -49,6 +49,8 @@ class AppState {
       this.statistic,
       this.rules,
       this.stack,
+      this.usersForCreatingProject,
+      this.timelogProjects,
       this.requests,
       this.projectsFilter});
   bool isLoading;
@@ -61,6 +63,7 @@ class AppState {
   NotifyModel notify;
   List<LogModel> logsByDate;
   UserModel currentUser;
+  List<ProjectModel> timelogProjects;
   StatisticModel statistic;
   LogFilterModel filter;
   ProjectsFilterModel projectsFilter;
@@ -75,17 +78,21 @@ class AppState {
   VacationSickAvailable vacationSickAvailable;
   Map<DateTime, List<CalendarModel>> logs;
   List<RulesModel> rules;
+  List<UserModel> usersForCreatingProject;
   List<StackModel> stack;
   List<LogModel> requests;
 }
 
 AppState appStateReducer(AppState state, dynamic action) => AppState(
     isLoading: loadingReducers(state.isLoading, action),
+    usersForCreatingProject:
+        usersForCreatingProjectReducers(state.usersForCreatingProject, action),
     vacationSickAvailable:
         vacacationSickReducers(state.vacationSickAvailable, action),
     filter: filterReducers(state.filter, action),
     projectsFilter: projectFilterReducers(state.projectsFilter, action),
     titles: titleReducer(state.titles, action),
+    timelogProjects: timelogProjectsReducers(state.timelogProjects, action),
     filterLogsUsersProjects: filterLogsUserProjectsFilterReducers(
         state.filterLogsUsersProjects, action),
     filterProjectsUsersStack: filterProjectsUsersStackReducers(

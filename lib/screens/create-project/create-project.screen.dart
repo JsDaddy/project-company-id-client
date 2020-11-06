@@ -1,9 +1,11 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/services/validators.service.dart';
 import 'package:company_id_new/common/widgets/app-button/app-button.widget.dart';
 import 'package:company_id_new/common/widgets/app-input/app-input.widget.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/stack.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/stack.model.dart';
@@ -46,13 +48,19 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
             stack: store.state.stack,
-            users: store.state.users,
+            users: store.state.usersForCreatingProject,
             user: store.state.user),
         onInit: (Store<AppState> store) {
-          store.dispatch(GetUsersPending());
+          store.dispatch(
+              GetUsersPending(false, usersType: UsersType.CreateProject));
+          store.dispatch(GetStackPending());
         },
         builder: (BuildContext context, _ViewModel state) {
           return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => _addProject(state),
+              child: const Icon(Icons.add),
+            ),
             body: Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 32,
@@ -137,10 +145,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     ),
                     const SizedBox(
                       height: 16,
-                    ),
-                    AppButtonWidget(
-                      onClick: () => _addProject(state),
-                      title: 'Add project',
                     ),
                   ],
                 ),

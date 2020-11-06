@@ -133,7 +133,7 @@ class _AddVacationDialogWidgetState extends State<AddVacationDialogWidget> {
         date: widget.choosedDate,
         type: LogType.Vacation,
         user: state.user,
-        status: RequestStatus.Approved,
+        status: RequestStatus.Pending,
         vacationType: selectedReason)));
   }
 }

@@ -2,11 +2,11 @@ enum ProjectStatus { Finished, Rejected, Ongoing, All }
 
 enum ProjectSpec { Internal, Commercial, All }
 
-enum ProjectsType { Default, Filter, Absent, ProjectFilter }
+enum ProjectsType { Default, Filter, Absent, ProjectFilter, AddTimelog }
 
 enum StackTypes { Default, ProjectFilter }
 
-enum UsersType { Default, Filter, Absent, ProjectFilter }
+enum UsersType { Default, Filter, Absent, ProjectFilter, CreateProject }
 
 enum LogType { Vacation, Timelog, Holiday, Birthday, All }
 

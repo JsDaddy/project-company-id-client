@@ -20,7 +20,12 @@ class EventMarkersWidget extends StatelessWidget {
                   height: 24,
                   child: Center(
                     child: Text(
-                      badge.value.toString(),
+                      (badge.value is double) &&
+                              ((badge.value as double).round() -
+                                      (badge.value as double) ==
+                                  0)
+                          ? (badge.value as double).round().toString()
+                          : badge.value.toString(),
                       style: const TextStyle(fontSize: 11),
                     ),
                   ),

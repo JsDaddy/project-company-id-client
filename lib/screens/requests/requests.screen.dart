@@ -37,9 +37,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
   final SlidableController _slidableController = SlidableController();
   @override
   void initState() {
-    if (store.state.requests != null && store.state.requests.isNotEmpty) {
-      return;
-    }
     store.dispatch(GetRequestsPending());
     super.initState();
   }

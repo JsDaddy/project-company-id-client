@@ -16,9 +16,13 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
       .where((dynamic action) => action is GetUsersPending)
       .switchMap<dynamic>((dynamic action) =>
           Stream<List<UserModel>>.fromFuture(getUsers(
-                  action.usersType as UsersType, action.projectId as String))
+                  action.usersType as UsersType,
+                  action.projectId as String,
+                  action.isFired as bool))
               .map<dynamic>((List<UserModel> users) {
             switch (action.usersType as UsersType) {
+              case UsersType.CreateProject:
+                return GetUsersForCreatingProjectSuccess(users);
               case UsersType.Default:
                 return GetUsersSuccess(users);
               case UsersType.ProjectFilter:

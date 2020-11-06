@@ -55,7 +55,8 @@ class _AddEditTimelogDialogWidgetState
   void initState() {
     _descController.text = widget.desc;
     _hhController.text = widget.hhMm;
-    store.dispatch(GetProjectsPending());
+    store.dispatch(GetProjectsPending(
+        projectTypes: ProjectsType.AddTimelog, userId: store.state.user.id));
     super.initState();
   }
 
@@ -65,7 +66,7 @@ class _AddEditTimelogDialogWidgetState
         converter: (Store<AppState> store) => _ViewModel(
             isLoading: store.state.isLoading,
             user: store.state.user,
-            projects: store.state.projects,
+            projects: store.state.timelogProjects,
             lastProject: store.state.lastProject),
         onDidChange: (_ViewModel state) {
           if (state.lastProject != null ?? selectedProject == null) {
