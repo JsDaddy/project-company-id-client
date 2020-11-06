@@ -6,7 +6,6 @@ import 'package:company_id_new/main.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/common/helpers/enums.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
-import 'package:company_id_new/store/models/filter-users-projects-logs.model.dart';
 import 'package:company_id_new/store/models/project.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -19,8 +18,9 @@ import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 
 class _ViewModel {
-  _ViewModel({this.filterLogsUsersProjects, this.filter, this.isLoading});
-  FilterLogsUsersProjects filterLogsUsersProjects;
+  _ViewModel({this.users, this.projects, this.filter, this.isLoading});
+  List<ProjectModel> projects;
+  List<UserModel> users;
   bool isLoading;
   LogFilterModel filter;
 }
@@ -78,42 +78,40 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel(
-            filterLogsUsersProjects: store.state.filterLogsUsersProjects,
+            projects: store.state.filterLogsUsersProjects.projects,
+            users: store.state.filterLogsUsersProjects.users,
             isLoading: store.state.isLoading,
             filter: store.state.filter),
-        onWillChange: (_ViewModel prev, _ViewModel state) {
+        onWillChange: (_, _ViewModel state) {
           if (selectedProject != null) {
             setState(() {
-              selectedProject = state.filterLogsUsersProjects.projects
-                  .firstWhere(
-                      (ProjectModel project) =>
-                          project.id == selectedProject.id,
-                      orElse: () => null);
+              selectedProject = state.projects.firstWhere(
+                  (ProjectModel project) => project.id == selectedProject.id,
+                  orElse: () => null);
             });
           }
           if (selectedUser != null) {
             setState(() {
-              selectedUser = state.filterLogsUsersProjects.users.firstWhere(
+              selectedUser = state.users.firstWhere(
                   (UserModel user) => user.id == selectedUser.id,
                   orElse: () => null);
             });
           }
-          if (state.filterLogsUsersProjects.projects.isNotEmpty &&
+          if (state.projects.isNotEmpty &&
               state.filter?.project?.id != null &&
               selectedProject == null) {
             setState(() {
-              selectedProject = state.filterLogsUsersProjects.projects
-                  .firstWhere(
-                      (ProjectModel project) =>
-                          project.id == state.filter.project.id,
-                      orElse: () => null);
+              selectedProject = state.projects.firstWhere(
+                  (ProjectModel project) =>
+                      project.id == state.filter.project.id,
+                  orElse: () => null);
             });
           }
-          if (state.filterLogsUsersProjects.users.isNotEmpty &&
+          if (state.users.isNotEmpty &&
               state.filter?.user?.id != null &&
               selectedUser == null) {
             setState(() {
-              selectedUser = state.filterLogsUsersProjects.users.firstWhere(
+              selectedUser = state.users.firstWhere(
                   (UserModel user) => user.id == state.filter.user.id,
                   orElse: () => null);
             });
@@ -215,8 +213,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                               value.id));
                                       selectedUser = value;
                                     }),
-                                items: state.filterLogsUsersProjects.users
-                                    .map((UserModel user) {
+                                items: state.users.map((UserModel user) {
                                   return DropdownMenuItem<UserModel>(
                                       value: user,
                                       child: Text(
@@ -244,8 +241,7 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                                       value.id));
                                               selectedProject = value;
                                             }),
-                                        items: state
-                                            .filterLogsUsersProjects.projects
+                                        items: state.projects
                                             .map((ProjectModel project) {
                                           return DropdownMenuItem<ProjectModel>(
                                               value: project,

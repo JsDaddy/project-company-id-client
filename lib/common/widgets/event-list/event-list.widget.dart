@@ -172,8 +172,14 @@ class _EventListWidgetState extends State<EventListWidget> {
                   : Container(),
               state.logs.isEmpty
                   ? const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text('No data'))
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: Center(
+                        child: Text(
+                          'No data',
+                          style: TextStyle(fontSize: 18, color: AppColors.red),
+                        ),
+                      ),
+                    )
                   : Container(),
               ...state.logs
                   .where((LogModel log) => log.type == LogType.vacation)
