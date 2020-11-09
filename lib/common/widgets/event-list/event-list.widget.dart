@@ -177,7 +177,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                   : Container(),
               state.logs.isEmpty
                   ? const Padding(
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.only(top: 24, bottom: 16),
                       child: Center(
                         child: Text(
                           'No data',
