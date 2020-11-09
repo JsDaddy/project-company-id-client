@@ -132,6 +132,8 @@ class _UserScreenState extends State<UserScreen> {
                                 width:
                                     MediaQuery.of(context).size.width / 2 - 12,
                                 child: SocialRowIconWidget(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      36,
                                   icon: Icons.language,
                                   title: state.user.englishLevel,
                                 ),
