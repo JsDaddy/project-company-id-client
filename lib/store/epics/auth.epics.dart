@@ -75,10 +75,10 @@ Stream<void> setPasswordEpic(
               .expand<dynamic>((_) {
             return <dynamic>[
               SetPasswordSuccess,
+              PushReplacementAction(HomeScreen(), key: mainNavigatorKey),
+              SetTitle('Statistics'),
               Notify(NotifyModel(
                   NotificationType.Success, 'Your password has been changed')),
-              SetTitle('Statistics'),
-              PushReplacementAction(HomeScreen(), key: mainNavigatorKey)
             ];
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.Error,

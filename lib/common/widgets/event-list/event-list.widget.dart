@@ -63,65 +63,84 @@ class _EventListWidgetState extends State<EventListWidget> {
           return ListView(
             shrinkWrap: true,
             children: <Widget>[
+              state.filter?.user?.id != null ||
+                      state.authUser.position == Positions.Developer &&
+                          state.vacationSickAvailable != null
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                                'Vacations available: ${state.vacationSickAvailable.vacationAvailable} of 18'),
+                            Text(
+                                'Sick available: ${state.vacationSickAvailable.sickAvailable} of 5'),
+                          ]),
+                    )
+                  : Container(),
               const SizedBox(height: 0.1),
               state.filter != null
-                  ? Wrap(children: <Widget>[
-                      state.filter?.logType?.logType == LogType.Timelog
-                          ? InkWell(
-                              onTap: () {
-                                store.dispatch(SaveLogFilter(store.state.filter
-                                    .copyWith(
-                                        logType:
-                                            FilterType('All', LogType.All))));
-                              },
-                              child: FilterItemWidget(
-                                title: state.filter.logType?.title,
-                                icon: Icons.history,
-                              ),
-                            )
-                          : Container(),
-                      state.filter?.logType?.logType == LogType.Vacation
-                          ? InkWell(
-                              onTap: () {
-                                store.dispatch(SaveLogFilter(store.state.filter
-                                    .copyWith(
-                                        logType:
-                                            FilterType('All', LogType.All))));
-                              },
-                              child: FilterItemWidget(
-                                title: AppConverting.getVacationTypeString(
-                                    state.filter.logType.vacationType),
-                                icon: Icons.history,
-                              ))
-                          : Container(),
-                      state.filter?.user?.id != null
-                          ? InkWell(
-                              onTap: () {
-                                store.dispatch(SaveLogFilter(store.state.filter
-                                    .copyWith(user: UserModel())));
-                              },
-                              child: FilterItemWidget(
-                                title:
-                                    '${state.filter.user.name} ${state.filter.user.lastName}',
-                                icon: Icons.person,
-                              ),
-                            )
-                          : Container(),
-                      state.filter?.project?.id != null
-                          ? InkWell(
-                              onTap: () {
-                                store.dispatch(SaveLogFilter(store.state.filter
-                                    .copyWith(project: ProjectModel())));
-                              },
-                              child: FilterItemWidget(
-                                title: state.filter.project.name,
-                                icon: Icons.desktop_mac,
-                              ),
-                            )
-                          : Container(),
-                    ])
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Wrap(children: <Widget>[
+                        state.filter?.logType?.logType == LogType.Timelog
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveLogFilter(
+                                      store.state.filter.copyWith(
+                                          logType:
+                                              FilterType('All', LogType.All))));
+                                },
+                                child: FilterItemWidget(
+                                  title: state.filter.logType?.title,
+                                  icon: Icons.history,
+                                ),
+                              )
+                            : Container(),
+                        state.filter?.logType?.logType == LogType.Vacation
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveLogFilter(
+                                      store.state.filter.copyWith(
+                                          logType:
+                                              FilterType('All', LogType.All))));
+                                },
+                                child: FilterItemWidget(
+                                  title: AppConverting.getVacationTypeString(
+                                      state.filter.logType.vacationType),
+                                  icon: Icons.history,
+                                ))
+                            : Container(),
+                        state.filter?.user?.id != null
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveLogFilter(store
+                                      .state.filter
+                                      .copyWith(user: UserModel())));
+                                },
+                                child: FilterItemWidget(
+                                  title:
+                                      '${state.filter.user.name} ${state.filter.user.lastName}',
+                                  icon: Icons.person,
+                                ),
+                              )
+                            : Container(),
+                        state.filter?.project?.id != null
+                            ? InkWell(
+                                onTap: () {
+                                  store.dispatch(SaveLogFilter(store
+                                      .state.filter
+                                      .copyWith(project: ProjectModel())));
+                                },
+                                child: FilterItemWidget(
+                                  title: state.filter.project.name,
+                                  icon: Icons.desktop_mac,
+                                ),
+                              )
+                            : Container(),
+                      ]),
+                    )
                   : Container(),
-              const SizedBox(height: 16),
               state.logs
                       .where((LogModel log) => log.type == LogType.Holiday)
                       .toList()
@@ -141,27 +160,19 @@ class _EventListWidgetState extends State<EventListWidget> {
                       ),
                     )
                   : Container(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Center(
-                  child: Text(
-                    getBirthdays(state.logs),
-                    style:
-                        const TextStyle(fontSize: 18, color: AppColors.orange),
-                  ),
-                ),
-              ),
-              state.filter?.user?.id != null
+              state.logs
+                      .where((LogModel log) => log.type == LogType.Birthday)
+                      .toList()
+                      .isNotEmpty
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                                'Vacations available: ${state.vacationSickAvailable.vacationAvailable} of 18'),
-                            Text(
-                                'Sick available: ${state.vacationSickAvailable.sickAvailable} of 5'),
-                          ]),
+                      padding: const EdgeInsets.only(top: 10, bottom: 16),
+                      child: Center(
+                        child: Text(
+                          getBirthdays(state.logs),
+                          style: const TextStyle(
+                              fontSize: 18, color: AppColors.orange),
+                        ),
+                      ),
                     )
                   : Container(),
               state.logs.isEmpty
@@ -249,6 +260,7 @@ class _EventListWidgetState extends State<EventListWidget> {
     String result = 'Birthdays: ';
     final List<LogModel> birthdays =
         logs.where((LogModel log) => log.type == LogType.Birthday).toList();
+    // ignore: avoid_function_literals_in_foreach_calls
     birthdays.forEach((LogModel log) {
       result += '${log.fullName}, ';
     });

@@ -76,8 +76,9 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                 onTap: () => store.dispatch(PushAction(
                     UserScreen(uid: widget.log.user.id),
                     '${widget.log.user.name} ${widget.log.user.lastName}')),
-                leading:
-                    AvatarWidget(avatar: widget.log.user.avatar, sizes: 50),
+                leading: state.authUser.position == Positions.Owner
+                    ? AvatarWidget(avatar: widget.log.user.avatar, sizes: 50)
+                    : null,
                 textSpan: TextSpan(
                     text: AppConverting.getVacationTypeString(
                         widget.log.vacationType),
