@@ -50,7 +50,7 @@ class _AddUserWidgetWidgetState extends State<AddUserWidget> {
         onWillChange: (_, _ViewModel state) {},
         builder: (BuildContext context, _ViewModel state) {
           return Container(
-            height: 200,
+            height: 230,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: Column(
@@ -76,7 +76,7 @@ class _AddUserWidgetWidgetState extends State<AddUserWidget> {
                                 value: user,
                                 child: Text('${user.name} ${user.lastName}'));
                           }).toList())),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   const Spacer(),
                   AppButtonWidget(
                       color: AppColors.green,
@@ -88,7 +88,8 @@ class _AddUserWidgetWidgetState extends State<AddUserWidget> {
                           state.project,
                           false,
                         ));
-                      })
+                      }),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),

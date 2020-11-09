@@ -258,8 +258,8 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                               if (selectedType.logType == LogType.All &&
                                   selectedUser == null &&
                                   selectedProject == null) {
-                                store
-                                    .dispatch(PopAction(key: mainNavigatorKey));
+                                store.dispatch(PopAction(
+                                    key: mainNavigatorKey, changeTitle: false));
                                 return;
                               }
                               final LogFilterModel filter = LogFilterModel(
