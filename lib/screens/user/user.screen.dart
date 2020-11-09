@@ -5,7 +5,7 @@ import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row-icon/social-row-icon.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row.widget.dart';
-import 'package:company_id_new/screens/projects/projects.screen.dart';
+import 'package:company_id_new/screens/project-details/project-details.screen.dart';
 import 'package:company_id_new/screens/user/add-project/add-project.widget.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
@@ -277,8 +277,9 @@ class _UserScreenState extends State<UserScreen> {
                             })
                       ],
                       child: AppListTile(
-                        onTap: () => store.dispatch(
-                            PushAction(ProjectsScreen(), project.name)),
+                        onTap: () => store.dispatch(PushAction(
+                            ProjectDetailsScreen(projectId: project.id),
+                            project.name)),
                         leading: Container(
                           width: MediaQuery.of(context).size.width / 5,
                           child: Text(project.name,

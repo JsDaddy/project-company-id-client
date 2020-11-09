@@ -15,6 +15,7 @@ import 'package:company_id_new/store/models/calendar.model.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
 import 'package:company_id_new/store/models/statistic.model.dart';
+import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _ViewModel {
       this.currentDate,
       this.filter,
       this.holidays,
+      this.user,
       this.logsByDate});
   Map<DateTime, List<CalendarModel>> logs;
   Map<DateTime, List<CalendarModel>> holidays;
@@ -41,6 +43,7 @@ class _ViewModel {
   LogFilterModel filter;
   StatisticModel statistic;
   List<LogModel> logsByDate;
+  UserModel user;
 }
 
 class StatisticsScreen extends StatefulWidget {
@@ -114,6 +117,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   holidays: store.state.holidays,
                   filter: store.state.filter,
                   logs: store.state.logs,
+                  user: store.state.user,
                   logsByDate: store.state.logsByDate),
               onWillChange: (_ViewModel prev, _ViewModel curr) {
                 if (prev.filter != curr.filter) {
@@ -134,50 +138,51 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                     children: speedDials,
                   ),
                   body: CalendarWidget(
-                    headerSubTitle: state.filter?.user?.id != null &&
-                            state.filter.project == null &&
-                            state.filter.logType.logType != LogType.Vacation
-                        ? '\n ${state.statistic.workedOut} / ${state.statistic.toBeWorkedOut} / ${state.statistic.overtime} '
-                        : '',
-                    title: 'Timelog',
-                    holidays: state.holidays,
-                    onCalendarCreated: _onCalendarCreated,
-                    onVisibleDaysChanged: _onVisibleDaysChanged,
-                    events: state.logs,
-                    calendarController: _calendarController,
-                    builders: CalendarBuilders(
-                      markersBuilder: (BuildContext context, DateTime date,
-                          List<dynamic> events, List<dynamic> holidays) {
-                        final List<Widget> children = <Widget>[];
-                        if (events.isNotEmpty) {
-                          final List<BadgeModel> badges = <BadgeModel>[];
-                          final CalendarModel calendar =
-                              events[0] as CalendarModel;
-                          if (calendar.timelogs != null) {
-                            badges.add(
-                                BadgeModel(AppColors.red, calendar.timelogs));
+                      headerSubTitle: state.filter?.user?.id != null &&
+                                  state.filter.project == null &&
+                                  state.filter.logType.logType !=
+                                      LogType.Vacation ||
+                              state.user.position == Positions.Developer
+                          ? '\n ${state.statistic?.workedOut ?? ''} / ${state.statistic?.toBeWorkedOut ?? ''} / ${state.statistic?.overtime ?? ''} '
+                          : '',
+                      title: 'Timelog',
+                      holidays: state.holidays,
+                      onCalendarCreated: _onCalendarCreated,
+                      onVisibleDaysChanged: _onVisibleDaysChanged,
+                      events: state.logs,
+                      calendarController: _calendarController,
+                      builders: CalendarBuilders(
+                        markersBuilder: (BuildContext context, DateTime date,
+                            List<dynamic> events, List<dynamic> holidays) {
+                          final List<Widget> children = <Widget>[];
+                          if (events.isNotEmpty) {
+                            final List<BadgeModel> badges = <BadgeModel>[];
+                            final CalendarModel calendar =
+                                events[0] as CalendarModel;
+                            if (calendar.timelogs != null) {
+                              badges.add(
+                                  BadgeModel(AppColors.red, calendar.timelogs));
+                            }
+                            if (calendar.vacations != null) {
+                              badges.add(BadgeModel(
+                                  AppColors.green, calendar.vacations));
+                            }
+                            if (calendar.birthdays != null) {
+                              badges.add(BadgeModel(AppColors.orange, ''));
+                            }
+                            children.add(
+                              Positioned(
+                                right: 1,
+                                bottom: 1,
+                                child: EventMarkersWidget(badges),
+                              ),
+                            );
                           }
-                          if (calendar.vacations != null) {
-                            badges.add(BadgeModel(
-                                AppColors.green, calendar.vacations));
-                          }
-                          if (calendar.birthdays != null) {
-                            badges.add(BadgeModel(AppColors.orange, ''));
-                          }
-                          children.add(
-                            Positioned(
-                              right: 1,
-                              bottom: 1,
-                              child: EventMarkersWidget(badges),
-                            ),
-                          );
-                        }
-                        return children;
-                      },
-                    ),
-                    onDaySelected: _onDaySelected,
-                    buildEventList: EventListWidget(),
-                  ),
+                          return children;
+                        },
+                      ),
+                      onDaySelected: _onDaySelected,
+                      buildEventList: EventListWidget()),
                 );
               })),
     );

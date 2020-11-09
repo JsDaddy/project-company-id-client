@@ -6,7 +6,6 @@ import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/project-details/add-user/add-user.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
-import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/project.model.dart';
