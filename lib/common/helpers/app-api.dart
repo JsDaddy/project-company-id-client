@@ -8,7 +8,6 @@ AppApi api = AppApi(localStorageService);
 class AppApi {
   AppApi(this.localStorageService) {
     dio.interceptors.addAll(<Interceptor>[
-      // LogInterceptor(),
       InterceptorsWrapper(
           onRequest: (RequestOptions requestOptions) async {
             dio.interceptors.requestLock.lock();
