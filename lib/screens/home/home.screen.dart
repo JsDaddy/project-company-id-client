@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
+import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
@@ -62,6 +65,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             onWillPop: () async {
               if (navigatorKey.currentState.canPop()) {
                 store.dispatch(PopAction());
+              } else {
+                final bool isConfirm = await showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ConfirmDialogWidget(
+                          title: 'Exit',
+                          text: 'Are you sure to exit from application?');
+                    });
+                if (isConfirm) {
+                  exit(0);
+                }
               }
               return false;
             },
