@@ -1,3 +1,4 @@
+import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/services/users.service.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
@@ -20,6 +21,7 @@ Stream<void> usersEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
                   action.projectId as String,
                   action.isFired as bool))
               .map<dynamic>((List<UserModel> users) {
+            refresh.refreshController.refreshCompleted();
             switch (action.usersType as UsersType) {
               case UsersType.CreateProject:
                 return GetUsersForCreatingProjectSuccess(users);
@@ -47,8 +49,10 @@ Stream<void> userEpic(Stream<dynamic> actions, EpicStore<AppState> store) {
       .where((dynamic action) => action is GetUserPending)
       .switchMap<dynamic>((dynamic action) =>
           Stream<UserModel>.fromFuture(getUser(action.id as String))
-              .map<dynamic>((UserModel user) => GetUserSuccess(user))
-              .handleError((dynamic e) {
+              .map<dynamic>((UserModel user) {
+            refresh.refreshController.refreshCompleted();
+            return GetUserSuccess(user);
+          }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetUserError());

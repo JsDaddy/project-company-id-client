@@ -1,6 +1,7 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
+import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
 import 'package:company_id_new/screens/project-details/add-user/add-user.widget.dart';
@@ -16,6 +17,7 @@ import 'package:company_id_new/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/models/notify.model.dart';
@@ -79,58 +81,67 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 24),
-                    child: ListView(
-                      children: <Widget>[
-                        Text('General info',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        _projectInfo('Industry: ', state.project?.industry),
-                        state.project?.startDate != null
-                            ? _projectInfo('Duration: ',
-                                '${converter.dateFromString((state.project.startDate).toString())} - ${state.project?.endDate != null ? converter.dateFromString((state.project?.endDate).toString()) : 'now'}')
-                            : Container(),
-                        _projectInfo('Customer: ', state.project?.customer),
-                        const SizedBox(height: 12),
-                        Text('Stack',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        state.project?.stack != null &&
-                                state.project.stack.isNotEmpty
-                            ? _stack(state.project?.stack)
-                            : Container(),
-                        const SizedBox(height: 12),
-                        Text('Onboard',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        state.project?.onboard != null &&
-                                state.project.onboard.isNotEmpty
-                            ? _projectsList(
-                                state.project,
-                                state.project.onboard,
-                                state.user.position,
-                                true)
-                            : Container(),
-                        const SizedBox(height: 12),
-                        Text('History',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
-                                fontSize: 18)),
-                        const SizedBox(height: 12),
-                        state.project?.history != null &&
-                                state.project.history.isNotEmpty
-                            ? _projectsList(
-                                state.project,
-                                state.project.history,
-                                state.user.position,
-                                false)
-                            : Container()
-                      ],
+                    child: SmartRefresher(
+                      controller: refresh.refreshController,
+                      onRefresh: () {
+                        store.dispatch(ClearDetailProject());
+                        store.dispatch(
+                            GetDetailProjectPending(widget.projectId));
+                      },
+                      enablePullDown: true,
+                      child: ListView(
+                        children: <Widget>[
+                          Text('General info',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          _projectInfo('Industry: ', state.project?.industry),
+                          state.project?.startDate != null
+                              ? _projectInfo('Duration: ',
+                                  '${converter.dateFromString((state.project.startDate).toString())} - ${state.project?.endDate != null ? converter.dateFromString((state.project?.endDate).toString()) : 'now'}')
+                              : Container(),
+                          _projectInfo('Customer: ', state.project?.customer),
+                          const SizedBox(height: 12),
+                          Text('Stack',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          state.project?.stack != null &&
+                                  state.project.stack.isNotEmpty
+                              ? _stack(state.project?.stack)
+                              : Container(),
+                          const SizedBox(height: 12),
+                          Text('Onboard',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          state.project?.onboard != null &&
+                                  state.project.onboard.isNotEmpty
+                              ? _projectsList(
+                                  state.project,
+                                  state.project.onboard,
+                                  state.user.position,
+                                  true)
+                              : Container(),
+                          const SizedBox(height: 12),
+                          Text('History',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 18)),
+                          const SizedBox(height: 12),
+                          state.project?.history != null &&
+                                  state.project.history.isNotEmpty
+                              ? _projectsList(
+                                  state.project,
+                                  state.project.history,
+                                  state.user.position,
+                                  false)
+                              : Container()
+                        ],
+                      ),
                     ),
                   ),
           );
@@ -195,12 +206,20 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 })
           ],
           child: AppListTile(
-            onTap: () => _pushToUser(user),
+            onTap: () => user.endDate != null ? null : _pushToUser(user),
             leading: AvatarWidget(avatar: user.avatar, sizes: 50),
-            trailing: Text(AppConverting.getPositionFromString(user.position)),
+            trailing: Text(
+              AppConverting.getPositionFromString(user.position),
+              style: TextStyle(
+                color: user.endDate != null ? AppColors.semiGrey : Colors.white,
+              ),
+            ),
             textSpan: TextSpan(
               text: '${user.name} ${user.lastName}',
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(
+                  color:
+                      user.endDate != null ? AppColors.semiGrey : Colors.white,
+                  fontSize: 16),
             ),
           ),
         );

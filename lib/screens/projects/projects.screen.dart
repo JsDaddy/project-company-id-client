@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
+import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
 
 class _ViewModel {
@@ -107,76 +109,81 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                         builder: (BuildContext context) =>
                             FilterProjectsWidget()),
                   ),
-            body: ListView(
-              children: <Widget>[
-                const SizedBox(height: 0.1),
-                state.filter != null
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Wrap(children: <Widget>[
-                          state.filter?.user?.id != null
-                              ? InkWell(
-                                  onTap: () {
-                                    store.dispatch(SaveProjectsFilter(state
-                                        .filter
-                                        .copyWith(user: UserModel())));
-                                  },
-                                  child: FilterItemWidget(
-                                    title:
-                                        '${state.filter.user.name} ${state.filter.user.lastName}',
-                                    icon: Icons.person,
-                                  ),
-                                )
-                              : Container(),
-                          state.filter?.stack?.id != null
-                              ? InkWell(
-                                  onTap: () {
-                                    store.dispatch(SaveProjectsFilter(state
-                                        .filter
-                                        .copyWith(stack: StackModel())));
-                                  },
-                                  child: FilterItemWidget(
-                                    title: state.filter.stack.name,
-                                    icon: Icons.menu,
-                                  ),
-                                )
-                              : Container(),
-                          state.filter?.spec?.title != null &&
-                                  state.filter.spec.spec != ProjectSpec.All
-                              ? InkWell(
-                                  onTap: () {
-                                    store.dispatch(SaveProjectsFilter(
-                                        state.filter.copyWith(
-                                            spec: ProjectSpecModel(
-                                                'All', ProjectSpec.All))));
-                                  },
-                                  child: FilterItemWidget(
-                                    title: state.filter.spec?.title,
-                                    icon: Icons.menu,
-                                  ),
-                                )
-                              : Container(),
-                          state.filter?.status?.title != null &&
-                                  state.filter.status.status !=
-                                      ProjectStatus.All
-                              ? InkWell(
-                                  onTap: () {
-                                    store.dispatch(SaveProjectsFilter(
-                                        state.filter.copyWith(
-                                            status: ProjectStatusModel(
-                                                'All', ProjectStatus.All))));
-                                  },
-                                  child: FilterItemWidget(
-                                    title: state.filter.status?.title,
-                                    icon: Icons.menu,
-                                  ),
-                                )
-                              : Container(),
-                        ]),
-                      )
-                    : Container(),
-                _projects(state)
-              ],
+            body: SmartRefresher(
+              controller: refresh.refreshController,
+              onRefresh: () => store.dispatch(GetProjectsPending()),
+              enablePullDown: true,
+              child: ListView(
+                children: <Widget>[
+                  const SizedBox(height: 0.1),
+                  state.filter != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Wrap(children: <Widget>[
+                            state.filter?.user?.id != null
+                                ? InkWell(
+                                    onTap: () {
+                                      store.dispatch(SaveProjectsFilter(state
+                                          .filter
+                                          .copyWith(user: UserModel())));
+                                    },
+                                    child: FilterItemWidget(
+                                      title:
+                                          '${state.filter.user.name} ${state.filter.user.lastName}',
+                                      icon: Icons.person,
+                                    ),
+                                  )
+                                : Container(),
+                            state.filter?.stack?.id != null
+                                ? InkWell(
+                                    onTap: () {
+                                      store.dispatch(SaveProjectsFilter(state
+                                          .filter
+                                          .copyWith(stack: StackModel())));
+                                    },
+                                    child: FilterItemWidget(
+                                      title: state.filter.stack.name,
+                                      icon: Icons.menu,
+                                    ),
+                                  )
+                                : Container(),
+                            state.filter?.spec?.title != null &&
+                                    state.filter.spec.spec != ProjectSpec.All
+                                ? InkWell(
+                                    onTap: () {
+                                      store.dispatch(SaveProjectsFilter(
+                                          state.filter.copyWith(
+                                              spec: ProjectSpecModel(
+                                                  'All', ProjectSpec.All))));
+                                    },
+                                    child: FilterItemWidget(
+                                      title: state.filter.spec?.title,
+                                      icon: Icons.menu,
+                                    ),
+                                  )
+                                : Container(),
+                            state.filter?.status?.title != null &&
+                                    state.filter.status.status !=
+                                        ProjectStatus.All
+                                ? InkWell(
+                                    onTap: () {
+                                      store.dispatch(SaveProjectsFilter(
+                                          state.filter.copyWith(
+                                              status: ProjectStatusModel(
+                                                  'All', ProjectStatus.All))));
+                                    },
+                                    child: FilterItemWidget(
+                                      title: state.filter.status?.title,
+                                      icon: Icons.menu,
+                                    ),
+                                  )
+                                : Container(),
+                          ]),
+                        )
+                      : Container(),
+                  _projects(state)
+                ],
+              ),
             ),
           );
         });

@@ -1,5 +1,6 @@
 import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/services/projects.service.dart';
+import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
@@ -25,6 +26,7 @@ Stream<void> getProjectsEpic(
                   action.userId as String,
                   s.store.state.projectsFilter))
               .map<dynamic>((List<ProjectModel> projects) {
+            refresh.refreshController.refreshCompleted();
             switch (action.projectTypes as ProjectsType) {
               case ProjectsType.Default:
                 return GetProjectsSuccess(projects);
@@ -52,6 +54,7 @@ Stream<void> getDetailProjectEpic(
       .switchMap<dynamic>((dynamic action) => Stream<ProjectModel>.fromFuture(
                   getDetailProject(action.projectId as String))
               .map<dynamic>((ProjectModel project) {
+            refresh.refreshController.refreshCompleted();
             return GetDetailProjectSuccess(project);
           }).handleError((dynamic e) {
             s.store.dispatch(Notify(NotifyModel(NotificationType.Error,

@@ -95,7 +95,6 @@ class _AddEditTimelogDialogWidgetState
                           decoration: AppDropDownStyles.decoration,
                           style: AppDropDownStyles.style,
                           icon: AppDropDownStyles.icon,
-                          autovalidate: true,
                           validator: (ProjectModel value) {
                             if (value == null) {
                               return 'Please select project';

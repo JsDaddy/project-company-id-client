@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:company_id_new/screens/splash/splash.screen.dart';
+import 'package:company_id_new/store/actions/logs.action.dart';
+import 'package:company_id_new/store/actions/projects.action.dart';
+import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
 import 'package:company_id_new/store/store.dart';
 import 'package:flutter/foundation.dart';
@@ -42,7 +45,32 @@ class MyApp extends StatefulWidget {
 
 GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // app is visible and running.
+      store.dispatch(GetRequestsPending());
+      store.dispatch(GetProjectsPending());
+      store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
+      store.dispatch(
+          GetLogByDatePending('${store.state.currentDate.currentDay}'));
+      store.dispatch(GetUsersPending(true));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[

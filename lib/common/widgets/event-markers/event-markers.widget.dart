@@ -41,7 +41,7 @@ class EventMarkersWidget extends StatelessWidget {
                     height: 6,
                   ),
                 );
-              case 2:
+              default:
                 return Positioned(
                   top: 0,
                   right: 0,

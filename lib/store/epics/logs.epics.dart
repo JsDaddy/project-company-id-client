@@ -18,6 +18,7 @@ Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
       (dynamic action) => Stream<Map<String, dynamic>>.fromFuture(
                   getLogs(action.date as String, s.store.state.filter))
               .expand<dynamic>((Map<String, dynamic> full) {
+            refresh.refreshController.refreshCompleted();
             return <dynamic>[
               GetLogsSuccess(
                   full['logs'] as Map<DateTime, List<CalendarModel>>),
@@ -40,6 +41,7 @@ Stream<void> getLogByDateEpic(
       .switchMap((dynamic action) => Stream<LogResponse>.fromFuture(
                   getLogsByDate(action.date as String, s.store.state.filter))
               .expand<dynamic>((LogResponse logResponse) {
+            refresh.refreshController.refreshCompleted();
             return <dynamic>[
               GetLogByDateSuccess(logResponse.logs),
               SetVacationSickAvail(VacationSickAvailable(
