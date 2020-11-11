@@ -113,7 +113,15 @@ class _AddEditTimelogDialogWidgetState
                           },
                           items: state.projects.map((ProjectModel project) {
                             return DropdownMenuItem<ProjectModel>(
-                                value: project, child: Text(project.name));
+                                value: project,
+                                child: Text(
+                                  project.name,
+                                  style: TextStyle(
+                                      color: project.isInternal ||
+                                              project.endDate != null
+                                          ? AppColors.semiGrey
+                                          : Colors.white),
+                                ));
                           }).toList(),
                         )),
                         const SizedBox(height: 10),

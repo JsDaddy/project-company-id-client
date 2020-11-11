@@ -217,7 +217,12 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                   return DropdownMenuItem<UserModel>(
                                       value: user,
                                       child: Text(
-                                          '${user.name} ${user.lastName}'));
+                                        '${user.name} ${user.lastName}',
+                                        style: TextStyle(
+                                            color: user.endDate != null
+                                                ? AppColors.semiGrey
+                                                : Colors.white),
+                                      ));
                                 }).toList())),
                         selectedType.logType != LogType.Vacation
                             ? Padding(
@@ -245,7 +250,15 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                             .map((ProjectModel project) {
                                           return DropdownMenuItem<ProjectModel>(
                                               value: project,
-                                              child: Text(project.name));
+                                              child: Text(
+                                                project.name,
+                                                style: TextStyle(
+                                                    color: project.endDate !=
+                                                                null ||
+                                                            project.isInternal
+                                                        ? AppColors.semiGrey
+                                                        : Colors.white),
+                                              ));
                                         }).toList())),
                               )
                             : Container(),
