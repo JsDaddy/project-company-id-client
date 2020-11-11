@@ -110,6 +110,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             FilterProjectsWidget()),
                   ),
             body: SmartRefresher(
+              header: const WaterDropMaterialHeader(),
               controller: refresh.refreshController,
               onRefresh: () => store.dispatch(GetProjectsPending()),
               enablePullDown: true,

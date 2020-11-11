@@ -49,6 +49,7 @@ class _UsersScreenState extends State<UsersScreen> {
             isLoading: store.state.isLoading),
         builder: (BuildContext context, _ViewModel state) {
           return SmartRefresher(
+            header: const WaterDropMaterialHeader(),
             controller: refresh.refreshController,
             onRefresh: () => store.dispatch(GetUsersPending(true)),
             enablePullDown: true,

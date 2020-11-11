@@ -112,6 +112,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return SmartRefresher(
       controller: refresh.refreshController,
+      header: const WaterDropMaterialHeader(),
       onRefresh: () {
         store.dispatch(
             GetLogsPending('${store.state.currentDate.currentMohth}'));

@@ -82,6 +82,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 24),
                     child: SmartRefresher(
+                      header: const WaterDropMaterialHeader(),
                       controller: refresh.refreshController,
                       onRefresh: () {
                         store.dispatch(ClearDetailProject());

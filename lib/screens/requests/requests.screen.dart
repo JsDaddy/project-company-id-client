@@ -50,6 +50,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
             ),
         builder: (BuildContext context, _ViewModel state) {
           return SmartRefresher(
+            header: const WaterDropMaterialHeader(),
             controller: refresh.refreshController,
             onRefresh: () => store.dispatch(GetRequestsPending()),
             enablePullDown: true,

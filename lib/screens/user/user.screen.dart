@@ -81,6 +81,7 @@ class _UserScreenState extends State<UserScreen> {
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: SmartRefresher(
+                        header: const WaterDropMaterialHeader(),
                         controller: refresh.refreshController,
                         onRefresh: () =>
                             store.dispatch(GetUserPending(widget.uid)),

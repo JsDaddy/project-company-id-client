@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed && store.state.user?.id != null) {
       // app is visible and running.
       store.dispatch(GetRequestsPending());
       store.dispatch(GetProjectsPending());
