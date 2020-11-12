@@ -240,10 +240,12 @@ class _EventListWidgetState extends State<EventListWidget> {
                           textSpan: TextSpan(
                               text: log.project.name,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15)),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white)),
                           textSpan2: TextSpan(
-                            text: ' - ${log.desc}',
-                          ),
+                              text: ' - ${log.desc}',
+                              style: const TextStyle(color: Colors.white)),
                           onTap: () => store.dispatch(PushAction(
                               UserScreen(uid: log.user.id),
                               '${log.user.name} ${log.user.lastName}')),

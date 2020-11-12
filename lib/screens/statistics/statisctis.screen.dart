@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/services/refresh.service.dart';
+import 'package:company_id_new/common/widgets/calendar/calendar-web.widget.dart';
 import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
 import 'package:company_id_new/common/widgets/event-list/event-list.widget.dart';
 import 'package:company_id_new/common/widgets/event-markers/event-markers.widget.dart';
@@ -150,7 +151,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       overlayOpacity: 0.5,
                       children: speedDials,
                     ),
-                    body: CalendarWidget(
+                    body: CalendarWebWidget(
                         headerSubTitle: state.filter?.user?.id != null &&
                                     state.filter.project == null &&
                                     state.filter.logType.logType !=
@@ -242,3 +243,5 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     store.dispatch(GetLogByDatePending('${state.currentDate.currentDay}'));
   }
 }
+
+class CalndarWidget {}
