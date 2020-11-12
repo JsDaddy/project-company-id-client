@@ -88,8 +88,11 @@ class _UserScreenState extends State<UserScreen> {
                         enablePullDown: true,
                         child: ListView(
                           children: <Widget>[
-                            state.authUser.position == Positions.Owner &&
-                                    state.authUser.id != state.user.id
+                            (state.authUser.position == Positions.Owner &&
+                                        state.authUser.id != state.user.id) ||
+                                    (state.authUser.position ==
+                                            Positions.Developer &&
+                                        state.authUser.id == state.user.id)
                                 ? Padding(
                                     padding: const EdgeInsets.only(top: 16),
                                     child: Column(

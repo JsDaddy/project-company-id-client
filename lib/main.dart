@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/screens/splash/splash.screen.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
@@ -62,7 +63,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && store.state.user?.id != null) {
       // app is visible and running.
-      store.dispatch(GetRequestsPending());
+      if (store.state.user?.position == Positions.Owner) {
+        store.dispatch(GetRequestsPending());
+      }
       store.dispatch(GetProjectsPending());
       store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
       store.dispatch(

@@ -213,17 +213,19 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                               value.id));
                                       selectedUser = value;
                                     }),
-                                items: state.users.map((UserModel user) {
-                                  return DropdownMenuItem<UserModel>(
-                                      value: user,
-                                      child: Text(
-                                        '${user.name} ${user.lastName}',
-                                        style: TextStyle(
-                                            color: user.endDate != null
-                                                ? AppColors.semiGrey
-                                                : Colors.white),
-                                      ));
-                                }).toList())),
+                                items: state.users.isEmpty
+                                    ? <DropdownMenuItem<UserModel>>[]
+                                    : state.users.map((UserModel user) {
+                                        return DropdownMenuItem<UserModel>(
+                                            value: user,
+                                            child: Text(
+                                              '${user.name} ${user.lastName}',
+                                              style: TextStyle(
+                                                  color: user.endDate != null
+                                                      ? AppColors.semiGrey
+                                                      : Colors.white),
+                                            ));
+                                      }).toList())),
                         selectedType.logType != LogType.Vacation
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 16),
@@ -246,20 +248,25 @@ class _AdminLogFilterWidgetState extends State<AdminLogFilterWidget> {
                                                       value.id));
                                               selectedProject = value;
                                             }),
-                                        items: state.projects
-                                            .map((ProjectModel project) {
-                                          return DropdownMenuItem<ProjectModel>(
-                                              value: project,
-                                              child: Text(
-                                                project.name,
-                                                style: TextStyle(
-                                                    color: project.endDate !=
-                                                                null ||
-                                                            project.isInternal
-                                                        ? AppColors.semiGrey
-                                                        : Colors.white),
-                                              ));
-                                        }).toList())),
+                                        items: state.projects[0].id == null
+                                            ? <DropdownMenuItem<ProjectModel>>[]
+                                            : state.projects
+                                                .map((ProjectModel project) {
+                                                return DropdownMenuItem<
+                                                        ProjectModel>(
+                                                    value: project,
+                                                    child: Text(
+                                                      project.name,
+                                                      style: TextStyle(
+                                                          color: project?.endDate !=
+                                                                      null ||
+                                                                  project
+                                                                      .isInternal
+                                                              ? AppColors
+                                                                  .semiGrey
+                                                              : Colors.white),
+                                                    ));
+                                              }).toList())),
                               )
                             : Container(),
                         const SizedBox(height: 16),
