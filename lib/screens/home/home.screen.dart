@@ -82,15 +82,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             },
             child: Notifier(
               child: LoaderWrapper(
-                child: Scaffold(
-                  appBar: AppBarWidget(avatar: state.user?.avatar ?? ''),
-                  body: CustomNavigator(
-                    navigatorKey: navigatorKey,
-                    home: _children[_currentIndex],
-                    pageRoute: PageRoutes.materialPageRoute,
-                  ),
-                  bottomNavigationBar: _bottomNavigation(state),
-                ),
+                child: MediaQuery.of(context).size.width <
+                        MediaQuery.of(context).size.height
+                    ? Scaffold(
+                        appBar: AppBarWidget(avatar: state.user?.avatar ?? ''),
+                        body: CustomNavigator(
+                          navigatorKey: navigatorKey,
+                          home: _children[_currentIndex],
+                          pageRoute: PageRoutes.materialPageRoute,
+                        ),
+                        bottomNavigationBar: _bottomNavigation(state),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          _leftNavigation(state),
+                          const VerticalDivider(
+                              width: 1, thickness: 1, color: Colors.black87),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 103,
+                            child: Scaffold(
+                              appBar: AppBarWidget(
+                                  avatar: state.user?.avatar ?? ''),
+                              body: CustomNavigator(
+                                navigatorKey: navigatorKey,
+                                home: _children[_currentIndex],
+                                pageRoute: PageRoutes.materialPageRoute,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ),
           );
@@ -107,6 +129,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         items: state.user.position == Positions.Owner
             ? _adminBottomNav(state)
             : _userBottomNav());
+  }
+
+  Widget _leftNavigation(
+    _ViewModel state,
+  ) {
+    return Container(
+        width: 100,
+        child: NavigationRail(
+            backgroundColor: AppColors.bg,
+            selectedIndex: _currentIndex,
+            onDestinationSelected: (int index) => _onTabTapped(index),
+            labelType: NavigationRailLabelType.selected,
+            selectedIconTheme:
+                const IconThemeData(color: Colors.white, size: 30),
+            unselectedIconTheme:
+                const IconThemeData(color: AppColors.semiGrey, size: 20),
+            selectedLabelTextStyle: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
+            unselectedLabelTextStyle: const TextStyle(
+                color: AppColors.semiGrey, fontWeight: FontWeight.normal),
+            destinations: state.user.position == Positions.Owner
+                ? _adminBottomNav(state)
+                    .map((BottomNavigationBarItem item) =>
+                        NavigationRailDestination(
+                            icon: item.icon, label: item.title))
+                    .toList()
+                : _userBottomNav()
+                    .map((BottomNavigationBarItem item) =>
+                        NavigationRailDestination(
+                            icon: item.icon, label: item.title))
+                    .toList()));
   }
 
   List<BottomNavigationBarItem> _adminBottomNav(_ViewModel state) {
@@ -139,6 +192,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ];
   }
 
+  List<BottomNavigationBarItem> _userBottomNav() {
+    return const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+          icon: Icon(Icons.access_alarms), title: Text('Timelog')),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.supervisor_account), title: Text('Employees')),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.desktop_mac),
+        title: Text('Projects'),
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.info_outline),
+        title: Text('Info'),
+      ),
+    ];
+  }
+
   Widget requestsBadge(String text) {
     return Positioned(
         right: 0,
@@ -162,23 +232,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
         ));
-  }
-
-  List<BottomNavigationBarItem> _userBottomNav() {
-    return const <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-          icon: Icon(Icons.access_alarms), title: Text('Timelog')),
-      BottomNavigationBarItem(
-          icon: Icon(Icons.supervisor_account), title: Text('Employees')),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.desktop_mac),
-        title: Text('Projects'),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.info_outline),
-        title: Text('Info'),
-      ),
-    ];
   }
 
   String _getTitleAppBar(int index) {

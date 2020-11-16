@@ -73,25 +73,25 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                 ),
               ],
               child: AppListTile(
-                onTap: () => store.dispatch(PushAction(
-                    UserScreen(uid: widget.log.user.id),
-                    '${widget.log.user.name} ${widget.log.user.lastName}')),
-                leading: state.authUser.position == Positions.Owner
-                    ? AvatarWidget(avatar: widget.log.user.avatar, sizes: 50)
-                    : null,
-                textSpan: TextSpan(
-                    text: AppConverting.getVacationTypeString(
-                        widget.log.vacationType),
-                    style: TextStyle(
-                        color: AppColors.getColorTextVacation(
-                            AppConverting.getStringFromRequestStatus(
-                                widget.log.status)),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)),
-                textSpan2: TextSpan(
-                  text: ' - ${widget.log.desc}',
-                ),
-              ),
+                  onTap: () => store.dispatch(PushAction(
+                      UserScreen(uid: widget.log.user.id),
+                      '${widget.log.user.name} ${widget.log.user.lastName}')),
+                  leading: state.authUser.position == Positions.Owner
+                      ? AvatarWidget(avatar: widget.log.user.avatar, sizes: 50)
+                      : null,
+                  textSpan: TextSpan(
+                      text: AppConverting.getVacationTypeString(
+                          widget.log.vacationType),
+                      style: TextStyle(
+                          color: AppColors.getColorTextVacation(
+                              AppConverting.getStringFromRequestStatus(
+                                  widget.log.status)),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15)),
+                  textSpan2: TextSpan(
+                    text: ' - ${widget.log.desc}',
+                    style: const TextStyle(color: Colors.white),
+                  )),
             ),
           );
         });

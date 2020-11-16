@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-screen.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/app-vacation-tile/app-vacation.tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
@@ -61,14 +62,16 @@ class _EventListWidgetState extends State<EventListWidget> {
             logs: store.state.logsByDate),
         builder: (BuildContext context, _ViewModel state) {
           return ListView(
-            shrinkWrap: true,
             children: <Widget>[
               state.filter?.user?.id != null ||
                       state.authUser.position == Positions.Developer &&
                           state.vacationSickAvailable != null
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
+                      child: Flex(
+                          direction: AppScreen.getRatio(context) < 1
+                              ? Axis.horizontal
+                              : Axis.vertical,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
@@ -240,10 +243,12 @@ class _EventListWidgetState extends State<EventListWidget> {
                           textSpan: TextSpan(
                               text: log.project.name,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15)),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white)),
                           textSpan2: TextSpan(
-                            text: ' - ${log.desc}',
-                          ),
+                              text: ' - ${log.desc}',
+                              style: const TextStyle(color: Colors.white)),
                           onTap: () => store.dispatch(PushAction(
                               UserScreen(uid: log.user.id),
                               '${log.user.name} ${log.user.lastName}')),

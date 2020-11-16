@@ -71,7 +71,6 @@ Future<LogResponse> getLogsByDate(String date, LogFilterModel filter) async {
   final Response<dynamic> res = await api.dio
       .get<dynamic>('/logs/solo/$date/${statLog.logType}${statLog.fullQuery}');
   final Map<String, dynamic> logResponse = res.data as Map<String, dynamic>;
-  print(res.data);
   return LogResponse.fromJson(logResponse);
 }
 

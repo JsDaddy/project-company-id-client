@@ -240,11 +240,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     return RichText(
         text: TextSpan(
             text: title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             children: <TextSpan>[
           TextSpan(
             text: desc,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: Colors.white),
           )
         ]));
   }
