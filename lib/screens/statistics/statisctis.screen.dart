@@ -2,7 +2,6 @@ import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
 import 'package:company_id_new/common/widgets/event-list/event-list.widget.dart';
 import 'package:company_id_new/common/widgets/event-markers/event-markers.widget.dart';
-import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
 import 'package:company_id_new/screens/statistics/add-vacation/add-vacation.widget.dart';

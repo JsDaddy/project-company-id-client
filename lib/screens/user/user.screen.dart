@@ -218,7 +218,7 @@ class _UserScreenState extends State<UserScreen> {
                                   child: state.user.phone != null
                                       ? GestureDetector(
                                           onTap: () => _openUrl(
-                                                'tel://:${state.user.phone}',
+                                                'tel:${state.user.phone}',
                                               ),
                                           child: SocialRowIconWidget(
                                               width: MediaQuery.of(context)
