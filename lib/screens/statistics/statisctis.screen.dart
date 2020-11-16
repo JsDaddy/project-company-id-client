@@ -241,5 +241,3 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     store.dispatch(GetLogByDatePending('${state.currentDate.currentDay}'));
   }
 }
-
-class CalndarWidget {}

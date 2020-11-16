@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-screen.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -41,8 +42,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     return Column(
       children: <Widget>[
         SizedBox(
-          width: MediaQuery.of(context).size.width >
-                  MediaQuery.of(context).size.height
+          width: AppScreen.getRatio(context) > 1
               ? 625
               : MediaQuery.of(context).size.width,
           child: TableCalendar(

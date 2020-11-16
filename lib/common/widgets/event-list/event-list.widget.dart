@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-screen.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/app-vacation-tile/app-vacation.tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
@@ -68,8 +69,7 @@ class _EventListWidgetState extends State<EventListWidget> {
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Flex(
-                          direction: MediaQuery.of(context).size.width <
-                                  MediaQuery.of(context).size.height
+                          direction: AppScreen.getRatio(context) < 1
                               ? Axis.horizontal
                               : Axis.vertical,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
