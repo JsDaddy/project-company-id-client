@@ -1,6 +1,5 @@
 import 'package:company_id_new/common/services/auth.service.dart';
 import 'package:company_id_new/main.dart';
-import 'package:company_id_new/screens/home/home-web.screen.dart';
 import 'package:company_id_new/screens/home/home.screen.dart';
 import 'package:company_id_new/screens/login/login.screen.dart';
 import 'package:company_id_new/screens/set-password/set-password.screen.dart';
@@ -26,7 +25,7 @@ Stream<void> checkTokenEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               SignInSuccess(user),
               user.position == Positions.Owner ? GetRequestsPending() : null,
               PushReplacementAction(
-                  user.initialLogin ? SetPasswordScreen() : HomeScreenWeb(),
+                  user.initialLogin ? SetPasswordScreen() : HomeScreen(),
                   key: mainNavigatorKey)
             ];
           }).onErrorReturnWith((dynamic e) {

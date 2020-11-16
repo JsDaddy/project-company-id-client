@@ -27,7 +27,6 @@ Stream<void> getLogsEpic(Stream<dynamic> actions, EpicStore<dynamic> store) {
               GetStatisticSuccess(full['statistic'] as StatisticModel)
             ];
           }).handleError((dynamic e) {
-            // TODO: return aciton in error
             s.store.dispatch(Notify(NotifyModel(NotificationType.Error,
                 e.message as String ?? 'Something went wrong')));
             s.store.dispatch(GetLogsError());

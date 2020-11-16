@@ -61,14 +61,17 @@ class _EventListWidgetState extends State<EventListWidget> {
             logs: store.state.logsByDate),
         builder: (BuildContext context, _ViewModel state) {
           return ListView(
-            shrinkWrap: true,
             children: <Widget>[
               state.filter?.user?.id != null ||
                       state.authUser.position == Positions.Developer &&
                           state.vacationSickAvailable != null
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
+                      child: Flex(
+                          direction: MediaQuery.of(context).size.width <
+                                  MediaQuery.of(context).size.height
+                              ? Axis.horizontal
+                              : Axis.vertical,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
