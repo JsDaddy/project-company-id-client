@@ -89,7 +89,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                 request.id,
                                 context,
                                 RequestStatus.Approved,
-                                'Are you sure about approving?'))),
+                                'Are you sure about approving?',
+                                request.user.slack))),
                     IconSlideAction(
                         color: AppColors.bg,
                         iconWidget: IconButton(
@@ -99,7 +100,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                 request.id,
                                 context,
                                 RequestStatus.Rejected,
-                                'Are you sure about rejecting?'))),
+                                'Are you sure about rejecting?',
+                                request.user.slack))),
                   ],
                   child: AppListTile(
                       onTap: () => store.dispatch(PushAction(
@@ -121,7 +123,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
   }
 
   Future<void> _changeStatus(String id, BuildContext context,
-      RequestStatus status, String titleText) async {
+      RequestStatus status, String titleText, String slack) async {
     final bool isConfirm = await showDialog(
         barrierDismissible: false,
         context: context,
@@ -133,7 +135,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
       _slidableController.activeState?.close();
       return;
     }
-    store.dispatch(ChangeStatusVacationPending(id, status));
+    store.dispatch(ChangeStatusVacationPending(id, status, slack: slack));
     _slidableController.activeState?.close();
   }
 }

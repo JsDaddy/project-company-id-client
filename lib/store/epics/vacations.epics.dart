@@ -18,6 +18,12 @@ Stream<void> changeStatusVacationEpic(
               .expand<dynamic>((LogModel vacation) {
             return <dynamic>[
               ChangeStatusVacationSuccess(vacation.id, vacation.status),
+              SlackNotifyPending(
+                  action.slack as String,
+                  'Your vacation has been ' +
+                      (action.status == RequestStatus.Approved
+                          ? 'approved'
+                          : 'rejected')),
               Notify(NotifyModel(
                   NotificationType.Success,
                   action.status == RequestStatus.Approved

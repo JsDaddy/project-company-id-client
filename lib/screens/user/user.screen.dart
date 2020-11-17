@@ -230,6 +230,24 @@ class _UserScreenState extends State<UserScreen> {
                                               title: state.user.phone))
                                       : Container(),
                                 ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      12,
+                                  child: state.user.slack != null
+                                      ? GestureDetector(
+                                          onTap: () => _openUrl(
+                                                'https://app.slack.com/client/T5WCD8R5H/user_profile/${state.user.slack}',
+                                              ),
+                                          child: SocialRowWidget(
+                                              width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2 -
+                                                  36,
+                                              iconName: AppImages.slack,
+                                              title: state.user.lastName))
+                                      : Container(),
+                                ),
                               ],
                             ),
                             ..._projects(state.user, state.user.activeProjects,
