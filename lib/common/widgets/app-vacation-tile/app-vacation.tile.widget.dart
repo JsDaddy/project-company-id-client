@@ -56,8 +56,9 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                       color: Colors.green,
                       onPressed: () {
                         store.dispatch(ChangeStatusVacationPending(
-                            widget.log.id, RequestStatus.Approved,
-                            slack: widget.log.user.slack));
+                          widget.log.id,
+                          RequestStatus.Approved,
+                        ));
                         widget.slidableController.activeState?.close();
                       }),
                 ),
@@ -68,8 +69,9 @@ class _AppVacationTileWidgetState extends State<AppVacationTileWidget> {
                       color: AppColors.red,
                       onPressed: () {
                         store.dispatch(ChangeStatusVacationPending(
-                            widget.log.id, RequestStatus.Rejected,
-                            slack: widget.log.user.slack));
+                          widget.log.id,
+                          RequestStatus.Rejected,
+                        ));
                         widget.slidableController.activeState?.close();
                       }),
                 ),

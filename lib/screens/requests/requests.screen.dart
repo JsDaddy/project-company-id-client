@@ -86,22 +86,22 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             icon: const Icon(Icons.check),
                             color: Colors.green,
                             onPressed: () => _changeStatus(
-                                request.id,
-                                context,
-                                RequestStatus.Approved,
-                                'Are you sure about approving?',
-                                request.user.slack))),
+                                  request.id,
+                                  context,
+                                  RequestStatus.Approved,
+                                  'Are you sure about approving?',
+                                ))),
                     IconSlideAction(
                         color: AppColors.bg,
                         iconWidget: IconButton(
                             icon: const Icon(Icons.close),
                             color: AppColors.red,
                             onPressed: () => _changeStatus(
-                                request.id,
-                                context,
-                                RequestStatus.Rejected,
-                                'Are you sure about rejecting?',
-                                request.user.slack))),
+                                  request.id,
+                                  context,
+                                  RequestStatus.Rejected,
+                                  'Are you sure about rejecting?',
+                                ))),
                   ],
                   child: AppListTile(
                       onTap: () => store.dispatch(PushAction(
@@ -123,7 +123,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
   }
 
   Future<void> _changeStatus(String id, BuildContext context,
-      RequestStatus status, String titleText, String slack) async {
+      RequestStatus status, String titleText) async {
     final bool isConfirm = await showDialog(
         barrierDismissible: false,
         context: context,
@@ -135,7 +135,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
       _slidableController.activeState?.close();
       return;
     }
-    store.dispatch(ChangeStatusVacationPending(id, status, slack: slack));
+    store.dispatch(ChangeStatusVacationPending(id, status));
     _slidableController.activeState?.close();
   }
 }

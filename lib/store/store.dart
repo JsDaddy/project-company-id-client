@@ -19,8 +19,6 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:redux_logging/redux_logging.dart';
 
-import 'epics/slack.epics.dart';
-
 final AppState initalState = AppState(
     isLoading: false,
     titles: <String>[],
@@ -81,5 +79,4 @@ final Store<AppState> store =
       EpicMiddleware<AppState>(getStackEpic),
       EpicMiddleware<AppState>(createProjectEpic),
       EpicMiddleware<AppState>(archiveProjectEpic),
-      EpicMiddleware<AppState>(slackNotify),
     ]);
