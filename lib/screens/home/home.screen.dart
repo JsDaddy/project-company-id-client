@@ -153,12 +153,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ? _adminBottomNav(state)
                     .map((BottomNavigationBarItem item) =>
                         NavigationRailDestination(
-                            icon: item.icon, label: item.title))
+                            icon: item.icon, label: Text(item.label)))
                     .toList()
                 : _userBottomNav()
                     .map((BottomNavigationBarItem item) =>
                         NavigationRailDestination(
-                            icon: item.icon, label: item.title))
+                            icon: item.icon, label: Text(item.label)))
                     .toList()));
   }
 
@@ -166,17 +166,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return <BottomNavigationBarItem>[
       const BottomNavigationBarItem(
         icon: Icon(Icons.history),
-        title: Text('Statistics'),
+        label: 'Statistics',
       ),
       const BottomNavigationBarItem(
-          icon: Icon(Icons.supervisor_account), title: Text('Employees')),
+          icon: Icon(Icons.supervisor_account), label: 'Employees'),
       const BottomNavigationBarItem(
         icon: Icon(Icons.desktop_mac),
-        title: Text('Projects'),
+        label: 'Projects',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.info_outline),
-        title: Text('Info'),
+        label: 'Info',
       ),
       BottomNavigationBarItem(
         icon: state.requests.isEmpty
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   requestsBadge(state.requests.length.toString())
                 ],
               ),
-        title: const Text('Requests'),
+        label: 'Requests',
       ),
     ];
   }
@@ -195,16 +195,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   List<BottomNavigationBarItem> _userBottomNav() {
     return const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-          icon: Icon(Icons.access_alarms), title: Text('Timelog')),
+          icon: Icon(Icons.access_alarms), label: 'Timelog'),
       BottomNavigationBarItem(
-          icon: Icon(Icons.supervisor_account), title: Text('Employees')),
+          icon: Icon(Icons.supervisor_account), label: 'Employees'),
       BottomNavigationBarItem(
         icon: Icon(Icons.desktop_mac),
-        title: Text('Projects'),
+        label: 'Projects',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.info_outline),
-        title: Text('Info'),
+        label: 'Info',
       ),
     ];
   }

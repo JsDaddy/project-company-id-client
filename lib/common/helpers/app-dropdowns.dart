@@ -1,4 +1,3 @@
-import 'package:company_id_new/common/helpers/app-colors.dart';
 import 'package:flutter/material.dart';
 
 class AppDropDownStyles {

@@ -4,6 +4,7 @@ import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
+import 'package:company_id_new/common/widgets/refresher-header/water-header.widget.dart';
 import 'package:company_id_new/screens/project-details/add-user/add-user.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/projects.action.dart';
@@ -82,7 +83,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 24),
                     child: SmartRefresher(
-                      header: const WaterDropMaterialHeader(),
+                      header: const CustomWaterHeader(),
                       controller: refresh.refreshController,
                       onRefresh: () {
                         store.dispatch(ClearDetailProject());

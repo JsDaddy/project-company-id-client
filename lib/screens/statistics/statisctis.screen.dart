@@ -3,6 +3,7 @@ import 'package:company_id_new/common/widgets/calendar/calendar.widget.dart';
 import 'package:company_id_new/common/widgets/event-list/event-list.widget.dart';
 import 'package:company_id_new/common/widgets/event-markers/event-markers.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
+import 'package:company_id_new/common/widgets/refresher-header/water-header.widget.dart';
 import 'package:company_id_new/screens/statistics/add-edit-timelog/add-edit-timelog.widget.dart';
 import 'package:company_id_new/screens/statistics/add-vacation/add-vacation.widget.dart';
 import 'package:company_id_new/screens/statistics/filter/filter.widget.dart';
@@ -112,7 +113,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return SmartRefresher(
       controller: refresh.refreshController,
-      header: const WaterDropMaterialHeader(),
+      header: const CustomWaterHeader(),
       onRefresh: () {
         store.dispatch(
             GetLogsPending('${store.state.currentDate.currentMohth}'));
