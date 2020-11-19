@@ -86,20 +86,22 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             icon: const Icon(Icons.check),
                             color: Colors.green,
                             onPressed: () => _changeStatus(
-                                request.id,
-                                context,
-                                RequestStatus.Approved,
-                                'Are you sure about approving?'))),
+                                  request.id,
+                                  context,
+                                  RequestStatus.Approved,
+                                  'Are you sure about approving?',
+                                ))),
                     IconSlideAction(
                         color: AppColors.bg,
                         iconWidget: IconButton(
                             icon: const Icon(Icons.close),
                             color: AppColors.red,
                             onPressed: () => _changeStatus(
-                                request.id,
-                                context,
-                                RequestStatus.Rejected,
-                                'Are you sure about rejecting?'))),
+                                  request.id,
+                                  context,
+                                  RequestStatus.Rejected,
+                                  'Are you sure about rejecting?',
+                                ))),
                   ],
                   child: AppListTile(
                       onTap: () => store.dispatch(PushAction(

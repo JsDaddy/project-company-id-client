@@ -9,6 +9,7 @@ import 'package:company_id_new/screens/statistics/filter/filter.widget.dart';
 import 'package:company_id_new/store/actions/filter.action.dart';
 import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/notifier.action.dart';
+import 'package:company_id_new/store/actions/users.action.dart';
 import 'package:company_id_new/store/models/badge.model.dart';
 import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log-filter.model.dart';
@@ -218,6 +219,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     store.dispatch(GetLogsPending('${store.state.currentDate.currentMohth}'));
     store
         .dispatch(GetLogByDatePending('${store.state.currentDate.currentDay}'));
+    store.dispatch(GetUsersPending(true));
   }
 
   bool _isExisted(AppState state) {
