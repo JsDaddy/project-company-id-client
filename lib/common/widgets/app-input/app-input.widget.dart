@@ -31,6 +31,7 @@ class _AppInputState extends State<AppInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      // ignore: deprecated_member_use
       autovalidate: widget.myController.text.isNotEmpty,
       validator: widget.validator,
       obscureText: widget.obscureText,

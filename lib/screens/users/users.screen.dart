@@ -3,6 +3,7 @@ import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/avatar/avatar.widget.dart';
+import 'package:company_id_new/common/widgets/refresher-header/water-header.widget.dart';
 import 'package:company_id_new/screens/user/user.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/users.action.dart';
@@ -49,7 +50,7 @@ class _UsersScreenState extends State<UsersScreen> {
             isLoading: store.state.isLoading),
         builder: (BuildContext context, _ViewModel state) {
           return SmartRefresher(
-            header: const WaterDropMaterialHeader(),
+            header: const CustomWaterHeader(),
             controller: refresh.refreshController,
             onRefresh: () => store.dispatch(GetUsersPending(true)),
             enablePullDown: true,

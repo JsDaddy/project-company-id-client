@@ -5,6 +5,7 @@ import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
 import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
+import 'package:company_id_new/common/widgets/refresher-header/water-header.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row-icon/social-row-icon.widget.dart';
 import 'package:company_id_new/common/widgets/socials-rows/social-row.widget.dart';
 import 'package:company_id_new/screens/project-details/project-details.screen.dart';
@@ -82,7 +83,7 @@ class _UserScreenState extends State<UserScreen> {
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: SmartRefresher(
-                        header: const WaterDropMaterialHeader(),
+                        header: const CustomWaterHeader(),
                         controller: refresh.refreshController,
                         onRefresh: () =>
                             store.dispatch(GetUserPending(widget.uid)),
