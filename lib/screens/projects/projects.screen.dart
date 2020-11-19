@@ -4,6 +4,7 @@ import 'package:company_id_new/common/services/refresh.service.dart';
 import 'package:company_id_new/common/widgets/app-list-tile/app-list-tile.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/common/widgets/filter-item/filter-item.widget.dart';
+import 'package:company_id_new/common/widgets/refresher-header/water-header.widget.dart';
 import 'package:company_id_new/screens/create-project/create-project.screen.dart';
 import 'package:company_id_new/screens/project-details/project-details.screen.dart';
 import 'package:company_id_new/screens/projects/filter/filter.widget.dart';
@@ -110,7 +111,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             FilterProjectsWidget()),
                   ),
             body: SmartRefresher(
-              header: const WaterDropMaterialHeader(),
+              header: const CustomWaterHeader(),
               controller: refresh.refreshController,
               onRefresh: () => store.dispatch(GetProjectsPending()),
               enablePullDown: true,

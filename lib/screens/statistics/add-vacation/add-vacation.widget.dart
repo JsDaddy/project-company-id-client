@@ -71,6 +71,7 @@ class _AddVacationDialogWidgetState extends State<AddVacationDialogWidget> {
                                   decoration: AppDropDownStyles.decoration,
                                   style: AppDropDownStyles.style,
                                   icon: AppDropDownStyles.icon,
+                                  // ignore: deprecated_member_use
                                   autovalidate: true,
                                   isExpanded: AppDropDownStyles.isExpanded,
                                   hint: const Text('Select reason',
