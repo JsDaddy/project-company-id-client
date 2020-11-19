@@ -14,6 +14,7 @@ class UserModel {
     this.activeProjects,
     this.position,
     this.skype,
+    this.slack,
     this.projects,
     this.id,
     this.englishLevel,
@@ -33,6 +34,7 @@ class UserModel {
   String phone;
   Positions position;
   String skype;
+  String slack;
   String englishLevel;
   bool initialLogin;
   List<ProjectModel> projects;
@@ -73,6 +75,7 @@ class UserModel {
               .toList() as List<ProjectModel>,
       position: AppConverting.getPositionFromEnum(json['position'] as String),
       skype: json['skype'] as String,
+      slack: json['slack'] as String,
       initialLogin: json['initialLogin'] as bool,
     );
   }
@@ -92,6 +95,7 @@ class UserModel {
       int sickAvailable,
       int vacationAvailable,
       String skype,
+      String slack,
       String englishLevel,
       String documentId,
       bool initialLogin,
@@ -113,6 +117,7 @@ class UserModel {
         projects: projects ?? this.projects,
         position: position ?? this.position,
         skype: skype ?? this.skype,
+        slack: slack ?? this.slack,
         endDate: endDate ?? this.endDate,
         initialLogin: initialLogin ?? this.initialLogin);
   }

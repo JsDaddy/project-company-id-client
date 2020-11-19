@@ -1,4 +1,5 @@
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-constants.dart';
 import 'package:company_id_new/common/helpers/app-converting.dart';
 import 'package:company_id_new/common/helpers/app-images.dart';
 import 'package:company_id_new/common/services/converters.service.dart';
@@ -228,6 +229,24 @@ class _UserScreenState extends State<UserScreen> {
                                                   36,
                                               icon: Icons.phone,
                                               title: state.user.phone))
+                                      : Container(),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      12,
+                                  child: state.user.slack != null
+                                      ? GestureDetector(
+                                          onTap: () => _openUrl(
+                                                '${AppConstants.slackUrl}/${state.user.slack}',
+                                              ),
+                                          child: SocialRowWidget(
+                                              width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2 -
+                                                  36,
+                                              iconName: AppImages.slack,
+                                              title: state.user.lastName))
                                       : Container(),
                                 ),
                               ],
