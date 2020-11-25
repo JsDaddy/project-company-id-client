@@ -10,6 +10,7 @@ import 'package:company_id_new/screens/projects/projects.screen.dart';
 import 'package:company_id_new/screens/rules/rules.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
+import 'package:company_id_new/store/actions/logs.action.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
 import 'package:company_id_new/store/models/log.model.dart';
@@ -36,6 +37,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    if (store.state.user.position == Positions.Owner) {
+      store.dispatch(GetRequestsPending());
+    }
+    super.initState();
+  }
 
   final List<Widget> _children = <Widget>[
     StatisticsScreen(),
