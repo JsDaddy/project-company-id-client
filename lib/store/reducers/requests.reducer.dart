@@ -8,6 +8,7 @@ final Reducer<List<LogModel>> requestsReducer = combineReducers<
   TypedReducer<List<LogModel>, GetRequestsSuccess>(_getRequests),
   TypedReducer<List<LogModel>, ChangeStatusVacationSuccess>(
       _changeVacationStatus),
+  TypedReducer<List<LogModel>, RequestVacationSuccess>(_addRequest),
 ]);
 List<LogModel> _getRequests(
     List<LogModel> requests, GetRequestsSuccess action) {
@@ -21,4 +22,9 @@ List<LogModel> _changeVacationStatus(
       .where((LogModel request) => request.id != action.vacationId)
       .toList();
   return newRequests;
+}
+
+List<LogModel> _addRequest(
+    List<LogModel> requests, RequestVacationSuccess action) {
+  return <LogModel>[action.vacation, ...requests];
 }

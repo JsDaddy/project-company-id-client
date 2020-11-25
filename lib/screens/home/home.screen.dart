@@ -1,18 +1,17 @@
 import 'dart:io';
 
 import 'package:company_id_new/common/helpers/app-colors.dart';
+import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/common/widgets/app-appbar/app-appbar.widget.dart';
 import 'package:company_id_new/common/widgets/confirm-dialog/confirm-dialog.widget.dart';
 import 'package:company_id_new/common/widgets/loader/loader.widget.dart';
 import 'package:company_id_new/common/widgets/notifier/notifier.widget.dart';
 import 'package:company_id_new/screens/projects/projects.screen.dart';
-import 'package:company_id_new/screens/requests/requests.screen.dart';
 import 'package:company_id_new/screens/rules/rules.screen.dart';
 import 'package:company_id_new/screens/statistics/statisctis.screen.dart';
 import 'package:company_id_new/screens/users/users.screen.dart';
 import 'package:company_id_new/store/actions/route.action.dart';
 import 'package:company_id_new/store/actions/ui.action.dart';
-import 'package:company_id_new/common/helpers/app-enums.dart';
 import 'package:company_id_new/store/models/log.model.dart';
 import 'package:company_id_new/store/models/user.model.dart';
 import 'package:company_id_new/store/reducers/reducer.dart';
@@ -38,20 +37,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
 
-  final List<Widget> _children = store.state.user.position == Positions.Owner
-      ? <Widget>[
-          StatisticsScreen(),
-          UsersScreen(),
-          ProjectsScreen(),
-          const RulesScreen(),
-          RequestsScreen()
-        ]
-      : <Widget>[
-          StatisticsScreen(),
-          UsersScreen(),
-          ProjectsScreen(),
-          const RulesScreen()
-        ];
+  final List<Widget> _children = <Widget>[
+    StatisticsScreen(),
+    UsersScreen(),
+    ProjectsScreen(),
+    const RulesScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +117,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         unselectedItemColor: Colors.white,
         onTap: (int index) => _onTabTapped(index),
         currentIndex: _currentIndex,
-        items: state.user.position == Positions.Owner
-            ? _adminBottomNav(state)
-            : _userBottomNav());
+        items: _userBottomNav());
   }
 
   Widget _leftNavigation(
@@ -149,118 +138,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 color: Colors.white, fontWeight: FontWeight.bold),
             unselectedLabelTextStyle: const TextStyle(
                 color: AppColors.semiGrey, fontWeight: FontWeight.normal),
-            destinations: state.user.position == Positions.Owner
-                ? _adminBottomNav(state)
-                    .map((BottomNavigationBarItem item) =>
-                        NavigationRailDestination(
-                            icon: item.icon, label: Text(item.label)))
-                    .toList()
-                : _userBottomNav()
-                    .map((BottomNavigationBarItem item) =>
-                        NavigationRailDestination(
-                            icon: item.icon, label: Text(item.label)))
-                    .toList()));
-  }
-
-  List<BottomNavigationBarItem> _adminBottomNav(_ViewModel state) {
-    return <BottomNavigationBarItem>[
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.history),
-        label: 'Statistics',
-      ),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.supervisor_account), label: 'Employees'),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.desktop_mac),
-        label: 'Projects',
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.info_outline),
-        label: 'Info',
-      ),
-      BottomNavigationBarItem(
-        icon: state.requests.isEmpty
-            ? const Icon(Icons.mail_outline)
-            : Stack(
-                children: <Widget>[
-                  const Icon(Icons.mail_outline),
-                  requestsBadge(state.requests.length.toString())
-                ],
-              ),
-        label: 'Requests',
-      ),
-    ];
+            destinations: _userBottomNav()
+                .map((BottomNavigationBarItem item) =>
+                    NavigationRailDestination(
+                        icon: item.icon, label: Text(item.label)))
+                .toList()));
   }
 
   List<BottomNavigationBarItem> _userBottomNav() {
-    return const <BottomNavigationBarItem>[
+    return <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-          icon: Icon(Icons.access_alarms), label: 'Timelog'),
-      BottomNavigationBarItem(
+          icon: const Icon(Icons.access_alarms),
+          label: store.state.user.position == Positions.Owner
+              ? 'Statistics'
+              : 'Timelog'),
+      const BottomNavigationBarItem(
           icon: Icon(Icons.supervisor_account), label: 'Employees'),
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(Icons.desktop_mac),
         label: 'Projects',
       ),
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(Icons.info_outline),
         label: 'Info',
       ),
     ];
-  }
-
-  Widget requestsBadge(String text) {
-    return Positioned(
-        right: 0,
-        child: Container(
-          padding: const EdgeInsets.all(1),
-          decoration: const BoxDecoration(
-            color: AppColors.red,
-            shape: BoxShape.circle,
-          ),
-          constraints: const BoxConstraints(
-            minWidth: 13,
-            minHeight: 13,
-          ),
-          child: Center(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 9,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ));
   }
 
   String _getTitleAppBar(int index) {
     switch (index) {
       case 0:
-        return 'Timelog';
+        return store.state.user.position == Positions.Owner
+            ? 'Statistics'
+            : 'Timelog';
       case 1:
         return 'Employees';
       case 2:
         return 'Projects';
       case 3:
         return 'Rules';
-      default:
-        return '';
-    }
-  }
-
-  String _getAdminTitleAppBar(int index) {
-    switch (index) {
-      case 0:
-        return 'Statistics';
-      case 1:
-        return 'Employees';
-      case 2:
-        return 'Projects';
-      case 3:
-        return 'Rules';
-      case 4:
-        return 'Requests';
       default:
         return '';
     }
@@ -268,9 +184,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _onTabTapped(int index) {
     navigatorKey.currentState.popUntil((Route<dynamic> route) => route.isFirst);
-    store.dispatch(SetClearTitle(store.state.user.position == Positions.Owner
-        ? _getAdminTitleAppBar(index)
-        : _getTitleAppBar(index)));
+    store.dispatch(SetClearTitle(_getTitleAppBar(index)));
 
     setState(() {
       _currentIndex = index;

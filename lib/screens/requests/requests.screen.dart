@@ -49,6 +49,12 @@ class _RequestsScreenState extends State<RequestsScreen> {
               isLoading: store.state.isLoading,
               requests: store.state.requests,
             ),
+        onWillChange: (_ViewModel prev, _ViewModel curr) {
+          if (prev.requests?.length != curr.requests?.length &&
+              curr.requests.isEmpty) {
+            store.dispatch(PopAction(changeTitle: true));
+          }
+        },
         builder: (BuildContext context, _ViewModel state) {
           return SmartRefresher(
             header: const CustomWaterHeader(),
@@ -131,7 +137,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
         builder: (BuildContext context) {
           return ConfirmDialogWidget(title: 'Request', text: titleText);
         });
-    store.dispatch(SetTitle('Requests'));
     if (!isConfirm) {
       _slidableController.activeState?.close();
       return;
