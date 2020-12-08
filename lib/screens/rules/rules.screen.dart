@@ -23,7 +23,7 @@ class _RulesScreenState extends State<RulesScreen>
   AnimationController _controller;
   final Duration _kExpand = const Duration(milliseconds: 200);
   Animation<double> _iconTurns;
-  final List<bool> _isExpanded = List<bool>.filled(3, false);
+  final List<bool> _isExpanded = List<bool>.filled(10, false);
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween =
