@@ -71,12 +71,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                               store.dispatch(
                                   PushAction(RequestsScreen(), 'Requests'));
                             }),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 22, left: 24.0),
-                          child:
-                              requestsBadge(state.requests.length.toString()),
-                        )
+                        requestsBadge(state.requests.length.toString()),
                       ],
                     ),
               logout(context)
@@ -88,7 +83,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
   Widget requestsBadge(String text) {
     return Positioned(
-        right: 0,
+        right: 8,
+        top: 8,
         child: Container(
           padding: const EdgeInsets.all(1),
           decoration: const BoxDecoration(
